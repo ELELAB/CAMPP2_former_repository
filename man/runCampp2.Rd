@@ -6,8 +6,8 @@
 \usage{
 runCampp2(
   data,
-  sdata = NULL,
   metadata,
+  sdata = NULL,
   smetadata = NULL,
   technology,
   groups,
@@ -36,9 +36,9 @@ runCampp2(
 \arguments{
 \item{data}{Gene count matrix (genes as rows; samples as columns) should be imported using function "import_counts"; user can choose own way but has to keep gene IDs as row names and sample IDs as column names.}
 
-\item{sdata}{Gene count matrix for a second dataset. Gene count matrix (genes as rows; samples as columns) should be imported using function "import_counts".}
-
 \item{metadata}{Samples' metadata table, should be imported using function "import_metadata". Metadata must include exactly the same samples as gene counts (data) and samples must be sorted similarly.}
+
+\item{sdata}{Gene count matrix for a second dataset. Gene count matrix (genes as rows; samples as columns) should be imported using function "import_counts".}
 
 \item{smetadata}{Metadata for a second dataset, should be imported using function "import_metadata". Metadata to the secend dataset must include exactly the same samples as sdata and samples must be sorted similarly.}
 
