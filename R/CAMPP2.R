@@ -636,30 +636,7 @@ runCampp2 <- function (data, sdata=NULL, metadata, smetadata=NULL, technology, g
                                                                           ### PRELIMINARY MDS PLOT ###
   # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-
-
-  MDScolors <- gsub(pattern = "FF", replacement = "", x = colors)
-
-
-  if (plotmds == TRUE && databatch == TRUE){
-      mdsplot <- MDSPlot(data.batch, group, ids, MDScolors)
-      ggsave(paste0(prefix, "_MDSplot_batchcorr.pdf"), plot = mdsplot, dpi = 300, width = 8, height = 8)
-
-  } else if (plotmds == TRUE && databatch == FALSE){
-      if (technology[1] == "seq") {
-          mdsplot <- MDSPlot(data.frame(data$E), group, ids, MDScolors)
-      } else {
-          mdsplot <- MDSPlot(data, group, ids, MDScolors)
-      }
-      ggsave(paste0(prefix, "_MDSplot.pdf"), plot = mdsplot, dpi = 300, width = 8, height = 8)
-
-      rm(mdsplot)
-
-  } else {
-      cat("\n- No preliminary plot requested.\n")
-  }
-
-
+  applyMDSPlot(data, plotmds, databatch, data.batch, group, ids, prefix, technology, colors)
 
   # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
   # ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
