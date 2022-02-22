@@ -1,17 +1,21 @@
-#' @title Correlation analysis
-#' @description If two datasets are provided (for correlation and/or network analysis), this option should be specified as a comma separated list (without quotes or parenthesis!) of length two,
-#' first entry referring to data file 1 and second entry referring to the data file 2.
-#' @param my.d1 first dataframe with values to be correlated. These must have the same dimensions and rownames must the same.
-#' @param my.d2 second dataframe with values to be correlated. These must have the same dimensions and rownames must the same.
-#' @param my.filename a name of output plot
+#' @title Apply MDS plot
+#' @description Function for creating MDS plots
+#' @param data a gene counts matrix
+#' @param plotmds
+#' @param databatch TRUE/FALSE parameter for batch correction
+#' @param data.batch batch corrected gene counts
+#' @param group a group information for each sample
+#' @param ids sample identifiers from metadata table
+#' @param prefix a name of the results folder
+#' @param technology a technology
+#' @param colors colors
 #' @export
-#' @import ggplot2
-#' @import plyr
 #' @seealso
-#' @return correlation plots
+#' @return MDS plots
 #' @examples \dontrun{
 #' ...
 #' }
+#'
 
 applyMDSPlot<-function(data=data, plotmds=plotmds, databatch=databatch, data.batch=data.batch, group=group, ids=ids, prefix=prefix, technology=technology, colors=colors){
 
