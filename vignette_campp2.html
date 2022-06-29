@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-06-28" />
+<meta name="date" content="2022-06-29" />
 
 <title>CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</title>
 
@@ -730,12 +730,12 @@ function toggle_visibility(id1) {
 
 
 <h1 class="title toc-ignore">CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</h1>
-<p class="author-name">Nikola Tom<span class="affil-mark">1*</span></p>
-<p class="author-affiliation"><span class="affil-mark">1</span>Technical University of Denmark</p>
-<p class="author-email"><span class="affil-mark">*</span><a href="mailto:1nikola.tom@gmail.com">1nikola.tom@gmail.com</a></p>
-<h4 class="date">28 June 2022</h4>
+<p class="author-name">Nikola Tom, Matteo Tiberti, Elena Papaleo</p>
+<p class="author-affiliation">Technical University of Denmark, Danish Cancer Society Research Center</p>
+<p class="author-email"><a href="mailto:nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
+<h4 class="date">29 June 2022</h4>
 <h4 class="abstract">Abstract</h4>
-(TO BE EDITED) The CAncer bioMarker Prediction Pipeline (CAMPP) is a simple bioinformatics tool intended to automatize identification of potential diagnostic and prognostic cancer biomarkers. The pipeline is versatile and may be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP currently supports; differential expression/ abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
+The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to be submitted to Bioconductor. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in the pipeline. The pipeline is versatile and the functions or part of them can be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP2 currently supports; differential expression/abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
 <h4 class="package">Package</h4>
 <p>CAMPP2 0.1.0</p>
 
@@ -768,14 +768,7 @@ function toggle_visibility(id1) {
 
 <div id="about-campp-to-be-edited" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> About CAMPP (TO BE EDITED)</h1>
-<p>The CAncer bioMarker Prediction Pipeline was developed for internal
-use at the Danish Cancer Society Research Center (DCRC) providing
-researchers with an easy way to identify biomarkers for cancer diagnostics
-and prognostics. In its original form the pipeline was implemented
-using interstitial fluid samples and tissue samples from patients with
-breast cancer but it may be applied to any type of data with comparable
-properties.
-The pipeline can perform the following types of analysis (|) Differential
+<p>The pipeline can perform the following types of analysis (|) Differential
 expression/abundance analysis (limma [26]), (II) LASSO/Elastic-Net
 regression (glmnet [12]), (III) Weighed Gene Co-expression Network
 Analysis (WGCNA [23]), (IV) Correlation analysis (Pearson/Spearman),
@@ -822,7 +815,7 @@ should be OK before interpreting any results!</p>
 </div>
 <div id="requirements" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Requirements</h1>
-<p>To run CAMPP, a working R version 4.0.0 (or newer) is required.</p>
+<p>To run CAMPP2, a working R version 4.0.0 (or newer) is required.</p>
 <p>The Pipeline relies on a variety of R-packages which are installed
 during CAMPP2 installation.</p>
 <p>List of dependencies: (KEEP THIS? if yes, needs to be updated)</p>
@@ -890,20 +883,25 @@ during CAMPP2 installation.</p>
 <h1><span class="header-section-number">3</span> Running CAMPP2</h1>
 <div id="example-data" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Example data</h2>
-<p>Test data include 2 BRCA datasets (campp2_brca_1, campp2_brca_2) and associated metadata (campp2_brca_1_meta, campp2_brca_2_meta). Each dataset is represented by raw read counts for 25 samples (15 tumours, 10 normals in the 1st dataset; 18 tumours and 7 normals in the 2nd dataset). Metadata includes information about diagnosis, age, vital status, days to death, outcome time, tumor stage, outcome and survival.</p>
-<p>Both, raw read counts and metadata were extracted from TCGA BReast CAncer dataset using in-house scripts.</p>
-<p>Test data are integrated into CAMPP2 package and accessible as campp2_brca_1, campp2_brca_2, campp2_brca_1_meta, campp2_brca_2_meta variables once the package is installed. R data object files (.rda) are also available in a data/ directory of CAMPP2 package.</p>
+<p>The test data include 2 BRCA datasets (campp2_brca_1, campp2_brca_2) and associated metadata (campp2_brca_1_meta, campp2_brca_2_meta). Each dataset is represented by raw read counts for 25 samples (15 tumor, 10 normal samples in the 1st dataset; 18 tumors and 7 normal samples in the 2nd dataset). Metadata includes information about diagnosis, age, vital status, days to death, outcome time, tumor stage, outcome and survival.</p>
+<p>Both, raw read counts and metadata were extracted from TCGA-BRCA Level 3.</p>
+<p>Test data are integrated into CAMPP2 package and accessible as campp2_brca_1, campp2_brca_2, campp2_brca_1_meta, campp2_brca_2_meta variables once the package is installed. R data object files (.rda) are also available on <a href="https://github.com/ELELAB/CAMPP2/tree/main/data" class="uri">https://github.com/ELELAB/CAMPP2/tree/main/data</a>.</p>
 </div>
 <div id="running-example-script" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Running example script</h2>
-<pre><code>library(CAMPP2)
-library(edgeR)
-
-runCampp2(batches=c(&quot;tumor_stage&quot;,&quot;tumor_stage&quot;),prefix=&quot;test_CAMPP2&quot;, data1=campp2_brca_1, data2=campp2_brca_2, metadata1=campp2_brca_1_meta,metadata2=campp2_brca_2_meta, groups=c(&quot;IDs&quot;, &quot;diagnosis&quot;,&quot;IDs&quot;, &quot;diagnosis&quot;), technology=c(&quot;seq&quot;,&quot;seq&quot;)) </code></pre>
+<p>##Load CAMPP2 package:</p>
+<pre><code>library(CAMPP2)</code></pre>
+<p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects you can alter the path and use this code:</p>
+<pre><code>load(&quot;/path/to/campp2_brca_1.rda&quot;)
+load(&quot;/path/to/campp2_brca_1_meta.rda&quot;)
+load(&quot;/path/to/campp2_brca_2.rda&quot;)
+load(&quot;/path/to/campp2_brca_2_meta.rda&quot;)</code></pre>
+<p>##Run CAMPP2 on example data with default settings:</p>
+<pre><code>runCampp2(batches=c(&quot;tumor_stage&quot;,&quot;tumor_stage&quot;), prefix=&quot;test_CAMPP2&quot;, data1=campp2_brca_1, data2=campp2_brca_2, metadata1=campp2_brca_1_meta, metadata2=campp2_brca_2_meta, groups=c(&quot;IDs&quot;, &quot;diagnosis&quot;,&quot;IDs&quot;, &quot;diagnosis&quot;), technology=c(&quot;seq&quot;,&quot;seq&quot;)) </code></pre>
 </div>
 <div id="mandatory-input-and-parameters" class="section level2" number="3.3">
 <h2><span class="header-section-number">3.3</span> Mandatory Input and Parameters</h2>
-<p><strong>data1</strong>: Gene count matrix (gene IDs as row names and sample IDs as columns). It’s recommended to import gene counts using function “import_counts”.<br />
+<p><strong>data1</strong>: Gene count matrix (gene IDs as row names and sample IDs as columns). It is recommended to import gene counts using function “import_counts”.<br />
 </p>
 <p><strong>metadata1</strong>: Samples’ metadata table should be imported using function “import_metadata”. Metadata must include exactly the same samples as gene counts (data1) and samples must be sorted similarly.<br />
 </p>
@@ -942,7 +940,7 @@ runCampp2(batches=c(&quot;tumor_stage&quot;,&quot;tumor_stage&quot;),prefix=&quo
 <h3><span class="header-section-number">3.5.1</span> ReplaceNAs<br />
 </h3>
 <p><strong>Description:</strong><br />
-The features (rows) and samples (columns) with high proportion of “NAs” will be removed based on defined thresholds (70% for rows and 80% for columns by default). Remaining “NA” values will be replaced by imputed values. Missing value imputation is done using llsImpute (1st round). If 1st round wasn’t successful or resulted in negative values, impute.knn algorithm is applied (rows with more than 50% missing values will be imputed using the overall mean per sample).<br />
+The features (rows) and samples (columns) with high proportion of “NAs” will be removed based on defined thresholds (70% for rows and 80% for columns by default). Remaining “NA” values will be replaced by imputed values. Missing value imputation is done using llsImpute (1st round). If 1st round was not successful or resulted in negative values, impute.knn algorithm is applied (rows with more than 50% missing values will be imputed using the overall mean per sample).<br />
 <strong>Parameters:</strong><br />
 data: a dataframe of gene/abundance counts.<br />
 pct.NA.row: a number defining maximal percentage of NA values per row (feature). Rows with a higher percentage of NA values will be removed (70 by default).<br />
@@ -951,10 +949,15 @@ pct.NA.colum:n a number defining maximal percentage of NA values per column (sam
 Data frame with replaced “NA” values<br />
 <strong>An example run:</strong><br />
 </p>
-<pre><code>n&lt;-10000
-Na_dataset1&lt;-apply (campp2_brca_1, 2, function(x) {x[sample( c(1:n), floor(n/10))] &lt;- NA; x} )
-replacedNAs&lt;-ReplaceNAs(data=Na_dataset1)</code></pre>
-<p><br />
+<p><code>library(CAMPP2)</code><br />
+</p>
+<p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects you can alter the path and use this code:
+<code>load(&quot;path/to/campp2_brca_1.rda&quot;)</code><br />
+</p>
+<p>##In each of the 2 datasets, we have 10000 genes. In our example, we will randomly introduce 1000 NAs into each sample. Next, ReplaceNAs function is called.</p>
+<p><code>n&lt;-10000</code> # a number of genes in the dataset.</p>
+<p><code>Na_dataset1&lt;-apply (campp2_brca_1, 2, function(x) {x[sample( c(1:n), floor(n/10))] &lt;- NA; x} )</code> # For each sample, 1000 NA values is introduced randomly. All 10000 genes (n) in the example dataset are considered.</p>
+<p><code>replacedNAs&lt;-ReplaceNAs(data=Na_dataset1)</code> # creates an object with replaced NAs<br />
 <br />
 <br />
 </p>
