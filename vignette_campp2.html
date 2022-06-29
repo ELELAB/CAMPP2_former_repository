@@ -948,16 +948,17 @@ pct.NA.colum:n a number defining maximal percentage of NA values per column (sam
 <strong>Output from the function:</strong><br />
 Data frame with replaced “NA” values<br />
 <strong>An example run:</strong><br />
-</p>
-<p><code>library(CAMPP2)</code><br />
-</p>
-<p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects you can alter the path and use this code:
-<code>load(&quot;path/to/campp2_brca_1.rda&quot;)</code><br />
-</p>
-<p>##In each of the 2 datasets, we have 10000 genes. In our example, we will randomly introduce 1000 NAs into each sample. Next, ReplaceNAs function is called.</p>
-<p><code>n&lt;-10000</code> # a number of genes in the dataset.</p>
-<p><code>Na_dataset1&lt;-apply (campp2_brca_1, 2, function(x) {x[sample( c(1:n), floor(n/10))] &lt;- NA; x} )</code> # For each sample, 1000 NA values is introduced randomly. All 10000 genes (n) in the example dataset are considered.</p>
-<p><code>replacedNAs&lt;-ReplaceNAs(data=Na_dataset1)</code> # creates an object with replaced NAs<br />
+##In each of the 2 datasets, we have 10000 genes. In our example, we will randomly introduce 1000 NAs into each sample. Next, ReplaceNAs function is called.</p>
+<pre><code>library(CAMPP2)</code></pre>
+<p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects you can alter the path and use this code:</p>
+<pre><code>load(&quot;path/to/campp2_brca_1.rda&quot;)</code></pre>
+<p>##get a number of genes in the dataset.</p>
+<pre><code>n&lt;-nrow(campp2_brca_1)</code></pre>
+<p>##For each sample, 1000 NA values is introduced randomly. All 10000 genes (n) in the example dataset are considered.</p>
+<pre><code>Na_dataset1&lt;-apply (campp2_brca_1, 2, function(x) {x[sample( c(1:n), floor(n/10))] &lt;- NA; x} )</code></pre>
+<p>##create an object with replaced NAs</p>
+<pre><code>replacedNAs&lt;-ReplaceNAs(data=Na_dataset1)</code></pre>
+<p><br />
 <br />
 <br />
 </p>
