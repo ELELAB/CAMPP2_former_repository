@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-06-29" />
+<meta name="date" content="2022-07-01" />
 
 <title>CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</title>
 
@@ -733,7 +733,7 @@ function toggle_visibility(id1) {
 <p class="author-name">Nikola Tom, Matteo Tiberti, Elena Papaleo</p>
 <p class="author-affiliation">Technical University of Denmark, Danish Cancer Society Research Center</p>
 <p class="author-email"><a href="mailto:nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
-<h4 class="date">29 June 2022</h4>
+<h4 class="date">1 July 2022</h4>
 <h4 class="abstract">Abstract</h4>
 The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to be submitted to Bioconductor. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in the pipeline. The pipeline is versatile and the functions or part of them can be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP2 currently supports; differential expression/abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
 <h4 class="package">Package</h4>
@@ -891,11 +891,11 @@ during CAMPP2 installation.</p>
 <h2><span class="header-section-number">3.2</span> Running example script</h2>
 <p>##Load CAMPP2 package:</p>
 <pre><code>library(CAMPP2)</code></pre>
-<p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects you can alter the path and use this code:</p>
-<pre><code>load(&quot;/path/to/campp2_brca_1.rda&quot;)
-load(&quot;/path/to/campp2_brca_1_meta.rda&quot;)
-load(&quot;/path/to/campp2_brca_2.rda&quot;)
-load(&quot;/path/to/campp2_brca_2_meta.rda&quot;)</code></pre>
+<p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects manually from the cloned repository, you can use this code:</p>
+<pre><code>load(&quot;./data/campp2_brca_1.rda&quot;)
+load(&quot;./data/campp2_brca_1_meta.rda&quot;)
+load(&quot;./data/campp2_brca_2.rda&quot;)
+load(&quot;./data/campp2_brca_2_meta.rda&quot;)</code></pre>
 <p>##Run CAMPP2 on example data with default settings:</p>
 <pre><code>runCampp2(batches=c(&quot;tumor_stage&quot;,&quot;tumor_stage&quot;), prefix=&quot;test_CAMPP2&quot;, data1=campp2_brca_1, data2=campp2_brca_2, metadata1=campp2_brca_1_meta, metadata2=campp2_brca_2_meta, groups=c(&quot;IDs&quot;, &quot;diagnosis&quot;,&quot;IDs&quot;, &quot;diagnosis&quot;), technology=c(&quot;seq&quot;,&quot;seq&quot;)) </code></pre>
 </div>
