@@ -952,7 +952,7 @@ In the first step of this function, percentages of NAs in rows (features) and co
 <strong>Output from the function:</strong><br />
 A data frame without NA values<br />
 <strong>An example run:</strong><br />
-##In each of the 2 datasets, we have 10000 genes and all of them have assigned read counts. In our example, we will randomly introduce 1000 NAs into each sample in the first step. Next, NA values will be replaced by calling ReplaceNAs function.</p>
+##Each of the CAMPP2 example datasets (2) has 10000 genes and all of them have assigned read counts. In our example, we will randomly introduce 1000 NA values into each sample’s genes (taking dataset campp2_brca_1) in the first step in order to prepare test data for NA values replacement. In the next step, NA values will be replaced by calling ReplaceNAs function.</p>
 <pre><code>library(CAMPP2)</code></pre>
 <p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects manually from the cloned repository, you can use this code:</p>
 <pre><code>load(&quot;./data/campp2_brca_1.rda&quot;)</code></pre>
