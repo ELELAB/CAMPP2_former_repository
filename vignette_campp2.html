@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-07-06" />
+<meta name="date" content="2022-07-07" />
 
 <title>CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</title>
 
@@ -718,7 +718,7 @@ function toggle_visibility(id1) {
 <p class="author-name">Nikola Tom, Matteo Tiberti, Elena Papaleo</p>
 <p class="author-affiliation">Technical University of Denmark, Danish Cancer Society Research Center</p>
 <p class="author-email"><a href="mailto:nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
-<h4 class="date">6 July 2022</h4>
+<h4 class="date">7 July 2022</h4>
 <h4 class="abstract">Abstract</h4>
 The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to be submitted to Bioconductor. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in the pipeline. The pipeline is versatile and the functions or part of them can be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP2 currently supports; differential expression/abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
 <h4 class="package">Package</h4>
@@ -743,6 +743,7 @@ The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to b
 </a></li>
 <li><a href="#fixzeros"><span class="toc-section-number">3.5.2</span> FixZeros</a></li>
 <li><a href="#normalizedata"><span class="toc-section-number">3.5.3</span> NormalizeData</a></li>
+<li><a href="#batchcorrect"><span class="toc-section-number">3.5.4</span> BatchCorrect</a></li>
 </ul></li>
 <li><a href="#other-arguments"><span class="toc-section-number">3.6</span> Other Arguments</a></li>
 </ul></li>
@@ -942,15 +943,17 @@ A data frame without NA values<br />
 ##Each of the CAMPP2 example datasets (2) has 10000 genes and all of them have assigned read counts. In our example, we will randomly introduce 1000 NA values into each sample’s genes (taking dataset campp2_brca_1) in the first step in order to prepare test data for NA values replacement. In the next step, NA values will be replaced by calling ReplaceNAs function.</p>
 <pre><code>library(CAMPP2)</code></pre>
 <p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects manually from the cloned repository, you can use this code:</p>
-<pre><code>load(&quot;./data/campp2_brca_1.rda&quot;)</code></pre>
+<pre><code>load(&quot;./data/campp2_brca_1.rda&quot;)
+load(&quot;./data/campp2_brca_1_meta.rda&quot;)
+load(&quot;./data/campp2_brca_2.rda&quot;)
+load(&quot;./data/campp2_brca_2_meta.rda&quot;)
+</code></pre>
 <p>##get a number of genes in the dataset.</p>
 <pre><code>n&lt;-nrow(campp2_brca_1)</code></pre>
 <p>##For testing of this function, 1000 genes is assegned with NA value. NA values are introduced randomly into each sample and all the 10000 genes (n=10000) are considered for the introduction of NA values.</p>
-<pre><code>Na_dataset1&lt;-apply (campp2_brca_1, 2, function(x) {x[sample( c(1:n), floor(n/10))] &lt;- NA; x} )</code></pre>
-<p>##create an object with replaced NAs; features having “NA” in more than 70%
-of the samples will be removed; samples having “NA” in more than 80%
-of the genes will be removed</p>
-<pre><code>replacedNAs&lt;-ReplaceNAs(data=Na_dataset1, pct.NA.row=70, pct.NA.column=80) </code></pre>
+<pre><code>campp2_brca_1_NAs&lt;-apply (campp2_brca_1, 2, function(x) {x[sample( c(1:n), floor(n/10))] &lt;- NA; x} )</code></pre>
+<p>##create an object with replaced NAs; features having “NA” in more than 70% of the samples will be removed; samples having “NA” in more than 80% of the genes will be removed</p>
+<pre><code>campp2_brca_1_replacedNAs&lt;-ReplaceNAs(data=campp2_brca_1_NAs, pct.NA.row=70, pct.NA.column=80) </code></pre>
 <p><br />
 </p>
 </div>
@@ -964,47 +967,57 @@ removed (e.g. genes represented by zero counts/transcripts in more than n sampl
 Next, remaining zeros are substituted with minimal values (&gt;0) observed in each feature across all samples in the dataset.<br />
 <strong>Parameters:</strong><br />
 <em>data</em> a dataframe of gene/abundance counts.<br />
-<em>group</em> a factor specifying samples’ group which should be represented by a column from a metadata file.<br />
-<em>remove.sparse.features</em> a logical argument (TRUE/FALSE) for removal of features with sum of zero counts larger than the size of the smallest
-sample group, and for replacing the remaining zeros. Default is TRUE.<br />
+<em>group</em> group a factor specifying group for each sample (e.g. could be represented by a column from a metadata file).<br />
+<em>remove.sparse.features</em> a logical argument (TRUE/FALSE) for removal of features with sum of zero counts larger than the size of the smallest sample group, and for replacing the remaining zeros. Default is TRUE.<br />
 <strong>Output from the function:</strong><br />
-a data frame with fixed zeros. Features having sum of zero counts higher than the size of the smallest sample group are removed and remaining zeros will be replaced by default.<br />
+a data frame with fixed zeros. Features having sum of zero counts higher than the size of the smallest sample group are removed and remaining zeros are replaced by default.<br />
 <strong>An example run:</strong><br />
 </p>
-<pre><code>library(CAMPP2)</code></pre>
-<p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects manually from the cloned repository, you can use this code:</p>
-<pre><code>load(&quot;./data/campp2_brca_1.rda&quot;)</code></pre>
 <p>##Create an object with fixed zeros:</p>
-<pre><code>zerofix&lt;-FixZeros(data=campp2_brca_1,group=campp2_brca_1_meta$diagnosis, remove.sparse.features=TRUE)</code></pre>
+<pre><code>###Dataset without NA values (&quot;campp2_brca_1_replacedNAs&quot; generated in a previous step) is used as an input.
+campp2_brca_1_zeroFix&lt;-FixZeros(data=campp2_brca_1_replacedNAs,group=campp2_brca_1_meta$diagnosis, remove.sparse.features=TRUE)</code></pre>
 <p><br />
 </p>
 </div>
 <div id="normalizedata" class="section level3" number="3.5.3">
 <h3><span class="header-section-number">3.5.3</span> NormalizeData</h3>
 <p><strong>Description:</strong><br />
-This function normalizes and transforms feature counts depending on data types and selected normalization/standardization methods.
-Transformation methods include options log2, logit and log10. If technology is “seq”, a Voom transform is applied automatically.
+This function normalizes and transforms feature counts depending on data types (“seq”, “array”, “ms”, “other”) and selected normalization/standardization methods.
+Transformation methods include options for “log2”, “logit” and “log10.” If technology is “seq”, a Voom transform is applied automatically.
 Standardization methods options include “mean” or “median”. If technology is “seq” or “array”, this option is ignored, instead, sequencing data are normalized by “TMM”; micro-arrays data are normalized by “quantile” standardization.<br />
 <strong>Parameters:</strong><br />
 <em>data</em> a dataframe of expression/abundance counts<br />
-<em>group</em> a factor specifying samples’ group (e.g. could be represented by a column from a metadata file).<br />
+<em>group</em> a factor specifying group for each sample (e.g. could be represented by a column from a metadata file)<br />
 <em>transform</em> a string vector of length 1 defining transformation type (“log2”, “logit”, “log10”). If technology is “seq”, this option is ignored a Voom transform is applied.<br />
 <em>standardize</em> a string vector of length 1 defining standardization method (“mean” or “median”). If technology is “seq” or “array”, this option is ignored, instead, seq data are normalized by “TMM”; array data are normalized by “quantile” standardization.<br />
-<em>technology</em> a string vector of length 1 defining technology used for generating the data. Allowed types are: ‘array’, ‘seq’, ‘ms’ or ‘other’.<br />
+<em>technology</em> a string vector of length 1 defining technology used for generating the data. Allowed types are: “array”, “seq”, “ms” or “other”.<br />
 <strong>Output from the function:</strong><br />
-Elist (seq technology) or array (array, ms, other technologies) of normalized,
-filtered and transformed feature counts data<br />
+an Elist (“seq” technology) or array (“array”, “ms”, “other” technologies) of normalized and transformed feature counts data<br />
 <strong>An example run:</strong><br />
 </p>
-<pre><code>library(CAMPP2)</code></pre>
-<p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects manually from the cloned repository, you can use this code:</p>
-<pre><code>load(&quot;./data/campp2_brca_1.rda&quot;)</code></pre>
 <p>##Create an object with normalized gene counts</p>
-<pre><code>normalized_data&lt;-NormalizeData(data=campp2_brca_1,group=campp2_brca_1_meta$diagnosis,standardize=&quot;TMM&quot;,transform=&quot;voom&quot;,technology=&quot;seq&quot;)</code></pre>
+<pre><code>###Dataset without zero values (&quot;campp2_brca_1_zeroFix&quot; generated in the previous step) is used as an input.
+campp2_brca_1_normalized&lt;-NormalizeData(data=campp2_brca_1_zeroFix,group=campp2_brca_1_meta$diagnosis,standardize=&quot;TMM&quot;,transform=&quot;voom&quot;,technology=&quot;seq&quot;)</code></pre>
 <p><br />
-<br />
-<br />
 </p>
+</div>
+<div id="batchcorrect" class="section level3" number="3.5.4">
+<h3><span class="header-section-number">3.5.4</span> BatchCorrect</h3>
+<p><strong>Description:</strong><br />
+This function removes batch effects (using ComBat function) which could be causing a significant heterogeneity across batches of data.
+Batch corrected data are intended for explanatory purposes, NOT for a DEA analysis.<br />
+<strong>Parameters:</strong><br />
+<em>data</em> an Elist (“seq” technology) or a matrix (“array”, “ms”, “other” technologies) of normalized and transformed feature (e.g. gene) counts data<br />
+<em>batch</em> a factor specifying batch for each sample (e.g. could be represented by a column from a metadata file)<br />
+<em>group</em> a factor specifying group for each sample (e.g. could be represented by a column from a metadata file)<br />
+<em>technology</em> a string vector of length 1 defining technology used for generating the data. Allowed types are: “array”, “seq”, “ms” or “other”<br />
+<strong>Output from the function:</strong><br />
+a list including matrix (array) of batch corrected feature counts<br />
+<strong>An example run:</strong><br />
+</p>
+<p>##Create an object with batch corrected feature (gene) counts</p>
+<pre><code>###Normalized data (&quot;campp2_brca_1_normalized&quot; generated in a previous step) are used as an input.
+campp2_brca_1_batchCorrected&lt;-BatchCorrect(data=campp2_brca_1_normalized,batch=campp2_brca_1_meta$tumor_stage,group=campp2_brca_1_meta$diagnosis,technology=&quot;seq&quot;) </code></pre>
 <p>================================================================================================
 (THE REST WILL BE CONSIDERED - WE CAN USE SOME INFO TO BETTER DESCRIBE THE ARGUMENTS ABOVE)
 <strong>1. Quantitative data (counts) </strong>: An .xlsx (or .txt) file containing feature expression/abundance.
