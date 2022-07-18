@@ -4,22 +4,29 @@
 \alias{EstimateKmeans}
 \title{Estimate Kmeans}
 \usage{
-EstimateKmeans(df, n)
+EstimateKmeans(data)
 }
 \arguments{
-\item{n}{= number of sample subsets to generate (The number of clusters tested will be based on number of samples, fewer samples will result in fewer kmeans tested.)}
-
-\item{my.data}{a dataframe of expression/abundance counts}
+\item{data}{a dataframe of feature (e.g. gene) counts}
 }
 \value{
-clustering results and plots
+clustering r
 }
 \description{
-Function for Estimating Kmeans; Number of kmeans will be based on the bayesian information criterion(BIC); RNAseq with
-many genes, multiple samples of 3000 variables will be generated
+A function for estimating K-means.
+Number of kmeans will be based on the bayesian information criterion(BIC);
+
+(this is more for runEstimateKmeans)
+In case of data sets with many genes,
+multiple samples of 3000 variables will be generated
 and tested to overcome issues with computational time and the
 consensus of best n kmeans will be returned.
-Clustering may only be performed one dataset at a time!
+
+Clustering may only be performed one dataset at a time.
+
+(The number of clusters
+tested will be based on number of samples, fewer samples will result in fewer
+kmeans tested.)
 }
 \examples{
 \dontrun{

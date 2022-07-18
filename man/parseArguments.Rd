@@ -31,7 +31,8 @@ parseArguments(
   stratify,
   surv.plot,
   PPint,
-  gene.miR.int
+  gene.miR.int,
+  PCA.labels
 )
 }
 \arguments{
@@ -88,6 +89,8 @@ parseArguments(
 \item{PPint}{Argument specifying that protein-protein interaction networks should be generated using the results of the differential expression analysis. This argument must be a character vector of length two. The first element in this list must be a string specifying the type of gene identifier in the gene counts file provided. Allowed identifiers are: "ensembl_peptide_id", "hgnc_symbol", "ensembl_gene_id", "ensembl_transcript_id", "uniprotswissprot". The second element is a string specifying version of the stringDB to use. Currently only version supported is: 11.0. Default is FALSE (do not run).}
 
 \item{gene.miR.int}{Argument specifying that gene-miRNA interaction networks should be generated using the results of the differential expression analysis. This argument must be a character vector of length two. The first element in this list must be a string specifying the type of miRNA identifier in the gene counts data file. Allowed identifiers are: "mature_mirna_ids", "mature_mirna_accession". The second element must be a string specifying the miRNA-gene database to use, currently options are: "targetscan" (validated miRNAs), "mirtarbase" (predicted miRNAs), "tarscanbase" (validated + predicted miRNAs)". Default is FALSE (do not run).}
+
+\item{PCA.labels}{a text ("all", "none) specifying the elements to be labelled. Default value is "none".}
 }
 \value{
 parsed arguments
