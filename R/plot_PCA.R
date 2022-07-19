@@ -1,6 +1,6 @@
 #' @title Principal Component Analysis
 #' @description The plot shows the relationship between samples
-#' (squared euclidian distance) in the dataset. Each dot represents one sample.
+#' (squared euclidian distance) in the data set. Each dot represents one sample.
 #' @param data a dataframe of expression/abundance counts
 #' @param group a factor specifying group for each sample (e.g. could be
 #' represented by a column from a metadata file).
@@ -18,11 +18,6 @@
 
 PCAPlot <- function(data, group, PCA.labels ="none", cols=NULL, prefix) {
 
-        def_cols<-c("#000000", "#E69F00", "#56B4E9", "#009E73",
-                      "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-        if(is.null(cols)){
-            cols <- def_cols
-        }
 
         res.pca <- PCA(t(data),  graph = FALSE, ncp=10, scale = FALSE) # principal component analysis
         fviz_screeplot(res.pca, addlabels = TRUE, ylim = c(0, 50), ggtheme = theme_classic(), ncp=20) # visualize eigenvalues/variances
@@ -41,7 +36,8 @@ PCAPlot <- function(data, group, PCA.labels ="none", cols=NULL, prefix) {
                      palette = cols,
                      addEllipses = TRUE, # Concentration ellipses
                      repel=TRUE,
-                     ggtheme = theme_classic()
+                     ggtheme = theme_classic(),
+                     labelsize = 2
         )
         ggsave(paste0(prefix,"_PCA.png"))
 

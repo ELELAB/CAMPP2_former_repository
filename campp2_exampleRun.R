@@ -27,6 +27,9 @@ batch_corrected_data<-BatchCorrect(normalized_data,campp2_brca_1_meta$tumor_stag
 ###An example code for running differential gene expression analysis
 runCampp2(prefix="Testing_DEA", data1=campp2_brca_1, campp2_brca_1_meta=campp2_brca_1_meta, groups=c("IDs", "diagnosis"), technology=c("seq"), block=c(campp2_brca_1_meta$tumor_stage))
 
+###An example code for running kmeans clustering analysis
 runCampp2(prefix="Testing_kmeans", data1=campp2_brca_1, metadata1 =campp2_brca_1_meta, groups=c("IDs", "diagnosis"), technology=c("seq"), block=c(campp2_brca_1_meta$tumor_stage),kmeans=TRUE)
+runCampp2(prefix="Testing_kmeans2", data1=campp2_brca_1, data1=campp2_brca_2, metadata1 =campp2_brca_1_meta,metadata2 =campp2_brca_2_meta, groups=c("IDs", "diagnosis", "IDs", "diagnosis"), technology=c("seq", "seq"), block=c(campp2_brca_1_meta$tumor_stage),kmeans=TRUE)
 
+###An example code for running PCA
 runCampp2(prefix="Testing_PCA", data1=campp2_brca_1, metadata1 =campp2_brca_1_meta, groups=c("IDs", "diagnosis"), technology=c("seq"), block=c(campp2_brca_1_meta$tumor_stage),kmeans=FALSE, plot.mds = TRUE)

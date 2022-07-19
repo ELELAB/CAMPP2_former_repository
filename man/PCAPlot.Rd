@@ -23,7 +23,7 @@ of variables to PC2, 4) 2D PCA plot, 5) 3D PCA plot
 }
 \description{
 The plot shows the relationship between samples
-(squared euclidian distance) in the dataset. Each dot represents one sample.
+(squared euclidian distance) in the data set. Each dot represents one sample.
 }
 \examples{
 \dontrun{

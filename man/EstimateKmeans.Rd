@@ -10,23 +10,13 @@ EstimateKmeans(data)
 \item{data}{a dataframe of feature (e.g. gene) counts}
 }
 \value{
-clustering r
+number of clusters
 }
 \description{
 A function for estimating K-means.
-Number of kmeans will be based on the bayesian information criterion(BIC);
-
-(this is more for runEstimateKmeans)
-In case of data sets with many genes,
-multiple samples of 3000 variables will be generated
-and tested to overcome issues with computational time and the
-consensus of best n kmeans will be returned.
-
-Clustering may only be performed one dataset at a time.
-
-(The number of clusters
-tested will be based on number of samples, fewer samples will result in fewer
-kmeans tested.)
+Number of kmeans will be based on the bayesian information criterion(BIC)
+provided by mclust package. Summary describing the best model is printed on
+the screen during the calculation.
 }
 \examples{
 \dontrun{
