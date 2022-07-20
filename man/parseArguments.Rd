@@ -32,7 +32,8 @@ parseArguments(
   surv.plot,
   PPint,
   gene.miR.int,
-  PCA.labels
+  PCA.labels,
+  plot.umap
 )
 }
 \arguments{
@@ -56,7 +57,7 @@ parseArguments(
 
 \item{transform}{Data transformation type. Current options are "log2", "log10", "logit" and "voom". If two datasets are provided the parameter should be specified for each dataset, provided as a character vector. Defaults is FALSE (do not run).}
 
-\item{plot.pca}{This argument specifies ("TRUE" or "FALSE") if a preliminary PCAplot should be made for data overview. Works only for the first dataset. Default is FALSE (do not run).}
+\item{plot.pca}{This argument specifies ("TRUE" or "FALSE") if a preliminary PCAplot should be made for data overview. Default is FALSE (do not run).}
 
 \item{plot.heatmap}{Argument for heatmap specified as either: "DE", "DA", "LASSO", "EN" or "Consensus". Defaults is FALSE (do not run).}
 
@@ -91,6 +92,8 @@ parseArguments(
 \item{gene.miR.int}{Argument specifying that gene-miRNA interaction networks should be generated using the results of the differential expression analysis. This argument must be a character vector of length two. The first element in this list must be a string specifying the type of miRNA identifier in the gene counts data file. Allowed identifiers are: "mature_mirna_ids", "mature_mirna_accession". The second element must be a string specifying the miRNA-gene database to use, currently options are: "targetscan" (validated miRNAs), "mirtarbase" (predicted miRNAs), "tarscanbase" (validated + predicted miRNAs)". Default is FALSE (do not run).}
 
 \item{PCA.labels}{a text ("all", "none") specifying the elements to be labelled. Default value is "none".}
+
+\item{plot.umap}{This argument specifies ("TRUE" or "FALSE") if a preliminary UMAP plot should be made for data overview. Default is FALSE (do not run).}
 }
 \value{
 parsed arguments

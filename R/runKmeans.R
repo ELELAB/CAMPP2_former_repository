@@ -11,19 +11,22 @@
 #' In case k-means estimation
 #' using BIC fails, number of clusters will be based on the number of samples
 #' (2-6 clusters for dataset with less than 100 samples; 2-11 for datasets with
-#' 101-500 samples and 2-16 clusters for datasets with more than 500 samples).
+#' 101-500 samples and 2-16 clusters for data sets with more than 500 samples).
 #' The clusters visualized on a PCA graph are saved into the png.
-#' @param data a dataframe of feature (e.g. gene) counts
+#' @param data a data.frame of feature (e.g. gene) counts
 #' @param PCA.labels a text ("all", "none) specifying the elements to be
 #' labelled. Default value is "none".
 #' @param cols a vector of colors (one color for each group)
-#' @param prefix a character defining a prefix of output file names.
+#' @param prefix a character defining a prefix of output file.
 #' @export
-#' @import mclust
+#' @import factoextra
+#' @import FactoMineR
 #' @seealso
-#' @return a data frame (metadata table) with cluster info assigned to each sample; Figures saved into png.
+#' @return a data.frame with cluster info assigned to each sample;
+#' Figures saved into png.
+#' Results from PCA
 #' @examples \dontrun{
-#' ...
+#' runKmeans(campp2_brca_1_normalized$E, PCA.labels = FALSE, cols=NULL, prefix="test_run")
 #' }
 
 runKmeans <- function(data, PCA.labels = FALSE, cols=NULL, prefix=NULL){
@@ -61,11 +64,9 @@ runKmeans <- function(data, PCA.labels = FALSE, cols=NULL, prefix=NULL){
         list.of.dfs[[idx]] <- df  #create list of random selections
     }
     cat(paste0("\n", length(n.subsets), " clustering runs will be done in total...\n"))
-    n.clusters.list <- lapply(list.of.dfs, function(x) EstimateKmeans(x)) #estimate how many clusters in the data
+    n.clusters.list <- lapply(list.of.dfs, function(x) EstimateKmeans(x)) #estimate how many clusters in the data subsets
 
 
-
-    ###this part with number of cluster should be moved to the main function
     nclus <- unique(unlist(n.clusters.list))
 
     if (unique(is.na(nclus)) == TRUE) {
@@ -74,14 +75,13 @@ runKmeans <- function(data, PCA.labels = FALSE, cols=NULL, prefix=NULL){
         nclus <- nks
     }
     nclus <- sort(nclus)
-    paste0("numbers of cluster being tested: ",nclus)
+    paste0("Numbers of clusters being tested: ",nclus)
 
     res.pca <- PCA(t(data),  graph = FALSE, ncp=10, scale = FALSE) # principal component analysis
     res.list <- list()
 
     for (idx in 1:length(nclus)) {
         set.seed(10)
-        #        nth <- detectCores(logical = TRUE)
         Kclus <- kmeans(t(data), nclus[[idx]])
         Clusters <- as.factor(paste0("C",data.frame(Kclus$cluster)$Kclus.cluster))
         res.list[[idx]] <- Clusters
@@ -91,20 +91,20 @@ runKmeans <- function(data, PCA.labels = FALSE, cols=NULL, prefix=NULL){
         }
         fviz_pca_ind(res.pca,
                      label = PCA.labels, # show/hide individual labels; labels are taken from feature counts matrix automatically
-                     habillage = as.factor(Clusters), # color by groups
+                     habillage = as.factor(Clusters), # color by groups (clusters in this case)
                      palette = cols,
-                     addEllipses = TRUE, # Concentration ellipses
+                     addEllipses = TRUE, # concentration ellipses
                      repel=TRUE,
                      ggtheme = theme_classic(),
                      title = paste0("k-means ", nclus[[idx]], " clusters"),
                      labelsize = 2
 
         )
-        ggsave(paste0(prefix,"_PCA_Kmeans_",nclus[[idx]],".png"))
+        ggsave(paste0(prefix,"_PCA_Kmeans_C",nclus[[idx]],".png"))
 
     }
     names(res.list) <- paste0("Clus", nclus)
-    res.df <- as.data.frame(res.list)
-    return(res.df)
+    res.clusters <- as.data.frame(res.list)
+    return(list("res.clusters"=res.clusters,"res.pca"=res.pca))
 
 }

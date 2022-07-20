@@ -9,19 +9,21 @@ runKmeans(data, PCA.labels = FALSE, cols = NULL, prefix = NULL)
 runKmeans(data, PCA.labels = FALSE, cols = NULL, prefix = NULL)
 }
 \arguments{
-\item{data}{a dataframe of feature (e.g. gene) counts}
+\item{data}{a data.frame of feature (e.g. gene) counts}
 
 \item{PCA.labels}{a text ("all", "none) specifying the elements to be
 labelled. Default value is "none".}
 
 \item{cols}{a vector of colors (one color for each group)}
 
-\item{prefix}{a character defining a prefix of output file names.}
+\item{prefix}{a character defining a prefix of output file.}
 }
 \value{
 clustering r
 
-a data frame (metadata table) with cluster info assigned to each sample; Figures saved into png.
+a data.frame with cluster info assigned to each sample;
+Figures saved into png.
+Results from PCA
 }
 \description{
 A function for estimating K-means.
@@ -51,7 +53,7 @@ is limited to 2000 (for large sets having more than 2000 features).
 In case k-means estimation
 using BIC fails, number of clusters will be based on the number of samples
 (2-6 clusters for dataset with less than 100 samples; 2-11 for datasets with
-101-500 samples and 2-16 clusters for datasets with more than 500 samples).
+101-500 samples and 2-16 clusters for data sets with more than 500 samples).
 The clusters visualized on a PCA graph are saved into the png.
 }
 \examples{
@@ -59,6 +61,6 @@ The clusters visualized on a PCA graph are saved into the png.
 ...
 }
 \dontrun{
-...
+runKmeans(campp2_brca_1_normalized$E, PCA.labels = FALSE, cols=NULL, prefix="test_run")
 }
 }
