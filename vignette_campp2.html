@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-07-07" />
+<meta name="date" content="2022-08-11" />
 
 <title>CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</title>
 
@@ -718,7 +718,7 @@ function toggle_visibility(id1) {
 <p class="author-name">Nikola Tom, Matteo Tiberti, Elena Papaleo</p>
 <p class="author-affiliation">Technical University of Denmark, Danish Cancer Society Research Center</p>
 <p class="author-email"><a href="mailto:nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
-<h4 class="date">7 July 2022</h4>
+<h4 class="date">11 August 2022</h4>
 <h4 class="abstract">Abstract</h4>
 The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to be submitted to Bioconductor. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in the pipeline. The pipeline is versatile and the functions or part of them can be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP2 currently supports; differential expression/abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
 <h4 class="package">Package</h4>
@@ -744,6 +744,9 @@ The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to b
 <li><a href="#fixzeros"><span class="toc-section-number">3.5.2</span> FixZeros</a></li>
 <li><a href="#normalizedata"><span class="toc-section-number">3.5.3</span> NormalizeData</a></li>
 <li><a href="#batchcorrect"><span class="toc-section-number">3.5.4</span> BatchCorrect</a></li>
+<li><a href="#pcaplot"><span class="toc-section-number">3.5.5</span> PCAPlot</a></li>
+<li><a href="#estimatekmeans"><span class="toc-section-number">3.5.6</span> EstimateKmeans</a></li>
+<li><a href="#runkmeans"><span class="toc-section-number">3.5.7</span> runKmeans</a></li>
 </ul></li>
 <li><a href="#other-arguments"><span class="toc-section-number">3.6</span> Other Arguments</a></li>
 </ul></li>
@@ -808,64 +811,20 @@ should be OK before interpreting any results!</p>
 during CAMPP2 installation.</p>
 <p>List of dependencies: (KEEP THIS? if yes, needs to be updated)</p>
 <p> </p>
-<div class='horizontal-scroll'><table>
-<colgroup>
-<col width="21%" />
-<col width="78%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Analysis Packages</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Missing value imputation</td>
-<td>impute (v 1.56.0) [17]</td>
-</tr>
-<tr class="even">
-<td>Distributional checks</td>
-<td>fitdistrplus (v 1.0.11) [8]</td>
-</tr>
-<tr class="odd">
-<td>Excel formatting</td>
-<td>openxlsx (v 4.1.0) [34]</td>
-</tr>
-<tr class="even">
-<td>Plotting</td>
-<td>heatmap.plus (v 1.3), squash (v 1.0.8), viridis (v 0.5.1), ggplot2 (v 3.1.0), [7, 11, 14, 35]</td>
-</tr>
-<tr class="odd">
-<td>Data management</td>
-<td>data.table (v 1.11.8), stackoverflow (v 0.1.2), plyr (v 1.8.4), scales (v 1.0.0) [9, 13, 36, 37]</td>
-</tr>
-<tr class="even">
-<td>K-means Clustering</td>
-<td>mclust (v 5.4.3) [30]</td>
-</tr>
-<tr class="odd">
-<td>DE/DA Analysis</td>
-<td>sva (v 3.30.0), limma (v 3.38.2) [19, 26]</td>
-</tr>
-<tr class="even">
-<td>LASSO/Elastic-Net</td>
-<td>glmnet (v 2.0.16) [12]</td>
-</tr>
-<tr class="odd">
-<td>Co-expression analysis</td>
-<td>WGCNA (v 1.66) [23]</td>
-</tr>
-<tr class="even">
-<td>Interaction Networks</td>
-<td>igraph (v 1.2.4), biomaRt (v 2.38.0), multiMiR (v 1.4.0), devtools (v 2.0.1), [6, 10, 27, 38]</td>
-</tr>
-<tr class="odd">
-<td>Survival analysis</td>
-<td>survminer (v 0.4.3), survcomp (v 1.32.0), [22, 29]</td>
-</tr>
-</tbody>
-</table></div>
+<p>(THIS SHOULD BE UPDATED)
+| Analysis Packages |<br />
+|—————————|—————————————————————————————————|
+| Missing value imputation | impute (v 1.56.0) [17] |
+| Distributional checks | fitdistrplus (v 1.0.11) [8] |
+| Excel formatting | openxlsx (v 4.1.0) [34] |
+| Plotting | heatmap.plus (v 1.3), squash (v 1.0.8), viridis (v 0.5.1), ggplot2 (v 3.1.0), [7, 11, 14, 35] |
+| Data management | data.table (v 1.11.8), stackoverflow (v 0.1.2), plyr (v 1.8.4), scales (v 1.0.0) [9, 13, 36, 37] |
+| K-means Clustering | mclust (v 5.4.3) [30] |
+| DE/DA Analysis | sva (v 3.30.0), limma (v 3.38.2) [19, 26] |
+| LASSO/Elastic-Net | glmnet (v 2.0.16) [12] |
+| Co-expression analysis | WGCNA (v 1.66) [23] |
+| Interaction Networks | igraph (v 1.2.4), biomaRt (v 2.38.0), multiMiR (v 1.4.0), devtools (v 2.0.1), [6, 10, 27, 38] |
+| Survival analysis | survminer (v 0.4.3), survcomp (v 1.32.0), [22, 29] |</p>
 </div>
 <div id="running-campp2" class="section level1" number="3">
 <h1><span class="header-section-number">3</span> Running CAMPP2</h1>
@@ -914,16 +873,18 @@ technology=c(&quot;seq&quot;,&quot;seq&quot;)) </code></pre>
 <p><strong>transform</strong>: Data transformation type. Current options are “log2”, “log10”, “logit” and “voom”. If two datasets are provided the parameter should be specified for each dataset, provided as a character vector. Defaults is FALSE (do not run).</p>
 <p><strong>prefix</strong>: Prefix for the results’ files and results folder. Defalt is “Results”.</p>
 <p><strong>signif</strong>: Cut-offs for log fold change (logFC) and corrected p-value (fdr), defining significant hits (proteins, genes, miRNAs or N-features). If argument is set, it must be a numeric vector, where the first element specifies the cut-off for logFC and the second element specifies the cut-off for corrected p-value (fdr). In case of 2 datasets, vector must be of length 4. By default, cutoffs will be set to -1 &gt; logFC &gt; 1 and corrected p-values &lt; 0.05.</p>
-<p><strong>plot.mds</strong>: This argument specifies (“TRUE” or “FALSE”) if a preliminary MDSplot should be made for data overview. Works only for the first dataset. Default is FALSE (do not run).</p>
+<p><strong>plot.PCA</strong>: Argument specifies (“TRUE” or “FALSE”) if a preliminary PCA plot should be made for data overview. Default is FALSE (do not run).</p>
+<p><strong>PCA.labels</strong> a text (“all”, “none) specifying the elements to be labelled. Default value is”none”.</p>
 <p><strong>covariates</strong>: Covariates to include in the analysis. If multiple of these, they should be specified as a character vector. The first element in this list must be either TRUE or FALSE. If TRUE is specified then covariates will be included in both DE/DA analysis and Survival Analsysis. If FALSE is specified covariates will ONLY be used for Survival Analsysis. Names of covariates should match the desired columns in the metadata file. Default is NULL.</p>
 <p><strong>stratify</strong>: This argument may be used if some of the categorical (NOT continous) covariates violate the cox proportional assumption. The workflow checks for proportional hazard and will retun the covariates that fail the PH test. You may then rerun the workflow with this argument followed by the names of the categorical covariates which failed and these will be stratified. Default is NULL.</p>
-<p><strong>colors</strong>: Custom color pallet for MDS and heatmaps. Must be the same length as number of groups used for comparison (e.g. two groups = two colors) and must be defined as character vector. See R site for avalibe colors <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" class="uri">http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf</a>. Default is NULL.</p>
+<p><strong>colors</strong>: Custom color pallet for PCA and heatmaps. Must be the same length as number of groups used for comparison (e.g. two groups = two colors) and must be defined as character vector. See R site for avalibe colors <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" class="uri">http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf</a>. Default is NULL.</p>
 <p><strong>block</strong>: A vector or factor specifying a blocking variable for differential expression analysis. The block must be of same length as the belonging dataset and contain 2 or more options. For 2 datasets the block can be defined as a list of factors or vectors.</p>
 <p><strong>lasso</strong>: Argument specifying parameters for LASSO or Elastic net regression. This argument may be set to 1 for LASSO or &gt;0 &amp; &lt;1 for Elastic Net, but NOT to 0 exactly (Ridge Regression). Defaults is FALSE (do not run).</p>
 <p><strong>WGCNA</strong>: Argument specifying parameter for Weighed Gene Co-expression Network Analysis. It takes a string, either “DA”, “DE” or “ALL” specifying if all variables should be included in WGCNA or only differentially expressed / abundant variables. Defaults is FALSE (do not run).</p>
 <p><strong>cutoff.WGCNA</strong>: Argument specifying the cutoff values for WGCNA. The argument takes a numuric vector of three values: (I) minimum modules size, (II) maximum percentage of dissimilarity for merging of modules, and (III) percentage of top most interconnected genes (or other features) to return, from each modules identified in the Weighed Gene Co-expression Network Analysis. Default values are 10,25,25.</p>
 <p><strong>PPint</strong>: Argument specifying that protein-protein interaction networks should be generated using the results of the differential expression analysis. This argument must be a character vector of length two. The first element in this list must be a string specifying the type of gene identifier in the gene counts file provided. Allowed identifiers are: “ensembl_peptide_id”, “hgnc_symbol”, “ensembl_gene_id”, “ensembl_transcript_id”, “uniprotswissprot”. The second element is a string specifying version of the stringDB to use. Currently only version supported is: 11.0. Default is FALSE (do not run).</p>
 <p><strong>gene.miR.int</strong>: Argument specifying that gene-miRNA interaction networks should be generated using the results of the differential expression analysis. This argument must be a character vector of length two. The first element in this list must be a string specifying the type of miRNA identifier in the gene counts data file. Allowed identifiers are: “mature_mirna_ids”, “mature_mirna_accession”. The second element must be a string specifying the miRNA-gene database to use, currently options are: “targetscan” (validated miRNAs), “mirtarbase” (predicted miRNAs), “tarscanbase” (validated + predicted miRNAs)“. Default is FALSE (do not run).</p>
+<p><strong>plot.umap</strong> This argument specifies (“TRUE” or “FALSE”) if a preliminary UMAP plot should be made for data overview. Default is FALSE (do not run).</p>
 </div>
 <div id="functions-in-campp2" class="section level2" number="3.5">
 <h2><span class="header-section-number">3.5</span> FUNCTIONS IN CAMPP2</h2>
@@ -971,9 +932,9 @@ Next, remaining zeros are substituted with minimal values (&gt;0) observed in ea
 <em>remove.sparse.features</em> a logical argument (TRUE/FALSE) for removal of features with sum of zero counts larger than the size of the smallest sample group, and for replacing the remaining zeros. Default is TRUE.<br />
 <strong>Output from the function:</strong><br />
 a data frame with fixed zeros. Features having sum of zero counts higher than the size of the smallest sample group are removed and remaining zeros are replaced by default.<br />
+<br />
 <strong>An example run:</strong><br />
-</p>
-<p>##Create an object with fixed zeros:</p>
+##Create an object with fixed zeros:</p>
 <pre><code>###Dataset without NA values (&quot;campp2_brca_1_replacedNAs&quot; generated in a previous step) is used as an input.
 campp2_brca_1_zeroFix&lt;-FixZeros(data=campp2_brca_1_replacedNAs,group=campp2_brca_1_meta$diagnosis, remove.sparse.features=TRUE)</code></pre>
 <p><br />
@@ -993,9 +954,9 @@ Standardization methods options include “mean” or “median”. If technolog
 <em>technology</em> a string vector of length 1 defining technology used for generating the data. Allowed types are: “array”, “seq”, “ms” or “other”.<br />
 <strong>Output from the function:</strong><br />
 an Elist (“seq” technology) or array (“array”, “ms”, “other” technologies) of normalized and transformed feature counts data<br />
+<br />
 <strong>An example run:</strong><br />
-</p>
-<p>##Create an object with normalized gene counts</p>
+##Create an object with normalized gene counts</p>
 <pre><code>###Dataset without zero values (&quot;campp2_brca_1_zeroFix&quot; generated in the previous step) is used as an input.
 campp2_brca_1_normalized&lt;-NormalizeData(data=campp2_brca_1_zeroFix,group=campp2_brca_1_meta$diagnosis,standardize=&quot;TMM&quot;,transform=&quot;voom&quot;,technology=&quot;seq&quot;)</code></pre>
 <p><br />
@@ -1013,11 +974,99 @@ Batch corrected data are intended for explanatory purposes, NOT for a DEA analys
 <em>technology</em> a string vector of length 1 defining technology used for generating the data. Allowed types are: “array”, “seq”, “ms” or “other”<br />
 <strong>Output from the function:</strong><br />
 a list including matrix (array) of batch corrected feature counts<br />
+<br />
 <strong>An example run:</strong><br />
-</p>
-<p>##Create an object with batch corrected feature (gene) counts</p>
+##Create an object with batch corrected feature (gene) counts</p>
 <pre><code>###Normalized data (&quot;campp2_brca_1_normalized&quot; generated in a previous step) are used as an input.
 campp2_brca_1_batchCorrected&lt;-BatchCorrect(data=campp2_brca_1_normalized,batch=campp2_brca_1_meta$tumor_stage,group=campp2_brca_1_meta$diagnosis,technology=&quot;seq&quot;) </code></pre>
+<p><br />
+</p>
+</div>
+<div id="pcaplot" class="section level3" number="3.5.5">
+<h3><span class="header-section-number">3.5.5</span> PCAPlot</h3>
+<p><strong>Description:</strong><br />
+A function calculating PCA. PCA plot shows the relationships
+between samples (based on squared euclidean distances) in the data set.
+Each dot represents one sample. This function provides also a scree plot
+describing percentages of explained variances by each PCA component and
+plots with contributions of variables (e.g. genes) to PCA1 and PCA2.
+Top 3 PCA components are visualized in 3D plot.<br />
+<strong>Parameters:</strong><br />
+<em>data</em> a dataframe of expression/abundance counts<br />
+<em>group</em> a factor specifying group for each sample (e.g. could be represented by a column from a metadata file)<br />
+<em>cols</em> a vector of colors (one color for each group)<br />
+<em>PCA.labels</em> a text (“all”, “none) specifying the elements to be labelled. Default value is”none”<br />
+<strong>Output from the function:</strong><br />
+1) scree plot<br />
+2) contributions of variables to PC1<br />
+3) contributions of variables to PC2<br />
+4) 2D PCA plot<br />
+5) 3D PCA plot<br />
+<br />
+<strong>An example run:</strong><br />
+##Run PCA on object with batch corrected feature (gene) counts</p>
+<pre><code>###Normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated in a previous step) are used as an input.
+PCAPlot(campp2_brca_1_batchCorrected, as.factor(campp2_brca_1_meta$subtype), PCA.labels =&quot;none&quot;, cols=NULL, prefix=&quot;test_PCA_plot&quot;)</code></pre>
+<p><br />
+</p>
+</div>
+<div id="estimatekmeans" class="section level3" number="3.5.6">
+<h3><span class="header-section-number">3.5.6</span> EstimateKmeans</h3>
+<p><strong>Description:</strong><br />
+A function to estimate the number of K-means. A Number of K-means is based
+on the Bayesian information criterion (BIC) provided by mclust package.
+A summary describing the best model is printed on the screen during the
+calculation.<br />
+<strong>Parameters:</strong><br />
+<em>data</em> a data.frame of feature (e.g. gene) counts<br />
+<strong>Output from the function:</strong><br />
+a data frame with the number of clusters<br />
+<br />
+<strong>An example run:</strong><br />
+##Estimate number of K-means</p>
+<pre><code>###Sub-sampled (the first 2000 genes) normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated before) are used as an input.
+EstimateKmeans(t(campp2_brca_1_batchCorrected[1:2000,]))</code></pre>
+<p><br />
+</p>
+</div>
+<div id="runkmeans" class="section level3" number="3.5.7">
+<h3><span class="header-section-number">3.5.7</span> runKmeans</h3>
+<p><strong>Description:</strong><br />
+A wrapper function for K-means clustering.
+In order to speed up the analysis, for data sets with &gt;1000 features, multiple
+subsets (number of sets = number of features/1000; rounded up to the higher
+integer) will be generated, maximum is 10 subsets. A number of randomly selected
+features (e.g. genes) in 1 subset is limited to 2000.
+A number of clusters for each subset is automatically estimated using BIC and
+a consensus (based on all the subsets) of best n k-means is returned and used
+for clustering.
+If K-means estimation using BIC fails, a number of clusters will be based on
+the number of samples (2-6 clusters for data set with less than 100 samples;
+2-11 for data sets with 101-500 samples, and 2-16 clusters for data sets with
+more than 500 samples).
+As a result, an information about the clusters assigned to each sample and
+the details from PCA are provided (might be used e.g. for a customized PCA plots).
+The clusters are visualized on a PCA plot and saved into the png.
+A summary describing the best model is printed on the screen during
+calculation.<br />
+<strong>Parameters:</strong><br />
+<em>data</em> a data.frame of feature (e.g. gene) counts<br />
+<em>PCA.labels</em> a string vector (“all” or “none”) specifying which elements
+(e.g. samples) should be labelled (labeling is based on column names of the
+input data). Default value is “none”.<br />
+<em>cols</em> a vector of colors (one color for each group)<br />
+<em>prefix</em> a character string defining a prefix of output file.<br />
+<em>num.km.clusters</em> a vector of manually defined number(s) of clusters. By default, the values(s) are calculated
+automatically (a default value is NULL).<br />
+<strong>Output from the function:</strong><br />
+1) a data.frame with cluster information assigned to each sample<br />
+2) a list of results from PCA<br />
+3) PCA plot(s) saved into png<br />
+<strong>An example run:</strong><br />
+</p>
+<p>##Estimate number of K-means and assign a specific cluster to each sample</p>
+<pre><code>###Normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated in a previous step) are used as an input.
+Kmeans.output&lt;-runKmeans(campp2_brca_1_batchCorrected, PCA.labels = &quot;all&quot;, cols=NULL, prefix=&quot;test_kmeans&quot;, num.km.clusters=NULL)</code></pre>
 <p>================================================================================================
 (THE REST WILL BE CONSIDERED - WE CAN USE SOME INFO TO BETTER DESCRIBE THE ARGUMENTS ABOVE)
 <strong>1. Quantitative data (counts) </strong>: An .xlsx (or .txt) file containing feature expression/abundance.
@@ -1080,6 +1129,7 @@ metadataset 2.</p>
 <div id="other-arguments" class="section level2" number="3.6">
 <h2><span class="header-section-number">3.6</span> Other Arguments</h2>
 <p><br />
+MDS REMOVED
 <strong>Multidimensional* Scaling plot</strong> (MDS): The MDS may be set
 to generate a preliminary multidimensional scaling (MDS) plot.
 Multidimensional scaling (MDS) reduces high-dimensional data

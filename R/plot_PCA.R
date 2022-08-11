@@ -1,22 +1,29 @@
-#' @title Principal Component Analysis
-#' @description The plot shows the relationship between samples
-#' (squared euclidian distance) in the data set. Each dot represents one sample.
+#' @title Principal Component Analysis (PCA)
+#' @description A function calculating PCA. PCA plot shows the relationships
+#' between samples (based on squared euclidean distances) in the data set.
+#' Each dot represents one sample. This function provides also a scree plot
+#' describing percentages of explained variances by each PCA component and
+#' plots with contributions of variables to PCA1 and PCA2. Top 3 PCA components
+#' are visualized in 3D plot.
 #' @param data a dataframe of expression/abundance counts
 #' @param group a factor specifying group for each sample (e.g. could be
-#' represented by a column from a metadata file).
+#' represented by a column from a metadata file)
 #' @param cols a vector of colors (one color for each group)
 #' @param PCA.labels a text ("all", "none) specifying the elements to be
-#' labelled. Default value is "none".
+#' labelled. Default value is "none"
+#' @param prefix a character defining a prefix of output file
 #' @export
 #' @import factoextra
+#' @import FactoMineR
+#' @import pca3d
 #' @seealso
 #' @return 1) scree plot, 2) contributions of variables to PC1, 3) contributions
 #' of variables to PC2, 4) 2D PCA plot, 5) 3D PCA plot
 #' @examples \dontrun{
-#' PCAPlot(campp2_brca_1_normalized$E, as.factor(campp2_brca_1_meta$subtype), PCA.labels ="none", cols=NULL, prefix="test")
+#' PCAPlot(campp2_brca_1_batchCorrected, as.factor(campp2_brca_1_meta$subtype), PCA.labels ="none", cols=NULL, prefix="test")
 #' }
 
-PCAPlot <- function(data, group, PCA.labels ="none", cols=NULL, prefix) {
+PCAPlot <- function(data, group, PCA.labels ="none", cols=NULL, prefix="") {
 
 
         res.pca <- PCA(t(data),  graph = FALSE, ncp=10, scale = FALSE) # principal component analysis

@@ -2,24 +2,24 @@
 % Please edit documentation in R/Estimate_K_means.R
 \name{EstimateKmeans}
 \alias{EstimateKmeans}
-\title{Estimate Kmeans}
+\title{Estimate K-means clusters}
 \usage{
 EstimateKmeans(data)
 }
 \arguments{
-\item{data}{a dataframe of feature (e.g. gene) counts}
+\item{data}{a data frame of feature (e.g. gene) counts}
 }
 \value{
-number of clusters
+a data frame with a number of clusters
 }
 \description{
 A function for estimating K-means.
-Number of kmeans will be based on the bayesian information criterion(BIC)
-provided by mclust package. Summary describing the best model is printed on
+Number of K-means will be based on the bayesian information criterion(BIC)
+provided by mclust package. A summary describing the best model is printed on
 the screen during the calculation.
 }
 \examples{
 \dontrun{
-...
+EstimateKmeans(campp2_brca_1_batchCorrected)
 }
 }

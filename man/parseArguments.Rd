@@ -15,7 +15,7 @@ parseArguments(
   data.check,
   standardize,
   transform,
-  plot.pca,
+  plot.PCA,
   plot.heatmap,
   kmeans,
   signif,
@@ -57,7 +57,7 @@ parseArguments(
 
 \item{transform}{Data transformation type. Current options are "log2", "log10", "logit" and "voom". If two datasets are provided the parameter should be specified for each dataset, provided as a character vector. Defaults is FALSE (do not run).}
 
-\item{plot.pca}{This argument specifies ("TRUE" or "FALSE") if a preliminary PCAplot should be made for data overview. Default is FALSE (do not run).}
+\item{plot.PCA}{This argument specifies ("TRUE" or "FALSE") if a preliminary PCAplot should be made for data overview. Default is FALSE (do not run).}
 
 \item{plot.heatmap}{Argument for heatmap specified as either: "DE", "DA", "LASSO", "EN" or "Consensus". Defaults is FALSE (do not run).}
 

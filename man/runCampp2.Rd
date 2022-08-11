@@ -15,7 +15,7 @@ runCampp2(
   data.check = TRUE,
   standardize = FALSE,
   transform = FALSE,
-  plot.pca = FALSE,
+  plot.PCA = FALSE,
   plot.heatmap = FALSE,
   kmeans = FALSE,
   signif = NULL,
@@ -57,7 +57,7 @@ runCampp2(
 
 \item{transform}{Data transformation type. Current options are "log2", "log10", "logit" and "voom". If two datasets are provided the parameter should be specified for each dataset, provided as a character vector. Defaults is FALSE (do not run).}
 
-\item{plot.pca}{Argument specifies ("TRUE" or "FALSE") if a preliminary PCA plot should be made for data overview. Default is FALSE (do not run).}
+\item{plot.PCA}{Argument specifies ("TRUE" or "FALSE") if a preliminary PCA plot should be made for data overview. Default is FALSE (do not run).}
 
 \item{plot.heatmap}{Argument for heatmap specified as either: "DE", "DA", "LASSO", "EN" or "Consensus". Defaults is FALSE (do not run).}
 
@@ -92,6 +92,8 @@ runCampp2(
 \item{gene.miR.int}{Argument specifying that gene-miRNA interaction networks should be generated using the results of the differential expression analysis. This argument must be a character vector of length two. The first element in this list must be a string specifying the type of miRNA identifier in the gene counts data file. Allowed identifiers are: "mature_mirna_ids", "mature_mirna_accession". The second element must be a string specifying the miRNA-gene database to use, currently options are: "targetscan" (validated miRNAs), "mirtarbase" (predicted miRNAs), "tarscanbase" (validated + predicted miRNAs)". Default is FALSE (do not run).}
 
 \item{PCA.labels}{a text ("all", "none) specifying the elements to be labelled. Default value is "none".}
+
+\item{plot.umap}{This argument specifies ("TRUE" or "FALSE") if a preliminary UMAP plot should be made for data overview. Default is FALSE (do not run).}
 }
 \value{
 CAMPP2 results
@@ -101,6 +103,6 @@ CAMPP2 is a tool for quantitative data analysis
 }
 \examples{
 \dontrun{
-runCampp2(batches=c("tumor_stage","tumor_stage"),prefix="test_CAMPP2", data1=dataset1, data2=dataset2, metadata1=metadata1,metadata2=metadata2, groups=c("IDs", "diagnosis","IDs", "diagnosis"), technology=c("seq","seq"))
+runCampp2(batches=c("tumor_stage","tumor_stage"),prefix="test_CAMPP2", data1=campp2_brca_1, data2=campp2_brca_2, metadata1=campp2_brca_1_meta,metadata2=campp2_brca_2_meta, groups=c("IDs", "diagnosis","IDs", "diagnosis"), technology=c("seq","seq"),plot.PCA=TRUE,plot.umap=TRUE)
 }
 }
