@@ -61,13 +61,14 @@ RunDEA <- function(data, metadata, technology, batch, covarDEA, group, logFC, FD
     # Write results out as .txt file
     if (!is.null(res.DEA)) {
         DEA.out <- ExportDEA(res.DEA, paste0(prefix, out.name))
-        rownames(DEA.out) <- NULL
+        rownames(DEA.out) <- NULL   #why this?
         res.DEA.names <- unique(DEA.out$name)
+
     } else {
         cat("No signficant DE/DA hits found. Check your cut-off for differential expression analysis, it may be that these are too stringent.")
     }
 
-    if (technology[1] == "seq") {
+    if (technology[1] == "seq") {  ###why here?
         cnames <- colnames(data$E)
         data <- data.frame(data$E)
         colnames(data) <- cnames

@@ -147,7 +147,7 @@ runCampp2 <- function (data1, metadata1, data2=NULL, metadata2=NULL, technology,
         } else {
             print("data2 without 0-values are being normalized")
             data2 <- NormalizeData(data2, group2, transform[2], standardize[2], technology[2])
-            }
+        }
     }
 
     ###saving the results
@@ -185,7 +185,7 @@ runCampp2 <- function (data1, metadata1, data2=NULL, metadata2=NULL, technology,
     }
     if (is.null(batches)){
         print("Batch correction wasn't selected")
-        }
+    }
 
     ###saving the results
     if(databatch1==TRUE && !is.null(data1.batch)){
@@ -395,9 +395,16 @@ runCampp2 <- function (data1, metadata1, data2=NULL, metadata2=NULL, technology,
     #First dataset
     DEARes1 <- RunDEA(data1, metadata1, technology[1], batch1, covarDEA1, group1, logFC1, FDR1, paste0(prefix,"1"), block1)
 
-    DEA1.out<-DEARes1$DE.out
-    res.DEA1<-DEARes1$res.DE
-    res.DEA1.names<-DEARes1$res.DE.names
+    DEA1.out<-DEARes1$DEA.out
+    # print("DEA1.out")
+    # print(DEA1.out)
+
+    res.DEA1<-DEARes1$res.DEA
+    # print("res.DEA1")
+    # print(res.DEA1)
+    res.DEA1.names<-DEARes1$res.DEA.names
+    # print("res.DEA1.names")
+    # print(res.DEA1.names)
 
     #Second dataset
     if(!is.null(data2) & !is.null(metadata2)) {
@@ -422,21 +429,24 @@ runCampp2 <- function (data1, metadata1, data2=NULL, metadata2=NULL, technology,
 
     #Lasso
 
+    ##I think this could be more specific (more conditions) with the messages saying which statistics is running (EN, lasso)
     if (!isFALSE(lasso)) {
         if(lasso <= 0.0 || lasso > 1.0 ) {
             stop("\n- The input for argument lasso denotes hyperparameter alpha. This value must be set to 0.0 < x < 1.0 for Elastic Net (0.5 is default) or to 1.0 for LASSO regression. Re-run the pipeline again with correct lasso input or remove lasso all together.\n")
         }
 
-
+        ##!!!
+        ##what about cases between 9 and 19? Looks like the calculation is donu just without cross validation (even with cross validation error reported - which is probably not correct approach)
         # Length of each group
         len <- as.numeric(table(group1))
         test.train <- unique(len >= 19)
-        too.few <- unique(len < 9)
+        ##print warning for num of samples between 9 and 19
+        too.few <- unique(len < 9) ##I would say this should be 10, not 9
 
 
         # Stop Lasso if too few samples
         if (TRUE %in% too.few) {
-            stop("\n- LASSO cannot be performed, too few samples per group, minimum is 10!\n")
+            stop("\n- LASSO cannot be performed, too few samples per group, minimum is 8!\n") ##originally saying minimum is 10 - no sense to me
         }
 
 
@@ -444,11 +454,12 @@ runCampp2 <- function (data1, metadata1, data2=NULL, metadata2=NULL, technology,
         setwd("LASSOResults/")
 
         group1.LASSO <- group1
-        seeds <- sample(1:1000, 10)
+        seeds <- sample(1:1000, 10) #generate 10 random seeds
         LASSO.res <- list()
 
         cat("Cross-validation for grouped multinomial LASSO is running with 10 random seeds, this will take some minutes...")
 
+        ### test.train could be TRUE FALSE if one group is small 9-18; validation would not be done (validation sets not created)
         if(FALSE %in% test.train) {
             if (databatch1 == TRUE) {
                 if (length(levels(as.factor(group1.LASSO))) > 2) {
@@ -475,7 +486,7 @@ runCampp2 <- function (data1, metadata1, data2=NULL, metadata2=NULL, technology,
                     }
                 }
             }
-        } else {
+        } else {   ###with validation (more than 19 samples in each group)
             if (databatch1 == TRUE) {
                 if (length(levels(as.factor(group1.LASSO))) > 2) {
                     for (idx in 1:length(seeds)) {
@@ -503,18 +514,27 @@ runCampp2 <- function (data1, metadata1, data2=NULL, metadata2=NULL, technology,
             }
         }
 
+        print("LASSO.res")
+        print(LASSO.res)
+
 
         # Extract results of 10 runs - Write out and plot results
+        # Creates an intersect of 10 data frames saved in LASSO.res (results are different probably because of different seeds)
         VarsSelect <- Reduce(intersect, lapply(LASSO.res, '[[', 1))
 
+        print("VarsSelect")
+        print(VarsSelect)
+
         if (length(VarsSelect) < 2) {
-            stop("\n- There is no overlap in 10 elastic net runs. If you ran LASSO (lasso was et to 1.0) you can try and relax alpha and perform elastic net instead (0.0 < lasso < 1.0). Otherwise you data may have to high of a noise ratio to sample size, LASSO should not be performed.\n")
+            stop("\n- There is no overlap in 10 elastic net runs. If you ran LASSO (lasso was set to 1.0) you can try and relax alpha and perform elastic net instead (0.0 < lasso < 1.0). Otherwise you data may have to high of a noise ratio to sample size, LASSO should not be performed.\n")
         }
 
 
         VarsSelect <- data.frame(VarsSelect[-1])
         colnames(VarsSelect) <- c("LASSO.Var.Select")
 
+        print("VarsSelect2")
+        print(VarsSelect)
 
         # Write out LASSO/EN results
         write.table(VarsSelect, paste0(prefix,"_LASSO.txt"), sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
@@ -527,10 +547,10 @@ runCampp2 <- function (data1, metadata1, data2=NULL, metadata2=NULL, technology,
             write.table(consensus, paste0(prefix,"_DEA_LASSO_Consensus.txt"), sep = "\t", row.names=FALSE, col.names=TRUE, quote=FALSE)
             pdf(paste0(prefix, "_overlap_DEAA_LASSO_EN.pdf"), height=8, width=12)
             if (length(levels(group1)) == 2) {
-                venn <- venn.diagram(list(A=unique(as.character(DEA1.out[DEA1.out$dir =="up",]$name)), B=unique(as.character(DEA1.out[DEA1.out$dir =="down",]$name)), C=as.character(VarsSelect$LASSO.Var.Select)), category.names = c("D(EA) Analysis Up", "D(EA) Analysis Down", "LASSO/EN Regression"), filename=NULL, lwd = 0.7, cat.pos=0, sub.cex = 2, cat.cex= 1.5, cex=1.5, fill=viridis(3, begin = 0.2, end = 0.8, option="cividis"))
+                venn <- venn.diagram(list(A=unique(as.character(DEA1.out[DEA1.out$dir =="up.reg",]$name)), B=unique(as.character(DEA1.out[DEA1.out$dir =="down.reg",]$name)), C=as.character(VarsSelect$LASSO.Var.Select)), category.names = c("D(EA) Analysis Up", "D(EA) Analysis Down", "LASSO/EN Regression"), filename=NULL, lwd = 0.7, cat.pos=0, sub.cex = 2, cat.cex= 1.5, cex=1.5, fill=viridis(3, begin = 0.2, end = 0.8, option="cividis"))
 
             } else {
-                venn <- venn.diagram(list(A=unique(as.character(DEA1.out$name)), B=as.character(VarsSelect$LASSO.Var.Select)), category.names = c("D(EA) Analysis All", "LASSO/EN Regression"), filename=NULL, lwd = 0.7, cat.pos=0, sub.cex = 2, cat.cex= 1.5, cex=1.5, fill=viridis(2, begin = 0.2, end = 0.8, option="cividis"))
+                venn <- venn.diagram(list(A=unique(as.character(DEA1.out$name)), B=as.character(VarsSelect$LASSO.Var.Select)), category.names = c("D(EA) Analysis All", "LASSO/EN Regression"), filename=NULL, lwd = 0.7, cat.pos=0, sub.cex = 2, cat.cex= 1.5, cex=1.5, fill=viridis(2, begin = 0.2, end = 0.8, option="cividis"))  ##double check this
 
             }
             grid.draw(venn)
@@ -542,18 +562,19 @@ runCampp2 <- function (data1, metadata1, data2=NULL, metadata2=NULL, technology,
 
 
         # Cross Validation errors
+        ## I think this should be done only for cases when the crossvalidation is really calculated (not calculated for small groups).
+        ## IF not calculated, cross-validation error mean is zero which means possible over fitting.
         LassoRun <- paste0(rep("Run", 10), 1:10)
-        CrossValErrormean <- round(unlist(lapply(LASSO.res, '[[', 2)), digits = 4)
+        CrossValErrormean <- round(unlist(lapply(LASSO.res, '[[', 2)), digits = 4) ##print error means from the results
         cat(paste0("\nThe average leave-one-out cross validation error for LASSO/elastic-net was: ", mean(CrossValErrormean), "% and the higest error returned from any of the 10 runs was: ", max(CrossValErrormean),"%. Generally the cross validation error should be low ~ 5.0 %, as large errors may indicate a poor model and/or very heterogeneous data. On the other hand, an error of 0 might indicate over-fitting. See CAMPP manual for specifics.\n\n"))
-        pCVEM <- data.frame(cbind(CrossValErrormean, LassoRun))
+        pCVEM <- data.frame(cbind(CrossValErrormean, LassoRun)) #pCVEM - percentage of cross validation error mean
         pCVEM <- ggplot(data=pCVEM, aes(x=LassoRun, y=CrossValErrormean)) + geom_bar(aes(fill = as.factor(LassoRun)), stat="identity") + theme_minimal() + scale_x_discrete(limits=c(LassoRun)) + scale_fill_viridis(begin = 0.0, end = 0.0, discrete=TRUE, option="cividis" ) + theme(legend.position="none") + ylab("CrossValErrormean in %") + theme(axis.text = element_text(size=14), axis.title = element_text(size=16))
         ggsave(paste0(prefix, "_CrossValidationPlot.pdf"), plot = pCVEM)
 
 
 
-
         # Area under the curve AUC
-        if(TRUE %in% test.train) {
+        if(TRUE %in% test.train) {   ##Should here this condition? if(FALSE NOT %in% test.train) {
 
             ll <- list()
             llev <- levels(as.factor(group1.LASSO))
