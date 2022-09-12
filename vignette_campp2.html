@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-09-02" />
+<meta name="date" content="2022-09-12" />
 
 <title>CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</title>
 
@@ -718,7 +718,7 @@ function toggle_visibility(id1) {
 <p class="author-name">Nikola Tom, Matteo Tiberti, Elena Papaleo</p>
 <p class="author-affiliation">Technical University of Denmark, Danish Cancer Society Research Center</p>
 <p class="author-email"><a href="mailto:nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
-<h4 class="date">2 September 2022</h4>
+<h4 class="date">12 September 2022</h4>
 <h4 class="abstract">Abstract</h4>
 The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to be submitted to Bioconductor. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in the pipeline. The pipeline is versatile and the functions or part of them can be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP2 currently supports; differential expression/abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
 <h4 class="package">Package</h4>
@@ -744,8 +744,8 @@ The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to b
 <li><a href="#fixzeros"><span class="toc-section-number">3.5.2</span> FixZeros</a></li>
 <li><a href="#normalizedata"><span class="toc-section-number">3.5.3</span> NormalizeData</a></li>
 <li><a href="#batchcorrect"><span class="toc-section-number">3.5.4</span> BatchCorrect</a></li>
-<li><a href="#estimatekmeans"><span class="toc-section-number">3.5.5</span> EstimateKmeans</a></li>
-<li><a href="#pcaplot"><span class="toc-section-number">3.5.6</span> PCAPlot</a></li>
+<li><a href="#pcaplot"><span class="toc-section-number">3.5.5</span> PCAPlot</a></li>
+<li><a href="#estimatekmeans"><span class="toc-section-number">3.5.6</span> EstimateKmeans</a></li>
 <li><a href="#runkmeans"><span class="toc-section-number">3.5.7</span> runKmeans</a></li>
 </ul></li>
 <li><a href="#other-arguments"><span class="toc-section-number">3.6</span> Other Arguments</a></li>
@@ -1026,27 +1026,8 @@ campp2_brca_1_batchCorrected&lt;-BatchCorrect(data=campp2_brca_1_normalized,batc
 <p><br />
 </p>
 </div>
-<div id="estimatekmeans" class="section level3" number="3.5.5">
-<h3><span class="header-section-number">3.5.5</span> EstimateKmeans</h3>
-<p><strong>Description:</strong><br />
-A function to estimate the number of K-means. A Number of K-means is based
-on the Bayesian information criterion (BIC) provided by mclust package.
-A summary describing the best model is printed on the screen during the
-calculation.<br />
-<strong>Parameters:</strong><br />
-<em>data</em> a data.frame of feature (e.g. gene) counts<br />
-<strong>Output from the function:</strong><br />
-a data frame with the number of clusters<br />
-<br />
-<strong>An example run:</strong><br />
-##Estimate number of K-means</p>
-<pre><code>###Sub-sampled (the first 2000 genes) normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated before) are used as an input.
-EstimateKmeans(t(campp2_brca_1_batchCorrected[1:2000,]))</code></pre>
-<p><br />
-</p>
-</div>
-<div id="pcaplot" class="section level3" number="3.5.6">
-<h3><span class="header-section-number">3.5.6</span> PCAPlot</h3>
+<div id="pcaplot" class="section level3" number="3.5.5">
+<h3><span class="header-section-number">3.5.5</span> PCAPlot</h3>
 <p><strong>Description:</strong><br />
 A function calculating Principal component analysis (PCA).
 PCA is a method for dimensionality reduction.
@@ -1077,30 +1058,45 @@ PCAPlot(campp2_brca_1_batchCorrected, as.factor(campp2_brca_1_meta$subtype), sho
 <p><br />
 </p>
 </div>
+<div id="estimatekmeans" class="section level3" number="3.5.6">
+<h3><span class="header-section-number">3.5.6</span> EstimateKmeans</h3>
+<p><strong>Description:</strong><br />
+A function to estimate the number of K-means. A Number of K-means is based
+on the Bayesian information criterion (BIC) provided by mclust package.
+A summary describing the best model is printed on the screen during the
+calculation.<br />
+<strong>Parameters:</strong><br />
+<em>data</em> a data.frame of feature (e.g. gene) counts<br />
+<strong>Output from the function:</strong><br />
+a data frame with the number of clusters<br />
+<br />
+<strong>An example run:</strong><br />
+##Estimate number of K-means</p>
+<pre><code>###Sub-sampled (the first 2000 genes) normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated before) are used as an input.
+EstimateKmeans(t(campp2_brca_1_batchCorrected[1:2000,]))</code></pre>
+<p><br />
+</p>
+</div>
 <div id="runkmeans" class="section level3" number="3.5.7">
 <h3><span class="header-section-number">3.5.7</span> runKmeans</h3>
 <p><strong>Description:</strong><br />
 A wrapper function for K-means clustering.
-In order to speed up the analysis, for data sets with &gt;1000 features, multiple
-subsets (number of sets = number of features/1000; rounded up to the higher
-integer) will be generated, maximum is 10 subsets. A number of randomly selected
-features (e.g. genes) in 1 subset is limited to 2000.
-A number of clusters for each subset is automatically estimated using BIC and
-a consensus (based on all the subsets) of best n k-means is returned and used
-for clustering.
+For data sets with &gt;1000 features, multiple subsets (number of sets = number
+of features/1000; rounded up to the higher integer) will be generated,
+maximum is 10 subsets. A number of randomly selected features (e.g. genes)
+in 1 subset is limited to 2000.
+A number of clusters for each sub set is automatically estimated (using
+mclustBIC function from mclust package) and a consensus (based on all the
+subsets) of best n k-means is returned and used for K-means clustering.
 If K-means estimation using BIC fails, a number of clusters will be based on
 the number of samples (2-6 clusters for data set with less than 100 samples;
 2-11 for data sets with 101-500 samples, and 2-16 clusters for data sets with
-more than 500 samples).</p>
-<p>Results are provided in the form of:
-1) a list including:
-a) a data.frame with cluster information assigned to each sample;
-b) a PCA object including data for generating PCA plots with cluster
-information (generated by PCA function from FactoMineT package) is
-returned. This might be used e.g. for a customized PCA plots.
-2) 2D PCA plot(s) projecting samples over first 2 principal components saved
-into png.
-3) A summary describing the best model is printed on the screen during
+more than 500 samples). The number of cluster can also be supplied manually.
+As results, an information about the clusters assigned to each sample and
+results from PCA function (FactoMineR) are provided.
+The clusters are visualized on PCA plot and saved into .png file.
+Plot of BIC values for each of the sample sub-set is saved into .png file.
+A summary describing the best model is printed on the screen during
 calculation.<br />
 <strong>Parameters:</strong><br />
 <em>data</em> a data.frame of feature (e.g. gene) counts<br />
@@ -1108,19 +1104,33 @@ calculation.<br />
 (e.g. samples) should be labelled in the PCA plot including information about
 the clusters. Labeling is based on column names of the input data.
 Default value is FALSE.<br />
-<em>cols</em> a vector of colors (one color for each group)<br />
+<em>colors</em> a vector of colors (one color for each cluster)<br />
 <em>prefix</em> a character string defining a prefix of output file.<br />
-<em>num.km.clusters</em> a vector of manually defined number(s) of clusters. By default, the values(s) are calculated
-automatically (a default value is NULL).<br />
+<em>num.km.clusters</em> a vector of numbers of clusters expected in the data.
+Clusters can be represented e.g., by sample groups, sub-types, etc.
+If multiple values provided, the function will automatically
+perform K-means clustering based on each (expected number of clusters) of
+them separately. By default, expected numbers of clusters are calculated
+automatically based on BIC (mclust package) applied to sub-sampled data sets.
+A default value for this parameter is NULL.
+<em>seed</em> a seed for K-means clustering. Defaults is NULL.
+<em>pca.scale</em> a boolean, if TRUE then data are scaled to unit variance
+during PCA. Default is FALSE<br />
 <strong>Output from the function:</strong><br />
-1) a data.frame with cluster information assigned to each sample<br />
-2) a list of results from PCA<br />
-3) PCA plot(s) saved into png<br />
-<strong>An example run:</strong><br />
+1) a list including:<br />
+a) a data.frame with cluster information assigned to each sample;<br />
+b) a PCA object including data for generating PCA plots with cluster<br />
+information (generated by PCA function from FactoMineR package);<br />
+2) 2D PCA plot(s) projecting samples (labeled with cluster number) over first 2
+principal components saved into .png.
+3) plots of BIC values for each sample sub-set saved into .png file<br />
+<br />
+</p>
+<p><strong>An example run:</strong><br />
 </p>
 <p>##Estimate number of K-means and assign a specific cluster to each sample</p>
 <pre><code>###Normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated in a previous step) are used as an input.
-Kmeans.output&lt;-runKmeans(campp2_brca_1_batchCorrected, show.PCA.labels = TRUE, cols=NULL, prefix=&quot;test_kmeans&quot;, num.km.clusters=NULL)</code></pre>
+Kmeans.output&lt;-runKmeans(campp2_brca_1_batchCorrected[1:2000,], show.PCA.labels = FALSE, colors=NULL, prefix=&quot;test&quot;, num.km.clusters=NULL, seed=123, pca.scale=FALSE)</code></pre>
 <p>================================================================================================
 (THE REST WILL BE CONSIDERED - WE CAN USE SOME INFO TO BETTER DESCRIBE THE ARGUMENTS ABOVE)
 <strong>1. Quantitative data (counts) </strong>: An .xlsx (or .txt) file containing feature expression/abundance.
