@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-09-13" />
+<meta name="date" content="2022-09-22" />
 
 <title>CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</title>
 
@@ -718,7 +718,7 @@ function toggle_visibility(id1) {
 <p class="author-name">Nikola Tom, Matteo Tiberti, Elena Papaleo</p>
 <p class="author-affiliation">Technical University of Denmark, Danish Cancer Society Research Center</p>
 <p class="author-email"><a href="mailto:nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
-<h4 class="date">13 September 2022</h4>
+<h4 class="date">22 September 2022</h4>
 <h4 class="abstract">Abstract</h4>
 The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to be submitted to Bioconductor. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in the pipeline. The pipeline is versatile and the functions or part of them can be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP2 currently supports; differential expression/abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
 <h4 class="package">Package</h4>
@@ -1080,26 +1080,30 @@ EstimateKmeans(t(campp2_brca_1_batchCorrected[1:2000,]))</code></pre>
 <div id="runkmeans" class="section level3" number="3.5.7">
 <h3><span class="header-section-number">3.5.7</span> runKmeans</h3>
 <p><strong>Description:</strong><br />
-A wrapper function for K-means clustering.
-By default, For data sets with &gt;1000 features, multiple subsets (number of
-sets = number of features/1000; rounded up to the higher integer) will be
-generated, maximum is 10 sub-sets. A number of randomly selected features
-(e.g. genes) in 1 subset is limited to 2000. The values for number of subsets
-and size of the sub-sets might by defined manually. The option of using the
-whole dataset for the estimation of the number of the clusters is also available.
-By default, a number of clusters for each sub-set is automatically estimated (using
-mclustBIC function from mclust package) and a consensus (based on all the
-subsets) of best n k-means is returned and used for K-means clustering.
-If K-means estimation using BIC fails, a number of clusters will be based on
-the number of samples (2-6 clusters for data set with less than 100 samples;
-2-11 for data sets with 101-500 samples, and 2-16 clusters for data sets with
-more than 500 samples). The number of clusters can also be supplied manually.
-As results, an information about the clusters assigned to each sample and
-results from PCA (FactoMineR) function are provided.
-The clusters are visualized on PCA plot and saved into .png file.
-Plot of BIC values for each of the sample sub-set is saved into .png file.
-A summary describing the best model is printed on the screen during
-calculation.<br />
+#’ A wrapper function for K-means clustering.
+#’ In a first step, a number of clusters is estimated.
+#’ By default, for data sets with &gt;1000 features, multiple
+#’ subsets (number of sets = number of features/1000; rounded up to the higher
+#’ integer) will be generated, maximum is 10 sub-sets.
+#’ A number of randomly selected features (e.g. genes) in 1 subset is limited
+#’ to 2000. The values for number of subsets and size of the sub-sets might by
+#’ defined manually. The option of using the whole dataset for the estimation
+#’ of the number of the clusters is also available. By default, a number of
+#’ clusters for each sub-set is automatically estimated (using
+#’ mclustBIC function from mclust package) and a consensus (based on all the
+#’ subsets) of best n k-means is returned and used for K-means clustering.
+#’ If K-means estimation using BIC fails, a number of clusters will be based on
+#’ the number of samples (2-6 clusters for data set with less than 100 samples;
+#’ 2-11 for data sets with 101-500 samples, and 2-16 clusters for data sets with
+#’ more than 500 samples). The number of clusters can also be supplied manually.
+#’ In the next step, K-means clustering using the information about the number
+#’ of clusters is done.
+#’ As results, an information about the clusters assigned to each sample and
+#’ results from PCA (FactoMineR) function are provided.
+#’ The clusters are visualized on PCA plot and saved into .png file.
+#’ Plot of BIC values for each of the sample sub-set is saved into .png file.
+#’ A summary describing the best model is printed on the screen during
+#’ calculation.<br />
 <strong>Parameters:</strong><br />
 <em>data</em> a data.frame of feature (e.g. gene) counts<br />
 <em>num.subsets</em> a number of sub-sets to be generated for the estimation of
