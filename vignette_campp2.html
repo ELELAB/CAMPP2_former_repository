@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-10-24" />
+<meta name="date" content="2022-10-31" />
 
 <title>CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</title>
 
@@ -714,7 +714,7 @@ function toggle_visibility(id1) {
 <p class="author-name">Nikola Tom, Matteo Tiberti, Elena Papaleo</p>
 <p class="author-affiliation">Technical University of Denmark, Danish Cancer Society Research Center</p>
 <p class="author-email"><a href="mailto:nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
-<h4 class="date">24 October 2022</h4>
+<h4 class="date">31 October 2022</h4>
 <h4 class="abstract">Abstract</h4>
 The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to be submitted to Bioconductor. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in the pipeline. The pipeline is versatile and the functions or part of them can be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP2 currently supports; differential expression/abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
 <h4 class="package">Package</h4>
@@ -740,22 +740,24 @@ The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to b
 <li><a href="#fixzeros" id="toc-fixzeros"><span class="toc-section-number">3.5.2</span> FixZeros</a></li>
 <li><a href="#normalizedata" id="toc-normalizedata"><span class="toc-section-number">3.5.3</span> NormalizeData</a></li>
 <li><a href="#batchcorrect" id="toc-batchcorrect"><span class="toc-section-number">3.5.4</span> BatchCorrect</a></li>
-<li><a href="#pcaplot" id="toc-pcaplot"><span class="toc-section-number">3.5.5</span> PCAPlot</a></li>
-<li><a href="#runkmeans" id="toc-runkmeans"><span class="toc-section-number">3.5.6</span> runKmeans</a></li>
-<li><a href="#estimatekmeans" id="toc-estimatekmeans"><span class="toc-section-number">3.5.7</span> EstimateKmeans</a></li>
-<li><a href="#rundea" id="toc-rundea"><span class="toc-section-number">3.5.8</span> RunDEA</a></li>
-<li><a href="#deafeatureapply" id="toc-deafeatureapply"><span class="toc-section-number">3.5.9</span> DEAFeatureApply</a></li>
-<li><a href="#dea_feature" id="toc-dea_feature"><span class="toc-section-number">3.5.10</span> DEA_feature</a></li>
-<li><a href="#exportdea" id="toc-exportdea"><span class="toc-section-number">3.5.11</span> ExportDEA</a></li>
-<li><a href="#rundeavisuals" id="toc-rundeavisuals"><span class="toc-section-number">3.5.12</span> RunDEAVisuals</a></li>
-<li><a href="#makevolcano" id="toc-makevolcano"><span class="toc-section-number">3.5.13</span> MakeVolcano</a></li>
-<li><a href="#makeupset" id="toc-makeupset"><span class="toc-section-number">3.5.14</span> MakeUpset</a></li>
-<li><a href="#makevenndiagram" id="toc-makevenndiagram"><span class="toc-section-number">3.5.15</span> MakeVennDiagram</a></li>
-<li><a href="#runheatmap" id="toc-runheatmap"><span class="toc-section-number">3.5.16</span> RunHeatmap</a></li>
-<li><a href="#makeheatmap" id="toc-makeheatmap"><span class="toc-section-number">3.5.17</span> MakeHeatmap</a></li>
-<li><a href="#runlasso" id="toc-runlasso"><span class="toc-section-number">3.5.18</span> runLASSO</a></li>
-<li><a href="#lassofeature" id="toc-lassofeature"><span class="toc-section-number">3.5.19</span> LASSOFeature</a></li>
-<li><a href="#rundea_lasso_consensus" id="toc-rundea_lasso_consensus"><span class="toc-section-number">3.5.20</span> RunDEA_LASSO_consensus</a></li>
+<li><a href="#fitdistributions" id="toc-fitdistributions"><span class="toc-section-number">3.5.5</span> FitDistributions</a></li>
+<li><a href="#plotdistributions" id="toc-plotdistributions"><span class="toc-section-number">3.5.6</span> PlotDistributions</a></li>
+<li><a href="#pcaplot" id="toc-pcaplot"><span class="toc-section-number">3.5.7</span> PCAPlot</a></li>
+<li><a href="#runkmeans" id="toc-runkmeans"><span class="toc-section-number">3.5.8</span> runKmeans</a></li>
+<li><a href="#estimatekmeans" id="toc-estimatekmeans"><span class="toc-section-number">3.5.9</span> EstimateKmeans</a></li>
+<li><a href="#rundea" id="toc-rundea"><span class="toc-section-number">3.5.10</span> RunDEA</a></li>
+<li><a href="#deafeatureapply" id="toc-deafeatureapply"><span class="toc-section-number">3.5.11</span> DEAFeatureApply</a></li>
+<li><a href="#dea_feature" id="toc-dea_feature"><span class="toc-section-number">3.5.12</span> DEA_feature</a></li>
+<li><a href="#exportdea" id="toc-exportdea"><span class="toc-section-number">3.5.13</span> ExportDEA</a></li>
+<li><a href="#rundeavisuals" id="toc-rundeavisuals"><span class="toc-section-number">3.5.14</span> RunDEAVisuals</a></li>
+<li><a href="#makevolcano" id="toc-makevolcano"><span class="toc-section-number">3.5.15</span> MakeVolcano</a></li>
+<li><a href="#makeupset" id="toc-makeupset"><span class="toc-section-number">3.5.16</span> MakeUpset</a></li>
+<li><a href="#makevenndiagram" id="toc-makevenndiagram"><span class="toc-section-number">3.5.17</span> MakeVennDiagram</a></li>
+<li><a href="#runheatmap" id="toc-runheatmap"><span class="toc-section-number">3.5.18</span> RunHeatmap</a></li>
+<li><a href="#makeheatmap" id="toc-makeheatmap"><span class="toc-section-number">3.5.19</span> MakeHeatmap</a></li>
+<li><a href="#runlasso" id="toc-runlasso"><span class="toc-section-number">3.5.20</span> runLASSO</a></li>
+<li><a href="#lassofeature" id="toc-lassofeature"><span class="toc-section-number">3.5.21</span> LASSOFeature</a></li>
+<li><a href="#rundea_lasso_consensus" id="toc-rundea_lasso_consensus"><span class="toc-section-number">3.5.22</span> RunDEA_LASSO_consensus</a></li>
 </ul></li>
 <li><a href="#other-arguments" id="toc-other-arguments"><span class="toc-section-number">3.6</span> Other Arguments</a></li>
 </ul></li>
@@ -1035,8 +1037,74 @@ campp2_brca_1_batchCorrected&lt;-BatchCorrect(data=campp2_brca_1_normalized,batc
 <p><br />
 </p>
 </div>
-<div id="pcaplot" class="section level3" number="3.5.5">
-<h3><span class="header-section-number">3.5.5</span> PCAPlot</h3>
+<div id="fitdistributions" class="section level3" number="3.5.5">
+<h3><span class="header-section-number">3.5.5</span> FitDistributions</h3>
+<p><strong>Description:</strong><br />
+A function for fitting data distribution.
+Depending on character of the data, various distributions are calculated.
+In case of only integer numbers present in the dataset, poison and normal
+distributions are tested. In case of presence of float values in the dataset,
+Weibull, gamma, log normal and normal distributions are tested. In case of
+negative float values, only normal distribution is calculated.<br />
+<strong>Parameters:</strong><br />
+<em>data</em> a data frame of feature counts. Only a subset of
+features should be input, not intended for the full feature count matrix!
+Depending on the character of the data, various distributions are calculated.
+In case of only integer numbers present in the dataset, poison and normal
+distributions are tested. In case of presence of float values in the dataset,
+Weibull, gamma, log normal and normal distributions are tested. In case of
+negative float values, only normal distribution is calculated.
+<strong>Output from the function:</strong><br />
+a list of the results from fitdist function<br />
+<br />
+<strong>An example run:</strong><br />
+##Create an object with information about the data distribution</p>
+<pre><code>###First 10 features from normalized and batch corrected data &quot;campp2_brca_1_batchCorrected&quot; are used as an input.
+campp2_brca_1_distributionsFit &lt;- FitDistributions(campp2_brca_1[1:10,])</code></pre>
+<p><br />
+</p>
+</div>
+<div id="plotdistributions" class="section level3" number="3.5.6">
+<h3><span class="header-section-number">3.5.6</span> PlotDistributions</h3>
+<p><strong>Description:</strong><br />
+Plotting the feature counts’ Distributions.
+As results, multiple plots are obtained for each feature:
+1) Cullen and Frey graph
+2) Histogram and theoretical densities
+3) Empirical and theoretical CDFs
+4) Q−Q plot
+5) P−P plot</p>
+<p>For some of the figures, plotted distributions depends on the characteristics
+of the input data:
+In case of only integer numbers are present in the dataset, poison and normal
+distributions are tested. In case of presence of float values,
+Weibull, gamma, log normal and normal distributions are tested. In case of
+negative float values, only normal distribution is calculated.
+Resulting figures are saved into the .pdf file.<br />
+</p>
+<p><strong>Parameters:</strong><br />
+<em>data</em> a data.frame of feature counts, the same which was
+used as an input for “FitDistributions” function.<br />
+<em>fitted.data</em> a list of distribution descriptions obtained as an output
+from the function “FitDistributions” where the same feature counts are used
+as an input.<br />
+<strong>Output from the function:</strong><br />
+a .pdf file including multiple plots:
+1) Cullen and Frey graph
+2) Histogram and theoretical densities
+3) Empirical and theoretical CDFs
+4) Q−Q plot
+5) P−P plot<br />
+<strong>An example run:</strong><br />
+##Plot distributions of the first 10 features from example batch corrected data.</p>
+<pre><code>###List of fitted distributions &quot;campp2_brca_1_distributionsFit&quot; and the first
+10 feature counts from example batch corrected data are used as an input.
+PlotDistributions(campp2_brca_1_batchCorrected[1:10,], campp2_brca_1_distributionsFit)</code></pre>
+<p><br />
+</p>
+</div>
+<div id="pcaplot" class="section level3" number="3.5.7">
+<h3><span class="header-section-number">3.5.7</span> PCAPlot</h3>
 <p><strong>Description:</strong><br />
 A function calculating Principal component analysis (PCA).
 PCA is a method for dimensionality reduction.
@@ -1067,8 +1135,8 @@ PCAPlot(campp2_brca_1_batchCorrected, as.factor(campp2_brca_1_meta$subtype), sho
 <p><br />
 </p>
 </div>
-<div id="runkmeans" class="section level3" number="3.5.6">
-<h3><span class="header-section-number">3.5.6</span> runKmeans</h3>
+<div id="runkmeans" class="section level3" number="3.5.8">
+<h3><span class="header-section-number">3.5.8</span> runKmeans</h3>
 <p><strong>Description:</strong><br />
 A wrapper function for K-means clustering.
 In a first step, a number of clusters is estimated.
@@ -1146,8 +1214,8 @@ Kmeans.output&lt;-runKmeans(campp2_brca_1_batchCorrected[1:2000,], num.subsets= 
 <p><br />
 </p>
 </div>
-<div id="estimatekmeans" class="section level3" number="3.5.7">
-<h3><span class="header-section-number">3.5.7</span> EstimateKmeans</h3>
+<div id="estimatekmeans" class="section level3" number="3.5.9">
+<h3><span class="header-section-number">3.5.9</span> EstimateKmeans</h3>
 <p><strong>Description:</strong><br />
 A function to estimate the number of K-means. A Number of K-means is based
 on the Bayesian information criterion (BIC) provided by mclust package.
@@ -1165,8 +1233,8 @@ EstimateKmeans(t(campp2_brca_1_batchCorrected[1:2000,]))</code></pre>
 <p><br />
 </p>
 </div>
-<div id="rundea" class="section level3" number="3.5.8">
-<h3><span class="header-section-number">3.5.8</span> RunDEA</h3>
+<div id="rundea" class="section level3" number="3.5.10">
+<h3><span class="header-section-number">3.5.10</span> RunDEA</h3>
 <p><strong>Description:</strong><br />
 A function for running differential expression/abundance
 analysis using a matrix of features (e.g., genes) counts as a mandatory
@@ -1218,8 +1286,8 @@ covarDEA = c(&quot;tumor_stage&quot;), cutoff.logFC=1, cutoff.FDR=0.01)</code></
 <p><br />
 </p>
 </div>
-<div id="deafeatureapply" class="section level3" number="3.5.9">
-<h3><span class="header-section-number">3.5.9</span> DEAFeatureApply</h3>
+<div id="deafeatureapply" class="section level3" number="3.5.11">
+<h3><span class="header-section-number">3.5.11</span> DEAFeatureApply</h3>
 <p><strong>Description:</strong><br />
 A function for applying differential expression/abundance
 analysis to all group comparisons at once. The analysis is based on feature
@@ -1255,8 +1323,8 @@ block = campp2_brca_1_meta$subtype, vector = FALSE)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="dea_feature" class="section level3" number="3.5.10">
-<h3><span class="header-section-number">3.5.10</span> DEA_feature</h3>
+<div id="dea_feature" class="section level3" number="3.5.12">
+<h3><span class="header-section-number">3.5.12</span> DEA_feature</h3>
 <p><strong>Description:</strong><br />
 A function for applying differential expression/abundance
 analysis using limma. The analysis is usually based on normalized feature
@@ -1290,8 +1358,8 @@ cutoff.logFC =1, cutoff.FDR =0.01, block = campp2_brca_1_meta$subtype)</code></p
 <p><br />
 </p>
 </div>
-<div id="exportdea" class="section level3" number="3.5.11">
-<h3><span class="header-section-number">3.5.11</span> ExportDEA</h3>
+<div id="exportdea" class="section level3" number="3.5.13">
+<h3><span class="header-section-number">3.5.13</span> ExportDEA</h3>
 <p><strong>Description:</strong><br />
 A function for re-formatting the output from DEA generated based
 on the workflow: (runDEA - DEAFeatureApply - DEAFeature - limma); and
@@ -1312,8 +1380,8 @@ prefix=&quot;test&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="rundeavisuals" class="section level3" number="3.5.12">
-<h3><span class="header-section-number">3.5.12</span> RunDEAVisuals</h3>
+<div id="rundeavisuals" class="section level3" number="3.5.14">
+<h3><span class="header-section-number">3.5.14</span> RunDEAVisuals</h3>
 <p><strong>Description:</strong><br />
 This function wraps several functions for the visualisation
 of DEA results:
@@ -1356,8 +1424,8 @@ n.labeled.features = 15, control.group= &quot;healthy&quot;, prefix=&quot;test_D
 <p><br />
 </p>
 </div>
-<div id="makevolcano" class="section level3" number="3.5.13">
-<h3><span class="header-section-number">3.5.13</span> MakeVolcano</h3>
+<div id="makevolcano" class="section level3" number="3.5.15">
+<h3><span class="header-section-number">3.5.15</span> MakeVolcano</h3>
 <p><strong>Description:</strong><br />
 A function for making volcano plots from DEA results.
 The input is typically an output from RunDEA (re-formatted matrix of
@@ -1387,8 +1455,8 @@ cutoff.logFC = 1, cutoff.FDR = 0.01, n.labeled.features = 15)
 <p><br />
 </p>
 </div>
-<div id="makeupset" class="section level3" number="3.5.14">
-<h3><span class="header-section-number">3.5.14</span> MakeUpset</h3>
+<div id="makeupset" class="section level3" number="3.5.16">
+<h3><span class="header-section-number">3.5.16</span> MakeUpset</h3>
 <p><strong>Description:</strong><br />
 A function for making Upset plots to visualize the size of
 intersections of the features present each group
@@ -1418,8 +1486,8 @@ y.axis.by=300,set.size.by=250)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="makevenndiagram" class="section level3" number="3.5.15">
-<h3><span class="header-section-number">3.5.15</span> MakeVennDiagram</h3>
+<div id="makevenndiagram" class="section level3" number="3.5.17">
+<h3><span class="header-section-number">3.5.17</span> MakeVennDiagram</h3>
 <p><strong>Description:</strong><br />
 A function for making Venn diagrams to visualize the size of
 intersections of the features between the groups
@@ -1440,8 +1508,8 @@ group</p>
 <p><br />
 </p>
 </div>
-<div id="runheatmap" class="section level3" number="3.5.16">
-<h3><span class="header-section-number">3.5.16</span> RunHeatmap</h3>
+<div id="runheatmap" class="section level3" number="3.5.18">
+<h3><span class="header-section-number">3.5.18</span> RunHeatmap</h3>
 <p><strong>Description:</strong><br />
 A function for making heatmaps to showcase the difference in
 expression/abundance of features across samples and sample groups and to
@@ -1484,8 +1552,8 @@ plot.heatmap=&quot;DEA&quot;, &quot;test_heatmap&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="makeheatmap" class="section level3" number="3.5.17">
-<h3><span class="header-section-number">3.5.17</span> MakeHeatmap</h3>
+<div id="makeheatmap" class="section level3" number="3.5.19">
+<h3><span class="header-section-number">3.5.19</span> MakeHeatmap</h3>
 <p><strong>Description:</strong><br />
 A function for making heatmaps to showcase the difference in
 expression/abundance of features across samples and sample groups and to
@@ -1515,8 +1583,8 @@ prefix=&quot;test_heatmap&quot;, viridis.opt = &quot;turbo&quot;, data.type = &q
 <p><br />
 </p>
 </div>
-<div id="runlasso" class="section level3" number="3.5.18">
-<h3><span class="header-section-number">3.5.18</span> runLASSO</h3>
+<div id="runlasso" class="section level3" number="3.5.20">
+<h3><span class="header-section-number">3.5.20</span> runLASSO</h3>
 <p><strong>Description:</strong><br />
 The function runs LASSO/Elastic net/Ridge regression (depending
 on a hyperparameter alpha value. For Ridge regression, alpha = 0;
@@ -1578,8 +1646,8 @@ runLASSO(data=campp2_test_data_LASSO_batchCorrected, group=campp2_test_metadata_
 <p><br />
 </p>
 </div>
-<div id="lassofeature" class="section level3" number="3.5.19">
-<h3><span class="header-section-number">3.5.19</span> LASSOFeature</h3>
+<div id="lassofeature" class="section level3" number="3.5.21">
+<h3><span class="header-section-number">3.5.21</span> LASSOFeature</h3>
 <p><strong>Description:</strong><br />
 The function runs LASSO/Elastic net/Ridge regression
 (depending on a hyperparameter alpha value). Parameter Lambda is
@@ -1632,8 +1700,8 @@ min.coef = 0, nfolds=10)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="rundea_lasso_consensus" class="section level3" number="3.5.20">
-<h3><span class="header-section-number">3.5.20</span> RunDEA_LASSO_consensus</h3>
+<div id="rundea_lasso_consensus" class="section level3" number="3.5.22">
+<h3><span class="header-section-number">3.5.22</span> RunDEA_LASSO_consensus</h3>
 <p><strong>Description:</strong><br />
 This function creates a consensus between the results from
 DEA and LASSO/Elastic net/Ridge regression. Specifically, only the features
