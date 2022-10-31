@@ -1055,7 +1055,8 @@ distributions are tested. In case of presence of float values in the dataset,
 Weibull, gamma, log normal and normal distributions are tested. In case of
 negative float values, only normal distribution is calculated.
 <strong>Output from the function:</strong><br />
-a list of the results from fitdist function<br />
+a list of the results from fitdist function describing distribution
+of the data<br />
 <br />
 <strong>An example run:</strong><br />
 ##Create an object with information about the data distribution</p>
@@ -1098,8 +1099,7 @@ a .pdf file including multiple plots:
 <strong>An example run:</strong><br />
 ##Plot distributions of the first 10 features from example batch corrected data.</p>
 <pre><code>###List of fitted distributions &quot;campp2_brca_1_distributionsFit&quot; and the first
-10 feature counts from example batch corrected data are used as an input.
-PlotDistributions(campp2_brca_1_batchCorrected[1:10,], campp2_brca_1_distributionsFit)</code></pre>
+10 feature counts from example batch corrected data are used as an input. PlotDistributions(campp2_brca_1_batchCorrected[1:10,], campp2_brca_1_distributionsFit)</code></pre>
 <p><br />
 </p>
 </div>
