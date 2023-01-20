@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2022-12-14" />
+<meta name="date" content="2023-01-20" />
 
 <title>CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</title>
 
@@ -714,7 +714,7 @@ function toggle_visibility(id1) {
 <p class="author-name">Nikola Tom, Mona Nourbakhsh, Matteo Tiberti, Elena Papaleo</p>
 <p class="author-affiliation">Technical University of Denmark, Danish Cancer Society Research Center</p>
 <p class="author-email"><a href="mailto:nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">nikto@dtu.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
-<h4 class="date">14 December 2022</h4>
+<h4 class="date">20 January 2023</h4>
 <h4 class="abstract">Abstract</h4>
 The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to be submitted to Bioconductor. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in the pipeline. The pipeline is versatile and the functions or part of them can be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP2 currently supports; differential expression/abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
 <h4 class="package">Package</h4>
@@ -1682,23 +1682,27 @@ selection are calculated 10 times for 10 random seeds and the intersection of
 the selected variables (e.g., genes) is obtained.
 The function optionally performs validation using a validation
 dataset of the random forest classification if there is enough samples in the
-dataset. If validation is not performed, only variable selection using random
-forest is carried out.
+dataset. This is determined by the split.size argument. If validation is not
+performed, only variable selection using random forest is carried out.
 The function also intersects the selected features across all 10 seed runs
 as found during the feature selection process.<br />
 <strong>Parameters:</strong><br />
 <em>data</em> a matrix of (transformed and normalized) feature counts from
 “seq”, “array”, “ms” or “other” technology (with feature IDs as row names
-and sample IDs as columns).<br />
+and sample IDs as columns). If available, batch corrected data should be used.<br />
 <em>group</em> a factor specifying group for each sample (e.g. could be
 represented by a column from a metadata file).<br />
 <em>split.size</em> an integer specifying the minimum number of samples that
 the groups must contain in order to carry out random forest classification
 and validation.<br />
+<em>test.train.ratio</em> a floating point number between 0 and 1 representing
+the ratio of samples to keep as validation dataset. For example, a
+test.train.ratio = 0.25 splits 25 percent of the data into a validation dataset,
+meaning 75 percent of the data will be kept as the training dataset.<br />
 <em>num.trees.init</em> an integer specifying number of trees to use for the first
-forest in the feature selection process.<br />
+forest in the feature selection process. Default is 5000.<br />
 <em>num.trees.iterat</em> an integer specifying number of trees to use for
-all additional forests in the feature selection process.<br />
+all additional forests in the feature selection process. Default is 2000.<br />
 <strong>Output from the function:</strong><br />
 a list of:<br />
 1) a list containing the output from the RFApply function.<br />
@@ -1710,8 +1714,9 @@ selected variables (e.g., genes) from the feature selection process.<br />
 RunRF(data = campp2_brca_1_batchCorrected,
 group = campp2_brca_1_meta$diagnosis,
 split.size = 5,
-num.trees.init = 30,
-num.trees.iterat = 15)</code></pre>
+test.train.ratio = 0.25,
+num.trees.init = 5000,
+num.trees.iterat = 2000)</code></pre>
 <p><br />
 </p>
 </div>
@@ -1723,49 +1728,55 @@ seeds. The ForestFeatures function performs random forest on feature counts
 (e.g. genes) and allows for feature selection using the random forest
 algorithm. This function extracts various results from the feature selection
 process such as the selected variables and the OOB errors. Moreover, the OOB
-error which resulted in the final selected model with the final selected
-variables is extracted. The function also extracts results from the process
-of random forest fitting to the input data such as OOB errors, predictions on
+error which resulted in the final selected model and the final selected
+variables is extracted. The final selected model is the one with the smallest
+number of genes whose error rate is within 1 standard error of the minimum
+error rate of all forests. The function also extracts results from the process
+of random forest fitting to the input data such as OOB error, predictions on
 test data and corresponding accuracies. Finally, the function calculates the
 average initial importance of each variable across the seed runs.<br />
 <strong>Parameters:</strong><br />
 <em>data</em> a matrix of (transformed and normalized) feature counts from
 “seq”, “array”, “ms” or “other” technology (with feature IDs as row names
-and sample IDs as columns).<br />
+and sample IDs as columns). If available, batch corrected data should be used.<br />
 <em>group</em> a factor specifying group for each sample (e.g. could be
 represented by a column from a metadata file).<br />
 <em>validation</em> a boolean indicating if validation will be performed
 on test data. If TRUE validation will be performed on test data. If FALSE
 validation will not be performed on test data. Default is FALSE.<br />
+<em>test.train.ratio</em> a floating point number between 0 and 1 representing
+the ratio of samples to keep as validation dataset. For example, a
+test.train.ratio = 0.25 splits 25 percent of the data into a validation dataset,
+meaning 75 percent of the data will be kept as the training dataset.<br />
 <em>num.trees.init</em> an integer specifying number of trees to use for the first
-forest in the feature selection process.<br />
+forest in the feature selection process. Default is 5000.<br />
 <em>num.trees.iterat</em> an integer specifying number of trees to use for
-all additional forests in the feature selection process.<br />
+all additional forests in the feature selection process. Default is 2000.<br />
 <strong>Output from the function:</strong><br />
 a list of:<br />
-1) a list where each element is a character string containing selected variables
-from the random forest feature selection process from each seed run.<br />
-2) a list where each element is out-of-bag errors from random forest feature
-selection process of type numeric from each seed run.<br />
-3) a list where each element is the OOB error of type numeric from first random
-forest model fitted during feature selection process from each seed run.<br />
-4) a list where each element is a matrix containing confusion matrix of
-predictions made based on OOB data and first random forest model fitted
-during feature selection process from each seed run.<br />
-5) a matrix containing average importance of features from first random forest
-model fitted during feature selection process.<br />
-6) a list where each element is the OOB error of type numeric from fitted random
-forest model across each seed run.<br />
-7) a matrix containing accuracy and 95% confidence interval for predictions of
-test data using fitted random forest model for each seed run.<br />
-8) a vector of integers containing seeds used in the procedure.<br />
+1) a list where each element is a character string containing selected
+variables from the random forest feature selection process from each seed run.<br />
+2) a list where each element is out-of-bag errors (of type numeric) from all
+random forest models used in the feature selection process for each seed run.<br />
+3) a list where each element is the OOB error (of type numeric) from the best random
+forest model (i.e. the final selected model) of the feature selection process
+for each seed run.<br />
+4) a matrix containing average initial importance (before any variable deletion)
+for each feature across seed runs.<br />
+5) a list where each element is the OOB error (of type numeric) from fitted random
+forest model for each seed run (if a random forest was not fitted then this will be NA).<br />
+6) a matrix ccontaining accuracy and 95 percent confidence interval for predictions
+of test data using fitted random forest model where each row in the matrix is a
+seed run.<br />
+7) a vector of integers containing seeds used in the procedure.<br />
 <strong>An example run:</strong><br />
 </p>
 <pre><code>campp2_brca_1_rf_apply &lt;- RFApply(data = campp2_brca_1_batchCorrected,
 group = campp2_brca_1_meta$diagnosis,
 validation = TRUE,
-num.trees.init = 30,
-num.trees.iterat = 15)</code></pre>
+test.train.ratio = 0.25,
+num.trees.init = 5000,
+num.trees.iterat = 2000)</code></pre>
 <p><br />
 </p>
 </div>
@@ -1776,30 +1787,37 @@ This function implements random forest on feature counts
 (e.g. genes) and allows for feature selection using the random forest
 algorithm. For the feature selection process, the recommended value for
 number of trees is 5000 for the first forest and 2000 for all additional
-forests.
+forests which are used as default values in this function.
 In the variable selection process, variables are eliminated iteratively
-by excluding the least important variables from each random forest. 20% of
+by excluding the least important variables from each random forest. 20 percent of
 the variables are excluded following each iteration. The out-of-bag (OOB)
 error is used as criterion for determining the final selected variables.
 Besides variable selection, a random forest model is also fitted which
 is used for classification of the samples.
 The input data is split into training and validation datasets where the
 training data is used for variable selection and classification and the
-random forest classifier is validated on the validation dataset.<br />
+random forest classifier is validated on the validation dataset.
+Splitting of the data is determined by the test.train.ratio. For example,
+a test.train.ratio = 0.25 splits 25 percent of the data into a validation dataset,
+meaning 75 percent of the data will be kept as the training dataset.<br />
 <strong>Parameters:</strong><br />
-<em>seed</em> an integer containing a random seed number.<br />
+<em>seed</em> an integer containing a random seed number. Default is 123.<br />
 <em>data</em> a matrix of (transformed and normalized) feature counts from
 “seq”, “array”, “ms” or “other” technology (with feature IDs as row names
-and sample IDs as columns).<br />
+and sample IDs as columns). If available, batch corrected data should be used.<br />
 <em>group</em> a factor specifying group for each sample (e.g. could be
 represented by a column from a metadata file).<br />
 <em>validation</em> a boolean indicating if validation will be performed
 on test data. If TRUE validation will be performed on test data. If FALSE
 validation will not be performed on test data. Default is FALSE.<br />
+<em>test.train.ratio</em> a floating point number between 0 and 1 representing
+the ratio of samples to keep as validation dataset. For example, a
+test.train.ratio = 0.25 splits 25 percent of the data into a validation dataset,
+meaning 75 percent of the data will be kept as the training dataset.<br />
 <em>num.trees.init</em> an integer specifying number of trees to use for the first
-forest in the feature selection process.<br />
+forest in the feature selection process. Default is 5000.<br />
 <em>num.trees.iterat</em> an integer specifying number of trees to use for
-all additional forests in the feature selection process.<br />
+all additional forests in the feature selection process. Default is 2000.<br />
 <strong>Output from the function:</strong><br />
 a list of:<br />
 1) a varSelRF object containing results of variable selection using random forest.<br />
@@ -1809,12 +1827,13 @@ a list of:<br />
 If validation = FALSE, the last three elements in output will be NA.<br />
 <strong>An example run:</strong><br />
 </p>
-<pre><code>campp2_brca_1_forest_features &lt;- ForestFeatures(seed = 173,
+<pre><code>campp2_brca_1_forest_features &lt;- ForestFeatures(seed = 123,
 data = campp2_brca_1_batchCorrected,
 group = campp2_brca_1_meta$diagnosis,
 validation = TRUE,
-num.trees.init = 30,
-num.trees.iterat = 15)</code></pre>
+test.train.ratio = 0.25,
+num.trees.init = 5000,
+num.trees.iterat = 2000)</code></pre>
 <p><br />
 </p>
 <p>================================================================================================
