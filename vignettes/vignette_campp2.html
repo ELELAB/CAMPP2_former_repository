@@ -10,7 +10,7 @@
 
 
 
-<meta name="date" content="2023-03-20" />
+<meta name="date" content="2023-03-28" />
 
 <title>CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</title>
 
@@ -712,11 +712,11 @@ function toggle_visibility(id1) {
 
 <h1 class="title toc-ignore">CAncer bioMarker Prediction Pipeline 2 (CAMPP2)</h1>
 <p class="author-name">Nikola Tom, Mona Nourbakhsh, Mathilde Wismann Bechgaard, Matteo Tiberti, Elena Papaleo</p>
-<p class="author-affiliation">Technical University of Denmark, Danish Cancer Society Research Center</p>
-<p class="author-email"><a href="mailto:nikto@cancer.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">nikto@cancer.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
-<h4 class="date">20 March 2023</h4>
+<p class="author-affiliation">Danish Cancer Society Research Center, Technical University of Denmark</p>
+<p class="author-email"><a href="mailto:ntom@cancer.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk">ntom@cancer.dk, tiberti@cancer.dk, elpap@dtu.dk, elenap@cancer.dk</a></p>
+<h4 class="date">28 March 2023</h4>
 <h4 class="abstract">Abstract</h4>
-The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to be submitted to Bioconductor. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in the pipeline. The pipeline is versatile and the functions or part of them can be used for analysis of a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. CAMPP2 currently supports; differential expression/abundance analysis, LASSO/Elastic Net regression,Weighed Gene Co-expression Network Analysis, Correlation analysis and Survival analysis (Cox proportional hazard regression).
+The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a Bioconductor package. It is a tool for downstream analyses which is agnostic with respect to the source of -omics biological data. It requires that data quantification has been carried out before using the data as inputs in CAMPP2. User can analyse a variety of quantitative biological data from high throughput platforms, including genes, proteins, small RNAs, lipids and glycans. For this, the whole pipeline or individual functions can be used.
 <h4 class="package">Package</h4>
 <p>CAMPP2 0.99.0</p>
 
@@ -725,174 +725,98 @@ The CAncer bioMarker Prediction Pipeline 2 (CAMPP2) is a R package designed to b
 <h1>Contents</h1>
 <div id="TOC">
 <ul>
-<li><a href="#about-campp-to-be-edited" id="toc-about-campp-to-be-edited"><span class="toc-section-number">1</span> About CAMPP (TO BE EDITED)</a></li>
+<li><a href="#introduction" id="toc-introduction"><span class="toc-section-number">1</span> Introduction</a></li>
 <li><a href="#requirements" id="toc-requirements"><span class="toc-section-number">2</span> Requirements</a></li>
-<li><a href="#running-campp2" id="toc-running-campp2"><span class="toc-section-number">3</span> Running CAMPP2</a>
+<li><a href="#campp2-package" id="toc-campp2-package"><span class="toc-section-number">3</span> CAMPP2 package</a>
 <ul>
 <li><a href="#example-data" id="toc-example-data"><span class="toc-section-number">3.1</span> Example data</a></li>
 <li><a href="#running-example-script" id="toc-running-example-script"><span class="toc-section-number">3.2</span> Running example script</a></li>
-<li><a href="#mandatory-input-and-parameters" id="toc-mandatory-input-and-parameters"><span class="toc-section-number">3.3</span> Mandatory Input and Parameters</a></li>
-<li><a href="#optional-arguments" id="toc-optional-arguments"><span class="toc-section-number">3.4</span> Optional arguments</a></li>
-<li><a href="#functions-in-campp2" id="toc-functions-in-campp2"><span class="toc-section-number">3.5</span> FUNCTIONS IN CAMPP2</a>
+<li><a href="#campp2-functions-in-details" id="toc-campp2-functions-in-details"><span class="toc-section-number">3.3</span> CAMPP2 functions in details</a>
 <ul>
-<li><a href="#replacenas" id="toc-replacenas"><span class="toc-section-number">3.5.1</span> ReplaceNAs<br />
+<li><a href="#runcampp2" id="toc-runcampp2"><span class="toc-section-number">3.3.1</span> runCampp2<br />
 </a></li>
-<li><a href="#fixzeros" id="toc-fixzeros"><span class="toc-section-number">3.5.2</span> FixZeros</a></li>
-<li><a href="#normalizedata" id="toc-normalizedata"><span class="toc-section-number">3.5.3</span> NormalizeData</a></li>
-<li><a href="#batchcorrect" id="toc-batchcorrect"><span class="toc-section-number">3.5.4</span> BatchCorrect</a></li>
-<li><a href="#fitdistributions" id="toc-fitdistributions"><span class="toc-section-number">3.5.5</span> FitDistributions</a></li>
-<li><a href="#plotdistributions" id="toc-plotdistributions"><span class="toc-section-number">3.5.6</span> PlotDistributions</a></li>
-<li><a href="#meancounts" id="toc-meancounts"><span class="toc-section-number">3.5.7</span> MeanCounts</a></li>
-<li><a href="#pcaplot" id="toc-pcaplot"><span class="toc-section-number">3.5.8</span> PCAPlot</a></li>
-<li><a href="#runkmeans" id="toc-runkmeans"><span class="toc-section-number">3.5.9</span> runKmeans</a></li>
-<li><a href="#estimatekmeans" id="toc-estimatekmeans"><span class="toc-section-number">3.5.10</span> EstimateKmeans</a></li>
-<li><a href="#rundea" id="toc-rundea"><span class="toc-section-number">3.5.11</span> RunDEA</a></li>
-<li><a href="#deafeatureapply" id="toc-deafeatureapply"><span class="toc-section-number">3.5.12</span> DEAFeatureApply</a></li>
-<li><a href="#dea_feature" id="toc-dea_feature"><span class="toc-section-number">3.5.13</span> DEA_feature</a></li>
-<li><a href="#exportdea" id="toc-exportdea"><span class="toc-section-number">3.5.14</span> ExportDEA</a></li>
-<li><a href="#rundeavisuals" id="toc-rundeavisuals"><span class="toc-section-number">3.5.15</span> RunDEAVisuals</a></li>
-<li><a href="#makevolcano" id="toc-makevolcano"><span class="toc-section-number">3.5.16</span> MakeVolcano</a></li>
-<li><a href="#makeupset" id="toc-makeupset"><span class="toc-section-number">3.5.17</span> MakeUpset</a></li>
-<li><a href="#makevenndiagram" id="toc-makevenndiagram"><span class="toc-section-number">3.5.18</span> MakeVennDiagram</a></li>
-<li><a href="#runheatmap" id="toc-runheatmap"><span class="toc-section-number">3.5.19</span> RunHeatmap</a></li>
-<li><a href="#makeheatmap" id="toc-makeheatmap"><span class="toc-section-number">3.5.20</span> MakeHeatmap</a></li>
-<li><a href="#runlasso" id="toc-runlasso"><span class="toc-section-number">3.5.21</span> runLASSO</a></li>
-<li><a href="#lassofeature" id="toc-lassofeature"><span class="toc-section-number">3.5.22</span> LASSOFeature</a></li>
-<li><a href="#rundea_lasso_consensus" id="toc-rundea_lasso_consensus"><span class="toc-section-number">3.5.23</span> RunDEA_LASSO_consensus</a></li>
-<li><a href="#runrf" id="toc-runrf"><span class="toc-section-number">3.5.24</span> RunRF</a></li>
-<li><a href="#rfapply" id="toc-rfapply"><span class="toc-section-number">3.5.25</span> RFApply</a></li>
-<li><a href="#forestfeatures" id="toc-forestfeatures"><span class="toc-section-number">3.5.26</span> ForestFeatures</a></li>
+<li><a href="#replacenas" id="toc-replacenas"><span class="toc-section-number">3.3.2</span> ReplaceNAs<br />
+</a></li>
+<li><a href="#fixzeros" id="toc-fixzeros"><span class="toc-section-number">3.3.3</span> FixZeros</a></li>
+<li><a href="#normalizedata" id="toc-normalizedata"><span class="toc-section-number">3.3.4</span> NormalizeData</a></li>
+<li><a href="#batchcorrect" id="toc-batchcorrect"><span class="toc-section-number">3.3.5</span> BatchCorrect</a></li>
+<li><a href="#fitdistributions" id="toc-fitdistributions"><span class="toc-section-number">3.3.6</span> FitDistributions</a></li>
+<li><a href="#plotdistributions" id="toc-plotdistributions"><span class="toc-section-number">3.3.7</span> PlotDistributions</a></li>
+<li><a href="#meancounts" id="toc-meancounts"><span class="toc-section-number">3.3.8</span> MeanCounts</a></li>
+<li><a href="#pcaplot" id="toc-pcaplot"><span class="toc-section-number">3.3.9</span> PCAPlot</a></li>
+<li><a href="#runkmeans" id="toc-runkmeans"><span class="toc-section-number">3.3.10</span> runKmeans</a></li>
+<li><a href="#estimatekmeans" id="toc-estimatekmeans"><span class="toc-section-number">3.3.11</span> EstimateKmeans</a></li>
+<li><a href="#rundea" id="toc-rundea"><span class="toc-section-number">3.3.12</span> RunDEA</a></li>
+<li><a href="#deafeatureapply" id="toc-deafeatureapply"><span class="toc-section-number">3.3.13</span> DEAFeatureApply</a></li>
+<li><a href="#dea_feature" id="toc-dea_feature"><span class="toc-section-number">3.3.14</span> DEA_feature</a></li>
+<li><a href="#exportdea" id="toc-exportdea"><span class="toc-section-number">3.3.15</span> ExportDEA</a></li>
+<li><a href="#rundeavisuals" id="toc-rundeavisuals"><span class="toc-section-number">3.3.16</span> RunDEAVisuals</a></li>
+<li><a href="#makevolcano" id="toc-makevolcano"><span class="toc-section-number">3.3.17</span> MakeVolcano</a></li>
+<li><a href="#makeupset" id="toc-makeupset"><span class="toc-section-number">3.3.18</span> MakeUpset</a></li>
+<li><a href="#makevenndiagram" id="toc-makevenndiagram"><span class="toc-section-number">3.3.19</span> MakeVennDiagram</a></li>
+<li><a href="#runheatmap" id="toc-runheatmap"><span class="toc-section-number">3.3.20</span> RunHeatmap</a></li>
+<li><a href="#makeheatmap" id="toc-makeheatmap"><span class="toc-section-number">3.3.21</span> MakeHeatmap</a></li>
+<li><a href="#runlasso" id="toc-runlasso"><span class="toc-section-number">3.3.22</span> runLASSO</a></li>
+<li><a href="#lassofeature" id="toc-lassofeature"><span class="toc-section-number">3.3.23</span> LASSOFeature</a></li>
+<li><a href="#rundea_lasso_consensus" id="toc-rundea_lasso_consensus"><span class="toc-section-number">3.3.24</span> RunDEA_LASSO_consensus</a></li>
+<li><a href="#runrf" id="toc-runrf"><span class="toc-section-number">3.3.25</span> RunRF</a></li>
+<li><a href="#rfapply" id="toc-rfapply"><span class="toc-section-number">3.3.26</span> RFApply</a></li>
+<li><a href="#forestfeatures" id="toc-forestfeatures"><span class="toc-section-number">3.3.27</span> ForestFeatures</a></li>
 </ul></li>
-<li><a href="#other-arguments" id="toc-other-arguments"><span class="toc-section-number">3.6</span> Other Arguments</a></li>
-</ul></li>
-<li><a href="#n-glycan-serum-markers-for-bc-diagnostics" id="toc-n-glycan-serum-markers-for-bc-diagnostics"><span class="toc-section-number">4</span> N-glycan Serum Markers for BC Diagnostics</a>
-<ul>
-<li><a href="#data-normalization-transformation-and-distributional-checks" id="toc-data-normalization-transformation-and-distributional-checks"><span class="toc-section-number">4.1</span> Data Normalization, Transformation and Distributional Checks</a></li>
 </ul></li>
 </ul>
 </div>
 
-<div id="about-campp-to-be-edited" class="section level1" number="1">
-<h1><span class="header-section-number">1</span> About CAMPP (TO BE EDITED)</h1>
-<p>The pipeline can perform the following types of analysis (|) Differential
-expression/abundance analysis (limma [26]), (II) LASSO/Elastic-Net
-regression (glmnet [12]), (III) Weighed Gene Co-expression Network
-Analysis (WGCNA [23]), (IV) Correlation analysis (Pearson/Spearman),
-(V) Survival analysis (Cox proportional hazard regression,
-survcomp [29]) and (VI) protein-protein/gene-miRNA interaction
-network analysis (multimiR [27] and the STRING [20]). In addition
-to different types of analysis the pipeline performs missing value
-imputation, normalization and transformation, along with data distributional
-checks. Differential expression/abundance analysis can be
-performed with as few as 3 biological replicates in each group, whereas
-LASSO/Elastic-Net regression, WGCNA, correlation and survival
-analysis is only advisable with a large(r) number of samples. CAMPP
-may be run with a variety of biological molecules (genes, miRNAs,
-proteins etc.) from various platforms (high-throughput sequencing,
-microarray data, liquid chromatography–mass spectrometry, etc.). For
-differential expression/abundance analysis the limma package [26] for
-R is utilized. Though limma was originally designed for microarray
-data, and more recently RNAseq, a number of studies have shown
-the versatility of this software for the analysis of other -omics data
-[4, 21, 24]. LIMMA has few underlying statistical assumptions and is
-known to be powerful for small sample sizes as a result of shrinkage of
-feature-specific variances [31].</p>
-<p>N.B The user should be careful with LASSO/Elastic-Net regression, as this
-type of analysis needs a good number of samples, in a balanced group
-design, to yield reliable results. Recommended is a minium of 30 samples for
-each group in the design [12][]. To perform WGCNA [23] at least 15 samples
-must be available for analysis (section 5 in FAQ here: <a href="https://horvath" class="uri">https://horvath</a>.
-genetics.ucla.edu/html/CoexpressionNetwork/Rpackages/WGCNA/faq.html), see
-description of WGCNA on page X.</p>
-<p>Survival (over-all, relapse-free) of patients based on the abundance/expression
-of a given marker is predicted using cox proportional-hazard
-model. Check for proportional hazard and linearity of continuous
-covariates are automatically performed. If the user wants to correct
-for confounders, such as patient age at diagnosis, drug treatment, etc.,
-these may be included in the model.</p>
-<p>N.B For every parameter added to the model more events are needed for appropriate
-statistical power. A rule of thumb is10 events for each parameter,
-however, this will somewhat depend on the number of levels within a given
-parameter. Generally results of the survival analysis should be interpreted
-with caution as the pipeline is unable to account for all possible options and
-assumptions related to this type of analysis.
-The check for proportional hazard and linearity of continuous covariates
-should be OK before interpreting any results!</p>
+<div id="introduction" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Introduction</h1>
+<p>The CAMPP2 is a Bioconductor package including various functions forming a
+workflow designed to pre-process, analyze, visualize and interpret
+biological data. These the workflow/functions can be easily executed by
+non-bioinformaticians as they provide a user-friendly way to handle complex data
+analysis tasks without requiring extensive programming knowledge. Here is a
+summary of the functions and functionalities:</p>
+<p>runCampp2: Runs a workflow based on the provided parameters.
+ReplaceNAs: Removes and replaces NA values, ensuring data quality.
+FixZeros: Detects and replaces zero/negative values in the data.
+NormalizeData: Normalizes and transforms feature counts depending on data types
+and selected methods.
+BatchCorrect: Removes batch effects to reduce heterogeneity across data batches.
+FitDistributions &amp; PlotDistributions: Fits and plots data distributions to help
+identify the best-fitting distribution.
+PCAPlot: Calculates Principal Component Analysis (PCA) for dimensionality
+reduction and visualization.
+runKmeans &amp; EstimateKmeans: Executes K-means clustering and estimates the
+optimal number of clusters.
+RunDEA, DEAFeatureApply, DEA_feature, ExportDEA, RunDEAVisuals, MakeVolcano,
+MakeUpset, MakeVennDiagram: Perform and visualize differential
+expression/abundance analysis.
+RunHeatmap &amp; MakeHeatmap: Create heatmaps to visualize differences in feature
+expression/abundance across samples and sample groups.
+runLASSO &amp; LASSOFeature: Perform LASSO/Elastic net/Ridge regression for feature
+selection and classification.
+RunDEA_LASSO_consensus: Creates a consensus between DEA and LASSO/Elastic
+net/Ridge regression results.
+RunRF, RFApply, ForestFeatures: Implement random forest classification and
+variable selection, along with validation and feature intersection.
+These functions, when combined, form a comprehensive workflow that enables
+non-bioinformaticians to perform complex data analysis tasks easily and
+efficiently. This is particularly useful in the field of biology, where
+researchers often need to analyze large, complex datasets to draw meaningful
+conclusions.</p>
 </div>
 <div id="requirements" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Requirements</h1>
-<p>To run CAMPP2, a working R version 4.0.0 (or newer) is required.</p>
+<p>To run CAMPP2, a working R version 4.1.0 (or newer) is required.</p>
 <p>The Pipeline relies on a variety of R-packages which are installed
-during CAMPP2 installation.</p>
-<p>List of dependencies: (KEEP THIS? if yes, needs to be updated)</p>
-<p> </p>
-<!-- THIS SHOULD BE UPDATED -->
-<div class='horizontal-scroll'><table>
-<colgroup>
-<col width="21%" />
-<col width="78%" />
-</colgroup>
-<thead>
-<tr class="header">
-<th>Analysis Packages</th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Missing value imputation</td>
-<td>impute (v 1.56.0) [17]</td>
-</tr>
-<tr class="even">
-<td>Distributional checks</td>
-<td>fitdistrplus (v 1.0.11) [8]</td>
-</tr>
-<tr class="odd">
-<td>Excel formatting</td>
-<td>openxlsx (v 4.1.0) [34]</td>
-</tr>
-<tr class="even">
-<td>Plotting</td>
-<td>heatmap.plus (v 1.3), squash (v 1.0.8), viridis (v 0.5.1), ggplot2 (v 3.1.0), [7, 11, 14, 35]</td>
-</tr>
-<tr class="odd">
-<td>Data management</td>
-<td>data.table (v 1.11.8), stackoverflow (v 0.1.2), plyr (v 1.8.4), scales (v 1.0.0) [9, 13, 36, 37]</td>
-</tr>
-<tr class="even">
-<td>K-means Clustering</td>
-<td>mclust (v 5.4.3) [30]</td>
-</tr>
-<tr class="odd">
-<td>DE/DA Analysis</td>
-<td>sva (v 3.30.0), limma (v 3.38.2) [19, 26]</td>
-</tr>
-<tr class="even">
-<td>LASSO/Elastic-Net</td>
-<td>glmnet (v 2.0.16) [12]</td>
-</tr>
-<tr class="odd">
-<td>Co-expression analysis</td>
-<td>WGCNA (v 1.66) [23]</td>
-</tr>
-<tr class="even">
-<td>Interaction Networks</td>
-<td>igraph (v 1.2.4), biomaRt (v 2.38.0), multiMiR (v 1.4.0), devtools (v 2.0.1), [6, 10, 27, 38]</td>
-</tr>
-<tr class="odd">
-<td>Survival analysis</td>
-<td>survminer (v 0.4.3), survcomp (v 1.32.0), [22, 29]</td>
-</tr>
-</tbody>
-</table></div>
+during CAMPP2 installation, those packages are defined in DESCRIPTION.</p>
 </div>
-<div id="running-campp2" class="section level1" number="3">
-<h1><span class="header-section-number">3</span> Running CAMPP2</h1>
+<div id="campp2-package" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> CAMPP2 package</h1>
 <div id="example-data" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Example data</h2>
 <p>The test data include 2 BRCA datasets (campp2_brca_1, campp2_brca_2) and associated metadata (campp2_brca_1_meta, campp2_brca_2_meta). Each dataset is represented by raw read counts (10000 genes) for 30 samples: 20 tumours which are divided into 4 subtypes (each subtype has 5 samples), and 10 normals. Metadata includes information about diagnosis, age, vital status, days to death, outcome time, tumor stage, subtyte, outcome and survival.</p>
 <p>Both, raw read counts and metadata were extracted from TCGA-BRCA Level 3.</p>
-<p>Test data are integrated into CAMPP2 package and accessible as campp2_brca_1, campp2_brca_2, campp2_brca_1_meta, campp2_brca_2_meta variables once the package is installed. R data object files (.rda) are also available on <a href="https://github.com/ELELAB/CAMPP2/tree/main/data" class="uri">https://github.com/ELELAB/CAMPP2/tree/main/data</a>.</p>
+<p>Test data inputs are integrated into CAMPP2 package and accessible as campp2_brca_1, campp2_brca_2, campp2_brca_1_meta, campp2_brca_2_meta variables once the package is installed. Different workflow results and intermediate data are available as lazy data and R data object files (.rda) present in a data folder <a href="https://github.com/ELELAB/CAMPP2/tree/main/data" class="uri">https://github.com/ELELAB/CAMPP2/tree/main/data</a>.</p>
 </div>
 <div id="running-example-script" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Running example script</h2>
@@ -903,55 +827,72 @@ during CAMPP2 installation.</p>
 load(&quot;./data/campp2_brca_1_meta.rda&quot;)
 load(&quot;./data/campp2_brca_2.rda&quot;)
 load(&quot;./data/campp2_brca_2_meta.rda&quot;)</code></pre>
-<p>##Run CAMPP2 on example data with default settings:</p>
+<p>##Run CAMPP2 on example data with basic default settings:</p>
 <pre><code>runCampp2(batches=c(&quot;tumor_stage&quot;,&quot;tumor_stage&quot;), prefix=&quot;test_CAMPP2&quot;, 
 data1=campp2_brca_1, data2=campp2_brca_2, metadata1=campp2_brca_1_meta, 
 metadata2=campp2_brca_2_meta, groups=c(&quot;IDs&quot;, &quot;diagnosis&quot;,&quot;IDs&quot;, &quot;diagnosis&quot;), 
 technology=c(&quot;seq&quot;,&quot;seq&quot;)) </code></pre>
 </div>
-<div id="mandatory-input-and-parameters" class="section level2" number="3.3">
-<h2><span class="header-section-number">3.3</span> Mandatory Input and Parameters</h2>
-<p><strong>data1</strong>: Gene count matrix (gene IDs as row names and sample IDs as columns). It is recommended to import gene counts using function “import_counts”.<br />
-</p>
-<p><strong>metadata1</strong>: Samples’ metadata table should be imported using function “import_metadata”. Metadata must include exactly the same samples as gene counts (data1) and samples must be sorted similarly.<br />
-</p>
-<p><strong>technology</strong>: Technology used for the analysis of biological input. Current options are ‘array’, ‘seq’, ‘ms’ or ‘other’. This argument is mandatory and depending on which option is chosen, data is transformed differently. If a second dataset is provided, the option should be specified for each dataset, provided as a character vector. </p>
-<p><strong>groups</strong>: Argument defining groups of samples should be specified as a character vector. The first element specifying the name of the column in the metadata file containing sample IDs and the second element specifying the name of the column which contains the groups for the DE/DA analysis.</p>
-</div>
-<div id="optional-arguments" class="section level2" number="3.4">
-<h2><span class="header-section-number">3.4</span> Optional arguments</h2>
-<p><strong>data2</strong>: Gene count matrix for a second dataset.</p>
-<p><strong>metadata2</strong>: Metadata for a second dataset.</p>
-<p><strong>data.check</strong>: Distributional checks of the input data is activated using logical argument (TRUE/FALSE). If activated, Cullen-Frey graphs will be made for 10 randomly selected variables to check data distributions. This argument is per default set to TRUE.</p>
-<p><strong>batches</strong>: Specifies which metadata should be used for a batch correction (sequencing run/tissue/interstitial fluid/etc.). Argument takes a character vector of length 1 (one dataset) or 2 (two datasets), where the string(s) match a column name(s) in the metadata file(s). Default is NULL.</p>
-<p><strong>kmeans</strong>: Argument for kmeans clustering. The parameter must be specified as a character vector matching the name of a column in the metadata file, denoting the labeling of points on the MDS plot(s). If a parameter is set to “TRUE” (no column name specified) no labels will be added to the plot. Works only for the first dataset (data1). Default is FALSE (do not run).</p>
-<p><strong>plot.heatmap</strong>: Argument for heatmap specified as either: “DE”, “DA”, “LASSO”, “EN” or “Consensus”. Defaults is FALSE (do not run).</p>
-<p><strong>correlation</strong>: Argument for correlation analysis. String specify which features should be correlated, options are: “ALL”, “DE”, “DA”, “LASSO”, “EN” or “Consensus”. For this type of analysis, 2 datasets must include the same samples, e.g. tumor1-normal vs tumor2-normal (3 samples from 1 patient needed). Default is FALSE (do not run).</p>
-<p><strong>survival</strong>: (double check this when parsin survival function) Survival analysis may be performed on differentially expressed/abundant variables, variables from LASSO/EN regression or the consensus of these. Argument “survival” must be specified as either; “DE”, “DA”, “LASSO”, “EN” or “Consensus”. The full dataframe of variables may be used (if argument is set to ALL), HOWEVER this is not advisable unless the dataset is small with very few variables. At least, “survival”, “outcome”, “outcome.time” info must be included in the metadata file. The metadata file must contain at least four columns named; “ids” (sample identifiers), “age” (age in years at diagnosis, surgery or entry into trail), “outcome.time” (time until end of follow-up in weeks, months or years, censuring, death) and “outcome” (numeric 0 = censuring, 1=death). N.B. in case of (paired) normal samples the columns with survival information for these samples should contain “NA” values.</p>
-<p><strong>surv.plot</strong>: Argument which specifies number of features to include per survival plot. Default is 50.</p>
-<p><strong>standardize</strong>: (double check for sequencing) Data centering. This option may be set to “mean” or “median.” If two datasets are provided, the standardize option should be specified for each dataset, provided as a character vector. If the argument standardize is not specified and “technology” = “array”, then quantile normalization will be performed. Defaults is FALSE (do not run).</p>
-<p><strong>transform</strong>: Data transformation type. Current options are “log2”, “log10”, “logit” and “voom”. If two datasets are provided the parameter should be specified for each dataset, provided as a character vector. Defaults is FALSE (do not run).</p>
-<p><strong>prefix</strong>: Prefix for the results’ files and results folder. Defalt is “Results”.</p>
-<p><strong>signif</strong>: Cut-offs for log fold change (logFC) and corrected p-value (fdr), defining significant hits (proteins, genes, miRNAs or N-features). If argument is set, it must be a numeric vector, where the first element specifies the cut-off for logFC and the second element specifies the cut-off for corrected p-value (fdr). In case of 2 datasets, vector must be of length 4. By default, cutoffs will be set to -1 &gt; logFC &gt; 1 and corrected p-values &lt; 0.05.</p>
-<p><strong>plot.PCA</strong>: Argument specifies (“TRUE” or “FALSE”) if a preliminary plot should be made for data overview. Default is FALSE (do not run).</p>
-<p><strong>show.PCA.labels</strong> a boolean value (TRUE or FALSE) specifying if elements (e.g. samples) should be labelled (for PCAPlot and runKmeans functions). Labeling is based on column names of the input data. Default value is FALSE.</p>
-<p><strong>covariates</strong>: Covariates to include in the analysis. If multiple of these, they should be specified as a character vector. The first element in this list must be either TRUE or FALSE. If TRUE is specified then covariates will be included in both DE/DA analysis and Survival Analsysis. If FALSE is specified covariates will ONLY be used for Survival Analsysis. Names of covariates should match the desired columns in the metadata file. Default is NULL.</p>
-<p><strong>stratify</strong>: This argument may be used if some of the categorical (NOT continous) covariates violate the cox proportional assumption. The workflow checks for proportional hazard and will retun the covariates that fail the PH test. You may then rerun the workflow with this argument followed by the names of the categorical covariates which failed and these will be stratified. Default is NULL.</p>
-<p><strong>colors</strong>: Custom color pallet for PCA and heatmaps. Must be the same length as number of groups used for comparison (e.g. two groups = two colors) and must be defined as character vector. See R site for avalibe colors <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" class="uri">http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf</a>. Default is NULL.</p>
-<p><strong>block</strong>: A vector or factor specifying a blocking variable for differential expression analysis. The block must be of same length as the belonging dataset and contain 2 or more options. For 2 datasets the block can be defined as a list of factors or vectors.</p>
-<p><strong>lasso</strong>: Argument specifying parameters for LASSO or Elastic net regression. This argument may be set to 1 for LASSO or &gt;0 &amp; &lt;1 for Elastic Net, but NOT to 0 exactly (Ridge Regression). Defaults is FALSE (do not run).</p>
-<p><strong>WGCNA</strong>: Argument specifying parameter for Weighed Gene Co-expression Network Analysis. It takes a string, either “DA”, “DE” or “ALL” specifying if all variables should be included in WGCNA or only differentially expressed / abundant variables. Defaults is FALSE (do not run).</p>
-<p><strong>cutoff.WGCNA</strong>: Argument specifying the cutoff values for WGCNA. The argument takes a numuric vector of three values: (I) minimum modules size, (II) maximum percentage of dissimilarity for merging of modules, and (III) percentage of top most interconnected genes (or other features) to return, from each modules identified in the Weighed Gene Co-expression Network Analysis. Default values are 10,25,25.</p>
-<p><strong>PPint</strong>: Argument specifying that protein-protein interaction networks should be generated using the results of the differential expression analysis. This argument must be a character vector of length two. The first element in this list must be a string specifying the type of gene identifier in the gene counts file provided. Allowed identifiers are: “ensembl_peptide_id”, “hgnc_symbol”, “ensembl_gene_id”, “ensembl_transcript_id”, “uniprotswissprot”. The second element is a string specifying version of the stringDB to use. Currently only version supported is: 11.0. Default is FALSE (do not run).</p>
-<p><strong>gene.miR.int</strong>: Argument specifying that gene-miRNA interaction networks should be generated using the results of the differential expression analysis. This argument must be a character vector of length two. The first element in this list must be a string specifying the type of miRNA identifier in the gene counts data file. Allowed identifiers are: “mature_mirna_ids”, “mature_mirna_accession”. The second element must be a string specifying the miRNA-gene database to use, currently options are: “targetscan” (validated miRNAs), “mirtarbase” (predicted miRNAs), “tarscanbase” (validated + predicted miRNAs)“. Default is FALSE (do not run).</p>
-</div>
-<div id="functions-in-campp2" class="section level2" number="3.5">
-<h2><span class="header-section-number">3.5</span> FUNCTIONS IN CAMPP2</h2>
-<div id="replacenas" class="section level3" number="3.5.1">
-<h3><span class="header-section-number">3.5.1</span> ReplaceNAs<br />
+<div id="campp2-functions-in-details" class="section level2" number="3.3">
+<h2><span class="header-section-number">3.3</span> CAMPP2 functions in details</h2>
+<div id="runcampp2" class="section level3" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> runCampp2<br />
 </h3>
 <p><strong>Description:</strong><br />
-In summary, this function removes samples and features with a high percentage of NA values. The rest of NA values is replaced by imputed values.<br />
+This functions provides a wrapper for the whole workflow including the
+functionality for biological data pre-processing, analysis, visualization and
+interpretation.<br />
+<strong>Parameters:</strong><br />
+<em>Mandatory Input and Parameters</em></p>
+<p><em>data1</em>: Gene count matrix (gene IDs as row names and sample IDs as columns). It’s recommended to import gene counts using function “import_counts”.<br />
+<em>metadata1</em>: Samples’ metadata table should be imported using function “import_metadata”. Metadata must include exactly the same samples as gene counts (data1) and samples must be sorted similarly.<br />
+<em>technology</em>: Technology used for the analysis of biological input. Current options are ‘array’, ‘seq’, ‘ms’ or ‘other’. This argument is mandatory and depending on which option is chosen, data is transformed differently. If a second dataset is provided, the option should be specified for each dataset, provided as a character vector.<br />
+<em>groups</em>: Argument defining groups of samples should be specified as a character vector. The first element specifying the name of the column in the metadata file containing sample IDs and the second element specifying the name of the column which contains the groups for the DEA analysis.<br />
+<em>Optional arguments</em><br />
+<em>data2</em>: Gene count matrix for a second dataset.<br />
+<em>metadata2</em>: Metadata for a second dataset.<br />
+<em>control.group</em>: A string vector defining control group name (e.g., “healthy” or “normal”). In case of subtype analysis (&gt;2 groups), the output of the main wrapper will include comparisons between control group and each subtype.<br />
+<em>data.check</em>: Distributional checks of the input data is activated using logical argument (TRUE/FALSE). If activated, Cullen-Frey graphs will be made for 10 randomly selected variables to check data distributions. This argument is per default set to TRUE.<br />
+<em>kmeans</em>: Argument specifies (“TRUE” or “FALSE”) if a k-means clustering should be performed. Default is FALSE (do not run).<br />
+<em>num.km.clusters</em>: either a vector of manually defined number(s) of clusters, or NULL. Each number in this vector represent a plausible number of clusters that the user would expected to be present in the data. If multiple values provided, the function will automatically perform K-means clustering using each of them as k (expected number of clusters) separately. If this argument is NULL (default), optimal numbers of clusters are calculated automatically based on the bayesian information criterion (mclust package), applied to sub sampled data (see documentation for the whole procedure).<br />
+<em>batches</em>: Specifies which metadata should be used for a batch correction (sequencing run/tissue/interstitial fluid/etc.). Argument takes a character vector of length 1 (one data set) or 2 (two data sets), where the string(s) match a column name(s) in the metadata file(s). In case batch correction should be performed only in 1 out of 2 data sets, a data set without the batch correction (1st one in the example) should be define as ““, e.g. batches(c(”“,”column_name”)). Default is NULL.<br />
+<em>plot.heatmap</em>: Argument defining which data will be used for the selection of the top x features to be plotted on the heatmap. Options are:“DEA”, “LASSO”, “EN”, “Ridge” or “Consensus”.<br />
+<em>heatmap.size</em>: Argument specifying how many genes will be selected to be plotted on the heatmap if plot.heatmap is TRUE. The input must be specified as an even number. Default is 30.<br />
+<em>show.PCA.labels</em>: a boolean value (TRUE or FALSE) specifying if elements (e.g. samples) should be labelled (for PCAPlot and runKmeans functions). Labeling is based on column names of the input data. Default value is FALSE.<br />
+<em>viridis.palette</em>: Argument specifying viridis color palette used for heatmaps. Default is “turbo”.<br />
+<em>show.PCA.labels</em>: a boolean value (TRUE or FALSE) specifying if elements (e.g. samples) should be labelled (for PCAPlot and runKmeans functions). Labeling is based on column names of the input data. Default value is FALSE.<br />
+<em>plot.PCA</em>: Argument specifies (“TRUE” or “FALSE”) if a PCA plot (describing relationships between the samples based on feature counts and sample groups; generated by PCAPlot function) should be created for data overview. Default is FALSE (do not run).<br />
+<em>standardize</em>: (double check for sequencing) Data centering. This option may be set to “mean” or “median.” If two datasets are provided, the standardize option should be specified for each dataset, provided as a character vector. If the argument standardize is not specified and “technology” = “array”, then quantile normalization will be performed. Defaults is FALSE (do not run).<br />
+<em>transform</em>: Data transformation type. Current options are “log2”, “log10”, “logit” and “voom”. If two datasets are provided the parameter should be specified for each dataset, provided as a character vector. Defaults is FALSE (do not run).<br />
+<em>prefix</em>: Prefix for the results’ files and results folder. Default is “Results”.<br />
+<em>plot.DEA</em>: This argument specifies (“TRUE” or “FALSE”) whether visualizations should be made for the differential expression analysis. Visualizations include a Volcano plot for the groups of samples and an Upset plot and Venn diagram for sample subtypes in the input data if subtypes are present.<br />
+<em>signif</em>: Cut-offs for log fold change (logFC) and corrected p-value (fdr), defining significant hits (proteins, genes, miRNAs or N-features). If argument is set, it must be a numeric vector, where the first element specifies the cut-off for logFC and the second element specifies the cut-off for corrected p-value (fdr). In case of 2 datasets, vector must be of length 4. By default, cutoffs will be set to -1 &gt; logFC &gt; 1 and corrected p-values &lt; 0.05.<br />
+<em>ensembl.version</em>: This argument specifies which ENSEMBL database to use when transforming ensemble IDs into HUGO IDs using biomaRt. The argument should be specified as a number.<br />
+<em>covariates</em>: Covariates are specified as a character vector. Specified covariates will be included in both DEA analysis. Names of covariates should match the desired columns in the metadata file. Only one covariate for each dataset is allowed (multiple covariates are allowed when using RunDEA function out of this wrapper). Default is NULL.<br />
+<em>colors</em>: Custom color palette for PCA and heatmaps. Must be the same length as number of groups used for comparison (e.g. two groups = two colors) and must be defined as character vector. See R site for avalibe colors <a href="http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf" class="uri">http://www.stat.columbia.edu/~tzheng/files/Rcolor.pdf</a>. Default is NULL.<br />
+<em>block</em>: A vector or factor specifying a blocking variable for differential expression analysis. The block must be of same length as the belonging dataset and contain 2 or more options. For 2 datasets the block can be defined as a list of factors or vectors.<br />
+<em>alpha.lasso</em>: a numeric vector specifying hyperparameter alpha for LASSO/Elastic network/Ridge regression. This value must be set to 0.0 &lt; x &lt; 1.0 for Elastic Net or to 1.0 for LASSO regression or to 0.0 for Ridge regression. Defaults is FALSE (do not run).<br />
+<em>min.coef.lasso</em>: a numeric vector specifying a threshold for features’ filtering (e.g. genes) based on the coefficients which are calculated during model fitting. Default value is &gt; 0.<br />
+<em>nfolds.lasso</em>: a numeric vector describing number of folds during Lambda estimation which is based on a cross-validation. Although nfolds can be as large as the sample size (leave-one-out CV), it is not recommended for large datasets. Smallest value allowable is nfolds=3. Default is 10.<br />
+<em>num.trees.init</em>: an integer specifying number of trees to use for the first random forest in the random forest feature selection process. Default is NULL (not activated). Both num.trees.init and num.trees.iterat need to be &gt; 0 to activate random forest.<br />
+<em>num.trees.iterat</em>: an integer specifying number of trees to use for all additional random forests in the random forest feature selection process. Default is NULL (not activated). Both num.trees.init and num.trees.iterat need to be &gt; 0 to activate random forest.<br />
+<em>split.size</em>: an integer specifying the minimum number of samples that the groups must contain in order to carry out random forest classification and subsequent validation<br />
+<em>test.train.ratio</em>: a floating point number between 0 and 1 representing the ratio of samples to keep as validation dataset. For example, a test.train.ratio = 0.25 splits 25 percent of the data into a validation dataset, meaning 75 percent of the data will be kept as the training dataset.<br />
+</p>
+<p><strong>Output from the function:</strong><br />
+Various output depending on workflow settings.<br />
+<strong>An example run:</strong><br />
+##This is a basic worflow run using the mandatory parameters and default test data provided in the package. The results are saved into “test_CAMPP2” folder in the working directory.</p>
+<pre class="r"><code>runCampp2(batches=c(&quot;tumor_stage&quot;,&quot;tumor_stage&quot;), prefix=&quot;test_CAMPP2&quot;, 
+data1=campp2_brca_1, data2=campp2_brca_2, metadata1=campp2_brca_1_meta, 
+metadata2=campp2_brca_2_meta, groups=c(&quot;IDs&quot;, &quot;diagnosis&quot;,&quot;IDs&quot;, &quot;diagnosis&quot;), 
+technology=c(&quot;seq&quot;,&quot;seq&quot;)) </code></pre>
+</div>
+<div id="replacenas" class="section level3" number="3.3.2">
+<h3><span class="header-section-number">3.3.2</span> ReplaceNAs<br />
+</h3>
+<p><strong>Description:</strong><br />
+This function removes samples and features with a high percentage of NA values. The rest of NA values is replaced by imputed values.<br />
 In the first step of this function, percentages of NAs in rows (features) and columns (samples) are calculated. The features and samples with a high percentage of NAs are removed (by default, features having &gt;70% and samples having &gt;80% of NAs are removed). Remaining NA values are replaced by imputed values generated by “local least squares (llsImpute)“. If the first round of missing values imputation failed or resulted in negative values, an additional missing value imputation using impute.knn will be performed (rows with more than 50% missing values will be imputed using the overall mean per sample).<br />
 <strong>Parameters:</strong><br />
 <em>data</em>: a dataframe of gene/abundance counts.<br />
@@ -961,24 +902,23 @@ In the first step of this function, percentages of NAs in rows (features) and co
 A data frame without NA values<br />
 <strong>An example run:</strong><br />
 ##Each of the CAMPP2 example datasets (2) has 10000 genes and all of them have assigned read counts. In our example, we will randomly introduce 1000 NA values into each sample’s genes (taking dataset campp2_brca_1) in the first step in order to prepare test data for NA values replacement. In the next step, NA values will be replaced by calling ReplaceNAs function.</p>
-<pre><code>library(CAMPP2)</code></pre>
+<pre class="r"><code>library(CAMPP2)</code></pre>
 <p>##Test data are already part of the CAMPP2 package so user doesn’t need to download them. In case you want to load .rda objects manually from the cloned repository, you can use this code:</p>
-<pre><code>load(&quot;./data/campp2_brca_1.rda&quot;)
+<pre class="r"><code>load(&quot;./data/campp2_brca_1.rda&quot;)
 load(&quot;./data/campp2_brca_1_meta.rda&quot;)
 load(&quot;./data/campp2_brca_2.rda&quot;)
-load(&quot;./data/campp2_brca_2_meta.rda&quot;)
-</code></pre>
+load(&quot;./data/campp2_brca_2_meta.rda&quot;)</code></pre>
 <p>##get a number of genes in the dataset.</p>
-<pre><code>n&lt;-nrow(campp2_brca_1)</code></pre>
+<pre class="r"><code>n&lt;-nrow(campp2_brca_1)</code></pre>
 <p>##For testing of this function, 1000 genes is assegned with NA value. NA values are introduced randomly into each sample and all the 10000 genes (n=10000) are considered for the introduction of NA values.</p>
-<pre><code>campp2_brca_1_NAs&lt;-apply (campp2_brca_1, 2, function(x) {x[sample( c(1:n), floor(n/10))] &lt;- NA; x} )</code></pre>
+<pre class="r"><code>campp2_brca_1_NAs&lt;-apply (campp2_brca_1, 2, function(x) {x[sample( c(1:n), floor(n/10))] &lt;- NA; x} )</code></pre>
 <p>##create an object with replaced NAs; features having “NA” in more than 70% of the samples will be removed; samples having “NA” in more than 80% of the genes will be removed</p>
-<pre><code>campp2_brca_1_replacedNAs&lt;-ReplaceNAs(data=campp2_brca_1_NAs, pct.NA.row=70, pct.NA.column=80) </code></pre>
+<pre class="r"><code>campp2_brca_1_replacedNAs&lt;-ReplaceNAs(data=campp2_brca_1_NAs, pct.NA.row=70, pct.NA.column=80) </code></pre>
 <p><br />
 </p>
 </div>
-<div id="fixzeros" class="section level3" number="3.5.2">
-<h3><span class="header-section-number">3.5.2</span> FixZeros</h3>
+<div id="fixzeros" class="section level3" number="3.3.3">
+<h3><span class="header-section-number">3.3.3</span> FixZeros</h3>
 <p><strong>Description:</strong><br />
 This function detects zero/negative values and replaces zero values in the data.
 In the first step, the function checks for the presence of zero and negative values in the data.
@@ -994,13 +934,13 @@ a data frame with fixed zeros. Features having sum of zero counts higher than th
 <br />
 <strong>An example run:</strong><br />
 ##Create an object with fixed zeros:</p>
-<pre><code>###Dataset without NA values (&quot;campp2_brca_1_replacedNAs&quot; generated in a previous step) is used as an input.
+<pre class="r"><code>###Dataset without NA values (&quot;campp2_brca_1_replacedNAs&quot; generated in a previous step) is used as an input.
 campp2_brca_1_zeroFix&lt;-FixZeros(data=campp2_brca_1_replacedNAs,group=campp2_brca_1_meta$diagnosis, remove.sparse.features=TRUE)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="normalizedata" class="section level3" number="3.5.3">
-<h3><span class="header-section-number">3.5.3</span> NormalizeData</h3>
+<div id="normalizedata" class="section level3" number="3.3.4">
+<h3><span class="header-section-number">3.3.4</span> NormalizeData</h3>
 <p><strong>Description:</strong><br />
 This function normalizes and transforms feature counts depending on data types (“seq”, “array”, “ms”, “other”) and selected normalization/standardization methods.
 Transformation methods include options for “log2”, “logit” and “log10.” If technology is “seq”, a Voom transform is applied automatically.
@@ -1016,13 +956,13 @@ an Elist (“seq” technology) or array (“array”, “ms”, “other” tec
 <br />
 <strong>An example run:</strong><br />
 ##Create an object with normalized gene counts</p>
-<pre><code>###Dataset without zero values (&quot;campp2_brca_1_zeroFix&quot; generated in the previous step) is used as an input.
+<pre class="r"><code>###Dataset without zero values (&quot;campp2_brca_1_zeroFix&quot; generated in the previous step) is used as an input.
 campp2_brca_1_normalized&lt;-NormalizeData(data=campp2_brca_1_zeroFix,group=campp2_brca_1_meta$diagnosis,standardize=&quot;TMM&quot;,transform=&quot;voom&quot;,technology=&quot;seq&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="batchcorrect" class="section level3" number="3.5.4">
-<h3><span class="header-section-number">3.5.4</span> BatchCorrect</h3>
+<div id="batchcorrect" class="section level3" number="3.3.5">
+<h3><span class="header-section-number">3.3.5</span> BatchCorrect</h3>
 <p><strong>Description:</strong><br />
 This function removes batch effects (using ComBat function) which could be causing a significant heterogeneity across batches of data.
 Batch corrected data are intended for explanatory purposes, NOT for a DEA analysis.<br />
@@ -1036,13 +976,13 @@ a list including matrix (array) of batch corrected feature counts<br />
 <br />
 <strong>An example run:</strong><br />
 ##Create an object with batch corrected feature (gene) counts</p>
-<pre><code>###Normalized data (&quot;campp2_brca_1_normalized&quot; generated in a previous step) are used as an input.
+<pre class="r"><code>###Normalized data (&quot;campp2_brca_1_normalized&quot; generated in a previous step) are used as an input.
 campp2_brca_1_batchCorrected&lt;-BatchCorrect(data=campp2_brca_1_normalized,batch=campp2_brca_1_meta$tumor_stage,group=campp2_brca_1_meta$diagnosis,technology=&quot;seq&quot;) </code></pre>
 <p><br />
 </p>
 </div>
-<div id="fitdistributions" class="section level3" number="3.5.5">
-<h3><span class="header-section-number">3.5.5</span> FitDistributions</h3>
+<div id="fitdistributions" class="section level3" number="3.3.6">
+<h3><span class="header-section-number">3.3.6</span> FitDistributions</h3>
 <p><strong>Description:</strong><br />
 A function for fitting data distribution.
 Depending on character of the data, various distributions are calculated.
@@ -1059,21 +999,21 @@ of the data<br />
 <br />
 <strong>An example run:</strong><br />
 ##Create an object with information about the data distribution</p>
-<pre><code>###First 10 features from normalized and batch corrected data &quot;campp2_brca_1_batchCorrected&quot; are used as an input.
+<pre class="r"><code>###First 10 features from normalized and batch corrected data &quot;campp2_brca_1_batchCorrected&quot; are used as an input.
 campp2_brca_1_distributionsFit &lt;- FitDistributions(campp2_brca_1[1:10,])</code></pre>
 <p><br />
 </p>
 </div>
-<div id="plotdistributions" class="section level3" number="3.5.6">
-<h3><span class="header-section-number">3.5.6</span> PlotDistributions</h3>
+<div id="plotdistributions" class="section level3" number="3.3.7">
+<h3><span class="header-section-number">3.3.7</span> PlotDistributions</h3>
 <p><strong>Description:</strong><br />
 Plotting the feature counts’ Distributions.
 As results, multiple plots are obtained for each feature:
 1) Cullen and Frey graph
 2) Histogram and theoretical densities
 3) Empirical and theoretical CDFs
-4) Q−Q plot
-5) P−P plot</p>
+4) Q-Q plot
+5) P-P plot</p>
 <p>For some of the figures, plotted distributions depends on the characteristics
 of the input data:
 In case of only integer numbers are present in the dataset, poison and normal
@@ -1093,17 +1033,18 @@ a .pdf file including multiple plots:
 1) Cullen and Frey graph
 2) Histogram and theoretical densities
 3) Empirical and theoretical CDFs
-4) Q−Q plot
-5) P−P plot<br />
+4) Q-Q plot
+5) P-P plot<br />
 <strong>An example run:</strong><br />
 ##Plot distributions of the first 10 features from example batch corrected data.</p>
-<pre><code>###List of fitted distributions &quot;campp2_brca_1_distributionsFit&quot; and the first
-10 feature counts from example batch corrected data are used as an input. PlotDistributions(campp2_brca_1_batchCorrected[1:10,], campp2_brca_1_distributionsFit)</code></pre>
+<pre class="r"><code>###List of fitted distributions &quot;campp2_brca_1_distributionsFit&quot; and the first
+###10 feature counts from example batch corrected data are used as an input. 
+PlotDistributions(campp2_brca_1_batchCorrected[1:10,], campp2_brca_1_distributionsFit)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="meancounts" class="section level3" number="3.5.7">
-<h3><span class="header-section-number">3.5.7</span> MeanCounts</h3>
+<div id="meancounts" class="section level3" number="3.3.8">
+<h3><span class="header-section-number">3.3.8</span> MeanCounts</h3>
 <p><strong>Description:</strong><br />
 A function for obtaining an average feature counts and SD for
 each gene across all the samples and for each sample group. Results are
@@ -1119,13 +1060,13 @@ Results are visualized via graphs saved into current directory as pdf files.<br 
 <br />
 <strong>An example run:</strong><br />
 ##Run MeanCounts on object with batch corrected feature (gene) counts</p>
-<pre><code>###Normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated in a previous step) are used as an input.
+<pre class="r"><code>###Normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated in a previous step) are used as an input.
 meanCounts(campp2_brca_1_batchCorrected, campp2_brca_1_meta$diagnosis)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="pcaplot" class="section level3" number="3.5.8">
-<h3><span class="header-section-number">3.5.8</span> PCAPlot</h3>
+<div id="pcaplot" class="section level3" number="3.3.9">
+<h3><span class="header-section-number">3.3.9</span> PCAPlot</h3>
 <p><strong>Description:</strong><br />
 A function calculating Principal component analysis (PCA).
 PCA is a method for dimensionality reduction.
@@ -1149,13 +1090,13 @@ the input data. Default value is FALSE.<br />
 <br />
 <strong>An example run:</strong><br />
 ##Run PCA on object with batch corrected feature (gene) counts</p>
-<pre><code>###Normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated in a previous step) are used as an input.
+<pre class="r"><code>###Normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated in a previous step) are used as an input.
 PCAPlot(campp2_brca_1_batchCorrected, as.factor(campp2_brca_1_meta$subtype), show.PCA.labels=FALSE, cols=NULL, prefix=&quot;test_PCA_plot&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="runkmeans" class="section level3" number="3.5.9">
-<h3><span class="header-section-number">3.5.9</span> runKmeans</h3>
+<div id="runkmeans" class="section level3" number="3.3.10">
+<h3><span class="header-section-number">3.3.10</span> runKmeans</h3>
 <p><strong>Description:</strong><br />
 A wrapper function for K-means clustering.
 In a first step, a number of clusters is estimated.
@@ -1228,13 +1169,13 @@ principal components saved into .png.
 <p><strong>An example run:</strong><br />
 </p>
 <p>##Estimate number of K-means and assign a specific cluster to each sample</p>
-<pre><code>###Normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated in a previous step) are used as an input.
+<pre class="r"><code>###Normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated in a previous step) are used as an input.
 Kmeans.output&lt;-runKmeans(campp2_brca_1_batchCorrected[1:2000,], num.subsets= NULL, subset.size=NULL, show.PCA.labels = FALSE, colors=NULL, prefix=&quot;test&quot;, num.km.clusters=NULL, seed=123, pca.scale=FALSE)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="estimatekmeans" class="section level3" number="3.5.10">
-<h3><span class="header-section-number">3.5.10</span> EstimateKmeans</h3>
+<div id="estimatekmeans" class="section level3" number="3.3.11">
+<h3><span class="header-section-number">3.3.11</span> EstimateKmeans</h3>
 <p><strong>Description:</strong><br />
 A function to estimate the number of K-means. A Number of K-means is based
 on the Bayesian information criterion (BIC) provided by mclust package.
@@ -1247,13 +1188,13 @@ a data frame with the number of clusters<br />
 <br />
 <strong>An example run:</strong><br />
 ##Estimate number of K-means</p>
-<pre><code>###Sub-sampled (the first 2000 genes) normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated before) are used as an input.
+<pre class="r"><code>###Sub-sampled (the first 2000 genes) normalized and batch corrected data (&quot;campp2_brca_1_batchCorrected&quot; generated before) are used as an input.
 EstimateKmeans(t(campp2_brca_1_batchCorrected[1:2000,]))</code></pre>
 <p><br />
 </p>
 </div>
-<div id="rundea" class="section level3" number="3.5.11">
-<h3><span class="header-section-number">3.5.11</span> RunDEA</h3>
+<div id="rundea" class="section level3" number="3.3.12">
+<h3><span class="header-section-number">3.3.12</span> RunDEA</h3>
 <p><strong>Description:</strong><br />
 A function for running differential expression/abundance
 analysis using a matrix of features (e.g., genes) counts as a mandatory
@@ -1297,7 +1238,7 @@ limma.
 5) a contrast matrix<br />
 <strong>An example run:</strong><br />
 ##Run a wrapper for differential gene expression analysis on a raw gene counts</p>
-<pre><code>campp2_brca_1_DEA&lt;-RunDEA(data=campp2_brca_1_normalized, 
+<pre class="r"><code>campp2_brca_1_DEA&lt;-RunDEA(data=campp2_brca_1_normalized, 
 metadata=campp2_brca_1_meta,
 group=campp2_brca_1_meta$subtype, prefix=&quot;test&quot;,
 block=campp2_brca_1_meta$subtype, batch=campp2_brca_1_meta$age,
@@ -1305,8 +1246,8 @@ covarDEA = c(&quot;tumor_stage&quot;), cutoff.logFC=1, cutoff.FDR=0.01)</code></
 <p><br />
 </p>
 </div>
-<div id="deafeatureapply" class="section level3" number="3.5.12">
-<h3><span class="header-section-number">3.5.12</span> DEAFeatureApply</h3>
+<div id="deafeatureapply" class="section level3" number="3.3.13">
+<h3><span class="header-section-number">3.3.13</span> DEAFeatureApply</h3>
 <p><strong>Description:</strong><br />
 A function for applying differential expression/abundance
 analysis to all group comparisons at once. The analysis is based on feature
@@ -1335,15 +1276,15 @@ comparisons<br />
 <br />
 <strong>An example run:</strong><br />
 ## Run differential gene expression on all groups comparasons</p>
-<pre><code>DEA_all_comparisons &lt;- DEAFeatureApply(data = campp2_brca_1_normalized, 
+<pre class="r"><code>DEA_all_comparisons &lt;- DEAFeatureApply(data = campp2_brca_1_normalized, 
 design.matrix = campp2_brca_1_DEA$DEA.design.matrix, contrast.matrix =
 campp2_brca_1_DEA$DEA.contrast.matrix, cutoff.logFC =1, cutoff.FDR =0.01,
 block = campp2_brca_1_meta$subtype, vector = FALSE)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="dea_feature" class="section level3" number="3.5.13">
-<h3><span class="header-section-number">3.5.13</span> DEA_feature</h3>
+<div id="dea_feature" class="section level3" number="3.3.14">
+<h3><span class="header-section-number">3.3.14</span> DEA_feature</h3>
 <p><strong>Description:</strong><br />
 A function for applying differential expression/abundance
 analysis using limma. The analysis is usually based on normalized feature
@@ -1369,7 +1310,7 @@ a list of up and down-regulated features in limma format<br />
 <strong>An example run:</strong><br />
 ##Run differential gene expression on the first group comparison (using 1st
 column from provided contrast matrix).</p>
-<pre><code>DEA_one_comparison &lt;- 
+<pre class="r"><code>DEA_one_comparison &lt;- 
 DEAFeature(contrast.matrix = campp2_brca_1_DEA$DEA.contrast.matrix[,1],
 data = campp2_brca_1_normalized, 
 design.matrix = campp2_brca_1_DEA$DEA.design.matrix,
@@ -1377,8 +1318,8 @@ cutoff.logFC =1, cutoff.FDR =0.01, block = campp2_brca_1_meta$subtype)</code></p
 <p><br />
 </p>
 </div>
-<div id="exportdea" class="section level3" number="3.5.14">
-<h3><span class="header-section-number">3.5.14</span> ExportDEA</h3>
+<div id="exportdea" class="section level3" number="3.3.15">
+<h3><span class="header-section-number">3.3.15</span> ExportDEA</h3>
 <p><strong>Description:</strong><br />
 A function for re-formatting the output from DEA generated based
 on the workflow: (runDEA - DEAFeatureApply - DEAFeature - limma); and
@@ -1394,13 +1335,13 @@ comparisons in limma format.
 <strong>An example run:</strong><br />
 ##Reformat and export results from DEA generated by limma in DEA_feature
 function</p>
-<pre><code>campp2_brca_1_DEA_out&lt;-ExportDEA(res.DEA = campp2_brca_1_DEA$res.DEA,
+<pre class="r"><code>campp2_brca_1_DEA_out&lt;-ExportDEA(res.DEA = campp2_brca_1_DEA$res.DEA,
 prefix=&quot;test&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="rundeavisuals" class="section level3" number="3.5.15">
-<h3><span class="header-section-number">3.5.15</span> RunDEAVisuals</h3>
+<div id="rundeavisuals" class="section level3" number="3.3.16">
+<h3><span class="header-section-number">3.3.16</span> RunDEAVisuals</h3>
 <p><strong>Description:</strong><br />
 This function wraps several functions for the visualisation
 of DEA results:
@@ -1438,13 +1379,13 @@ between the sample groups<br />
 <strong>An example run:</strong><br />
 ##Create a volcano plot, venn diagram, upset plots based on results from RunDEA
 and AddGeneName functions.</p>
-<pre><code>RunDEAVisuals(campp2_brca_1_DEA_HUGO, cutoff.FDR = 0.01, cutoff.logFC = 1,
+<pre class="r"><code>RunDEAVisuals(campp2_brca_1_DEA_HUGO, cutoff.FDR = 0.01, cutoff.logFC = 1,
 n.labeled.features = 15, control.group= &quot;healthy&quot;, prefix=&quot;test_DEA_visuals&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="makevolcano" class="section level3" number="3.5.16">
-<h3><span class="header-section-number">3.5.16</span> MakeVolcano</h3>
+<div id="makevolcano" class="section level3" number="3.3.17">
+<h3><span class="header-section-number">3.3.17</span> MakeVolcano</h3>
 <p><strong>Description:</strong><br />
 A function for making volcano plots from DEA results.
 The input is typically an output from RunDEA (re-formatted matrix of
@@ -1468,14 +1409,13 @@ Volcano plot of differentially expressed features saved into .png<br />
 <strong>An example run:</strong><br />
 ##Create a volcano plot based on results from RunDEA and
 AddGeneName functions.</p>
-<pre><code>MakeVolcano(campp2_brca_1_DEA_HUGO, prefix = &quot;test_volcano&quot;,
-cutoff.logFC = 1, cutoff.FDR = 0.01, n.labeled.features = 15)
-</code></pre>
+<pre class="r"><code>MakeVolcano(campp2_brca_1_DEA_HUGO, prefix = &quot;test_volcano&quot;,
+cutoff.logFC = 1, cutoff.FDR = 0.01, n.labeled.features = 15)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="makeupset" class="section level3" number="3.5.17">
-<h3><span class="header-section-number">3.5.17</span> MakeUpset</h3>
+<div id="makeupset" class="section level3" number="3.3.18">
+<h3><span class="header-section-number">3.3.18</span> MakeUpset</h3>
 <p><strong>Description:</strong><br />
 A function for making Upset plots to visualize the size of
 intersections of the features present each group
@@ -1499,14 +1439,14 @@ sample groups<br />
 <br />
 <strong>An example run:</strong><br />
 ##Create an Upset plot based on a list of the features characteristic for each group</p>
-<pre><code>MakeUpset(&quot;testUpSet&quot;,campp2_brca_1_DEA_HUGO_features_per_group,
+<pre class="r"><code>MakeUpset(&quot;testUpSet&quot;,campp2_brca_1_DEA_HUGO_features_per_group,
 label=&quot;test_UpSet&quot;,label.vertical.position=16.5,
 y.axis.by=300,set.size.by=250)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="makevenndiagram" class="section level3" number="3.5.18">
-<h3><span class="header-section-number">3.5.18</span> MakeVennDiagram</h3>
+<div id="makevenndiagram" class="section level3" number="3.3.19">
+<h3><span class="header-section-number">3.3.19</span> MakeVennDiagram</h3>
 <p><strong>Description:</strong><br />
 A function for making Venn diagrams to visualize the size of
 intersections of the features between the groups
@@ -1527,8 +1467,8 @@ group</p>
 <p><br />
 </p>
 </div>
-<div id="runheatmap" class="section level3" number="3.5.19">
-<h3><span class="header-section-number">3.5.19</span> RunHeatmap</h3>
+<div id="runheatmap" class="section level3" number="3.3.20">
+<h3><span class="header-section-number">3.3.20</span> RunHeatmap</h3>
 <p><strong>Description:</strong><br />
 A function for making heatmaps to showcase the difference in
 expression/abundance of features across samples and sample groups and to
@@ -1565,14 +1505,14 @@ a .png file with a heatmap<br />
 <br />
 <strong>An example run:</strong><br />
 ##Create and print heatmap based on the raw gene counts</p>
-<pre><code>RunHeatmap(campp2_brca_1_batchCorrected, campp2_brca_1_DEA_HUGO,
+<pre class="r"><code>RunHeatmap(campp2_brca_1_batchCorrected, campp2_brca_1_DEA_HUGO,
 campp2_brca_1_meta$subtype, heatmap.size=30, viridis.palette=&quot;turbo&quot;,
 plot.heatmap=&quot;DEA&quot;, &quot;test_heatmap&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="makeheatmap" class="section level3" number="3.5.20">
-<h3><span class="header-section-number">3.5.20</span> MakeHeatmap</h3>
+<div id="makeheatmap" class="section level3" number="3.3.21">
+<h3><span class="header-section-number">3.3.21</span> MakeHeatmap</h3>
 <p><strong>Description:</strong><br />
 A function for making heatmaps to showcase the difference in
 expression/abundance of features across samples and sample groups and to
@@ -1596,14 +1536,13 @@ a .png file with a heatmap<br />
 <br />
 <strong>An example run:</strong><br />
 ##Create and print heatmap based on the raw gene counts</p>
-<pre><code>MakeHeatmap(data=campp2_brca_1_batchCorrected, group=campp2_brca_1_meta$subtype, 
-prefix=&quot;test_heatmap&quot;, viridis.opt = &quot;turbo&quot;, data.type = &quot;expression/abundance&quot;)
-</code></pre>
+<pre class="r"><code>MakeHeatmap(data=campp2_brca_1_batchCorrected, group=campp2_brca_1_meta$subtype, 
+prefix=&quot;test_heatmap&quot;, data.type = &quot;expression/abundance&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="runlasso" class="section level3" number="3.5.21">
-<h3><span class="header-section-number">3.5.21</span> runLASSO</h3>
+<div id="runlasso" class="section level3" number="3.3.22">
+<h3><span class="header-section-number">3.3.22</span> runLASSO</h3>
 <p><strong>Description:</strong><br />
 The function runs LASSO/Elastic net/Ridge regression (depending
 on a hyperparameter alpha value. For Ridge regression, alpha = 0;
@@ -1648,7 +1587,7 @@ rate (datasets of &gt;20 samples)<br />
 <strong>An example run:</strong><br />
 </p>
 <p>##Run a wrapper of Ridge/elastic net/LASSO regression</p>
-<pre><code>###Normalized and batch corrected data are used as an input for regression.
+<pre class="r"><code>###Normalized and batch corrected data are used as an input for regression.
 ##run regression using small batch corrected dataset - no double cross validation
 runLASSO(data=campp2_brca_1_batchCorrected, group=campp2_brca_1_meta$diagnosis, alpha=0.5, min.coef=0, nfolds=10, prefix=&quot;test&quot;)
 ##run regression using large batch corrected dataset suitable for double cross validation
@@ -1660,13 +1599,12 @@ campp2_test_data_LASSO_zeroFix&lt;-FixZeros(data=campp2_test_data_LASSO_replaceN
 campp2_test_data_LASSO_normalized&lt;-NormalizeData(data=campp2_test_data_LASSO_zeroFix,group=campp2_test_metadata_LASSO$diagnosis,standardize=&quot;TMM&quot;,transform=&quot;voom&quot;,technology=&quot;seq&quot;)
 campp2_test_data_LASSO_batchCorrected&lt;-BatchCorrect(data=campp2_test_data_LASSO_normalized,batch=campp2_test_metadata_LASSO$tumor_stage,group=campp2_test_metadata_LASSO$diagnosis,technology=&quot;seq&quot;)
 ###run lasso on a large dataset
-runLASSO(data=campp2_test_data_LASSO_batchCorrected, group=campp2_test_metadata_LASSO$diagnosis, alpha=0.5, min.coef=0, nfolds=10, prefix=&quot;test&quot;)
-}</code></pre>
+runLASSO(data=campp2_test_data_LASSO_batchCorrected, group=campp2_test_metadata_LASSO$diagnosis, alpha=0.5, min.coef=0, nfolds=10, prefix=&quot;test&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="lassofeature" class="section level3" number="3.5.22">
-<h3><span class="header-section-number">3.5.22</span> LASSOFeature</h3>
+<div id="lassofeature" class="section level3" number="3.3.23">
+<h3><span class="header-section-number">3.3.23</span> LASSOFeature</h3>
 <p><strong>Description:</strong><br />
 The function runs LASSO/Elastic net/Ridge regression
 (depending on a hyperparameter alpha value). Parameter Lambda is
@@ -1712,15 +1650,15 @@ passing the filters (threshold defined by min.coef)<br />
 <strong>An example run:</strong><br />
 </p>
 <p>##Run Ridge/elastic net/LASSO regression</p>
-<pre><code>###Normalized and batch corrected data are used as an input for regression.
+<pre class="r"><code>###Normalized and batch corrected data are used as an input for regression.
 LASSOFeature(seed=123, data=campp2_brca_1_batchCorrected,
 group=campp2_brca_1_meta$diagnosis, alpha=0.5, validation=TRUE,
 min.coef = 0, nfolds=10)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="rundea_lasso_consensus" class="section level3" number="3.5.23">
-<h3><span class="header-section-number">3.5.23</span> RunDEA_LASSO_consensus</h3>
+<div id="rundea_lasso_consensus" class="section level3" number="3.3.24">
+<h3><span class="header-section-number">3.3.24</span> RunDEA_LASSO_consensus</h3>
 <p><strong>Description:</strong><br />
 This function creates a consensus between the results from
 DEA and LASSO/Elastic net/Ridge regression. Specifically, only the features
@@ -1743,7 +1681,7 @@ from DEAout table<br />
 2) a .png with a Venn diagram of features’ intersections between DEA and LASSO<br />
 <strong>An example run:</strong><br />
 </p>
-<pre><code>##here we prepare DEA results compatible (group=&quot;diagnosis) with
+<pre class="r"><code>##here we prepare DEA results compatible (group=&quot;diagnosis) with
 EN/LASS/Ridge regression results:
 campp2_brca_1_DEA_diagnosis&lt;-RunDEA(data=campp2_brca_1_normalized,
 metadata=campp2_brca_1_meta,
@@ -1757,8 +1695,8 @@ viridis.palette=&quot;turbo&quot;, &quot;test&quot;)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="runrf" class="section level3" number="3.5.24">
-<h3><span class="header-section-number">3.5.24</span> RunRF</h3>
+<div id="runrf" class="section level3" number="3.3.25">
+<h3><span class="header-section-number">3.3.25</span> RunRF</h3>
 <p><strong>Description:</strong><br />
 The function runs random forest classification and variable
 selection by running the RFApply function. The classification and variable
@@ -1794,7 +1732,7 @@ a list of:<br />
 selected variables (e.g., genes) from the feature selection process.<br />
 <strong>An example run:</strong><br />
 </p>
-<pre><code>campp2_brca_1_run_rf &lt;-
+<pre class="r"><code>campp2_brca_1_run_rf &lt;-
 RunRF(data = campp2_brca_1_batchCorrected,
 group = campp2_brca_1_meta$diagnosis,
 split.size = 5,
@@ -1804,8 +1742,8 @@ num.trees.iterat = 2000)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="rfapply" class="section level3" number="3.5.25">
-<h3><span class="header-section-number">3.5.25</span> RFApply</h3>
+<div id="rfapply" class="section level3" number="3.3.26">
+<h3><span class="header-section-number">3.3.26</span> RFApply</h3>
 <p><strong>Description:</strong><br />
 This function applies the ForestFeatures function using 10 random
 seeds. The ForestFeatures function performs random forest on feature counts
@@ -1855,7 +1793,7 @@ seed run.<br />
 7) a vector of integers containing seeds used in the procedure.<br />
 <strong>An example run:</strong><br />
 </p>
-<pre><code>campp2_brca_1_rf_apply &lt;- RFApply(data = campp2_brca_1_batchCorrected,
+<pre class="r"><code>campp2_brca_1_rf_apply &lt;- RFApply(data = campp2_brca_1_batchCorrected,
 group = campp2_brca_1_meta$diagnosis,
 validation = TRUE,
 test.train.ratio = 0.25,
@@ -1864,8 +1802,8 @@ num.trees.iterat = 2000)</code></pre>
 <p><br />
 </p>
 </div>
-<div id="forestfeatures" class="section level3" number="3.5.26">
-<h3><span class="header-section-number">3.5.26</span> ForestFeatures</h3>
+<div id="forestfeatures" class="section level3" number="3.3.27">
+<h3><span class="header-section-number">3.3.27</span> ForestFeatures</h3>
 <p><strong>Description:</strong><br />
 This function implements random forest on feature counts
 (e.g. genes) and allows for feature selection using the random forest
@@ -1911,7 +1849,7 @@ a list of:<br />
 If validation = FALSE, the last three elements in output will be NA.<br />
 <strong>An example run:</strong><br />
 </p>
-<pre><code>campp2_brca_1_forest_features &lt;- ForestFeatures(seed = 123,
+<pre class="r"><code>campp2_brca_1_forest_features &lt;- ForestFeatures(seed = 123,
 data = campp2_brca_1_batchCorrected,
 group = campp2_brca_1_meta$diagnosis,
 validation = TRUE,
@@ -1920,302 +1858,7 @@ num.trees.init = 5000,
 num.trees.iterat = 2000)</code></pre>
 <p><br />
 </p>
-<p>================================================================================================
-(THE REST WILL BE CONSIDERED - WE CAN USE SOME INFO TO BETTER DESCRIBE THE ARGUMENTS ABOVE)
-<strong>1. Quantitative data (counts) </strong>: An .xlsx (or .txt) file containing feature expression/abundance.
-With rows as variables, and columns as samples, e.g. columns
-are gene, N-glycan, protein, (mi)RNA identifiers and rows are sample
-IDs. The repository <a href="https://github.com/ELELAB/N-glycan-TIF/" class="uri">https://github.com/ELELAB/N-glycan-TIF/</a>
-tree/master/Data/DataExamples contains an example with N-glycans
-named: glycandata.xlsx. If two datasets are provided (for correlation
-and/or network analysis), this option should be specified as a
-comma separated list (without quotes or parenthesis!) of length two,
-first entry being data file 1 and second entry data file 2.
- </p>
-<p><strong>2. Data type (data_type)</strong>: The user must specify what type of data is provided
-in order for the pipeline to pick the appropriate normalization
-and/or transformation. Options include; array (mircoarray data),
-seq (high throughput sequencing data), ms (mass spectrometry data)
-or other (other type). If two datasets are provided (for correlation
-and/or network analysis), this option should be specified as a comma
-separated list (without quotes or parenthesis!) of length two, first
-entry referring to data file 1 and second entry referring to the data
-file 2.</p>
-<p>• Sequencing data: (data type is set to seq): Variables with low counts
-over all groups (tissue, treatment) are filered out, library sizes
-are scaled (normalization method is weighted trimmed mean of
-M-values, TMM) and data are voom transformed.
-• Microarray data (data type is set to array): Data are log transformed
-and either quantile normalized (normalizeBetweenArrays) or
-standardized using mean or median (specify option -z).
-• Mass spectrometry data (data type is set to ms): IF option -t is specified,
-then data will be log transformed (log2, log or logit as specified).
-It should be noted that CAMPP does NOT perform within-array normalization
-(normalizeBetweenArrays), which is standard for two color
-intensity data, e.g. this must be done before hand (see limma manual for
-more information [26]).</p>
-<p><strong>3 Metadata (metadata)</strong>: An .xlsx file (or .txt) containing metadata. This file
-must contain at least two columns, one with identifiers matching
-the column names in the data file and one with groups to contrast
-in analysis e.g. diagnosis (tumor or normal), tumor stage (1,2 or
-3), drug treatment (A, B C) etc. If two datasets are provided (for
-correlation and/or network analysis), this option should be specified
-as a comma separated list (without quotes or parenthesis!) of
-length two, first entry being metadata file 1 and second entry metadata
-file 2. The repository <a href="https://github.com/ELELAB/N-glycan-TIF/" class="uri">https://github.com/ELELAB/N-glycan-TIF/</a>
-tree/master/Data/DataExamples contains an example with N-glycans
-named: glycanmetadata.xlsx.</p>
-<p><strong>4 Ids and Groups (IDs, groups)</strong>: The user must specify which columns in
-the metadata file corresponds to the sample ids and groups for
-comparison, receptively. This is done by providing a list of two
-strings separated by a comma (without quotes or parenthesis!) ,
-indicating the names of the columns which should be used. If two
-datasets are provided, and both datasets are to be corrected for
-experimental batch, this option should be specified as a comma
-separated list (without quotes or parenthesis!) of length four.
-The first two entries in the list specifying names of columns
-(IDs and groups) to use from metadataset 1 and third and fourth
-entry specifying names of columns (ids and groups) to use from
-metadataset 2.</p>
 </div>
-</div>
-<div id="other-arguments" class="section level2" number="3.6">
-<h2><span class="header-section-number">3.6</span> Other Arguments</h2>
-<p><br />
-</p>
-<!-- MDS removed -->
-<p><strong>Data Transformation</strong> (transform): The flag -t may be set if the user
-desires the expression/abundance data to be transformed before
-analysis. A logarithmic transformation is recommended as the
-variance of measurements, from most platforms, depend on the
-expression/abundance level itself. The log-transformation reduces
-this dependency and additionally pushes the negative binomial
-distribution, displayed by count data (miRNA, mRNA), towards
-a normal distribution. The user may choose between log2, log10,
-logit or voom tranformation. For RNA-seq the voom transformation
-is recommended [26], while a log transformation may be
-more appropriate for proteomics and N-glycan abundances. If
-another sample paired dataset of expression values are provided,
-this option should be specified as a comma separated list (without
-quotes or parenthesis!) of length two, first entry referring to data
-file 1 and second entry referring to the data file 2.</p>
-<p><strong>Batch</strong> (batch): If the data comes from experimental batches and the
-user wants to correct for this, a column specifying which batch
-each sample belongs, should also be included in the metadata file.
-The argument “batch” takes a string (no quotes!) referring to the name
-of the column in the metadata file denoting batches (e.g. A, B,
-C, or batch1, batch2, batch3, etc.). Batch type must be noted
-as a character, meaning <strong>numbers alone are not allowed</strong>. If two
-datasets are provided, this option should be specified as a comma
-separated list (without quotes or parenthesis!) of length two, first
-entry matching the name of a column in metadata file 1 and the
-second entry matching the of a column in metadataset 2.</p>
-<p><strong>Distibutional Checks</strong> (check_distr): this argument may be set to FALSE to
-remove the default check of variable distributions. If the argument is
-not specified (or set to TRUE), the pipeline will produce plots including
-histograms, quantile-quantile plots and probability plots.
-By default 10 random variables are picked from the dataframe
-for plotting (here we are assuming that most variables in an gene
-expression matrix or protein abundance matrix will belong to the
-same family of distributions.) We heavily recommend always
-running the data checks and to NOT ignore the output, as
-this vital to whether or not results are reliable!.</p>
-<p><strong>Colors</strong> (colors): An argument to change group color scheme. Accepted Rcolors
-must be specified in a comma separated list (without parenthesis!)
-of a length matching the number of groups.</p>
-<p><strong>Covariates</strong> (covars): The user may specify argument “covars” if covariates should
-be included in the differential expression/abundance analysis
-and/or the survival analysis. This argument takes a comma separated
-list (without quotes or parenthesis!). The first element in
-this list must be either TRUE or FALSE. If TRUE is specified
-then covariates will be included in both DE/DA analysis and Survival
-Analsysis. If FALSE is specified covariates will ONLY be
-used for Survival Analsysis. All other elements of the list after
-element one (TRUE/FALSE) must be strings matching one or
-more column names in the metadata file. Age is automatically
-added as a covariate for survival anlysis and should therefore not
-be specified with “covars”!</p>
-<p><strong>LogFC and FDR</strong> (logFC_FDR): Cut-offs for log2 fold change and corrected
-p-value (fdr). Defaults are logFC &gt; 1 or logFC &lt; -1 and fdr
-&lt; 0.05. This argument takes a comma separated list of length two
-(without quotes or parenthesis!). The first element specifying
-cut-off for logFC and the second element specifying cut-off for
-FDR. If two datasets are provided, the list must have length four,
-e.g. cut-offs for both sets.</p>
-<p><strong>Kmeans Clustering</strong> (KMeansClust): The argument “KMeansClust” is set
-to specify K-means
-clustering. This argument takes a string specifying which column
-in the metadata file should be used to label the samples in the
-returned plot(s). If KMeansClust is set but left empty, no labels are added
-to the plot(s). The number of clusters tested will be based on
-number of samples, fewer samples will result in fewer kmeans
-tested. A folder with MDS plots will be returned for the best n
-number of kmeans, based on the bayesian information criterion
-(BIC) [30]. If the dataset has many variables i.e. RNAseq with
-many genes, multiple samples of 3000 variables will be generated
-and tested to overcome issues with computational time and the
-consensus of best n kmeans will be returned.
-Clustering may only be performed one dataset at a time!</p>
-<p><strong>LASSO/Elastic-Net Regression</strong> (LA_EN): The argument “LA_EN” may be set to
-specify least absolute shrinkage and selection operator (LA_EN 1.0) or
-Elastic-Net (0.0 &lt; LA_EN &lt; 1.0) regression. LASSO/EN is performed
-using the R-package glmnet [12]. K-fold (default is 10) cross
-validation (cv.glmnet) is used to estimate the optimal value for the
-hyperparameter, lambda. LASSO/EN may be performed in two
-ways, (I) the dataset is split into training and testing subsets, k-fold
-cross validation is performed on the training dataset, followed by
-estimation of specificity and sensitivity (area under the curve =
-AUC) using the test dataset, or (Il) k-fold cross validation is performed
-using the full dataset, no AUC is reported. CAMPP will
-automatically estimate whether the input dataset is large enough
-to split into training and test subsets and whether EN/LASSO
-is advisable to perform altogether. Specifying the argument LA_EN will
-produce a list of variables selected by LASSO and a file with the
-overlap between differential expression/abundance analysis and
-LASSO regression. LASSO is run with n (default is 10) different
-random seeds and the consensus set of variables is returned.
-N.B LASSO it not appropriate for heavily unbalanced group
-designs! When running LASSO a bar-plot with cross-validation
-errors are returned, as well as an area under the curve (AUC),
-IF the dataset is large and balanced enough to split into test and
-training set. LASSO may only be performed on one dataset at a
-time!</p>
-<p>N.B It is important to note setting the argument LA_EN is a trade-off between
-retaining information in the regression model without merely including
-all (or almost all) variables (this happens if LA_EN is very low). As the
-point of elastic-net regression is to aid the user in picking a smaller set
-of markers for validation from a potentially large set of differentially expressed/
-abundant variables, we suggest to set LA_EN to between 0.5-0.9,</p>
-<p><strong>Weighed Gene Co-expression Network Analysis</strong> (WGCNA): The
-argument “WGCNA” must be set (DA, DE or ALL) in order to perform Weighed
-Gene Co-expression Network Analysis with the R-package WGCNA
-[23]. WGCNA, despite its name, is in this case not exclusive to
-gene expression data but may be applied to any quantitative expression
-data. Minimum module size is 10 variables and modules
-with less than 25% dissimilarity will be merged (default values).
-The cutoff for top most interconnected variables (genes, proteins
-ect.) in an identified module is set to the 75th quantile by default.
-The user may specify different cutoffs for minimum module size,
-module dissimilarity merging and and % of interconnected variables
-to report with the flag -x.</p>
-<p><strong>how to solve flag -x?</strong>
-N.B the softpower plot generated by a WGCNA run should
-be inspected before interpretation of results. If the data is very
-heterogeneous, or if there are too few variables or samples (minimum
-15 samples for WGCNA) the scale-free topology fit index
-(printed to the screen while running) might fail to reach values
-above 0.8 for reasonable powers (see point 5 in WGCNA tutorial:
-<a href="https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/" class="uri">https://horvath.genetics.ucla.edu/html/CoexpressionNetwork/</a>
-Rpackages/WGCNA/faq.html). If this is the case, the dataset may not
-be appropriate forWGCNA.
-WGCNA may only be performed with one dataset at a time!</p>
-<p><strong>Correlation Analysis</strong> (correlation): The argument “correlation” must
-be set to perform
-correlation analysis between two matched datasets. For option
-“correlation” the user must provide a string specifying which subset of variables
-should be included in the correlation analysis; “ALL” = all
-variables (not advisable, unless dataset is small), “DA” / “DE” =
-Differentially Expressed/Abundant, “LASSO” / “EN” = LASSO
-/ Elastic Net results or “Consensus” = Overlap between DE and
-LASSO/EN. Naturally two datasets for must be input in order
-to perform correlation analysis. Both datasets are given to the
-argument correlation, with the names of the files separated by a comma
-(no quotes or parenthesis!). The two dataset do not need to have
-the same dimensions, but there must be at least a partial overlap
-in both variables and samples (column names). Column names of
-these datasets should match the IDs in the ids column in the two
-metadata files.</p>
-<p><strong>Survival Analysis</strong> (survival): The argument “survival” must be set in order
-to perform
-survival analysis using cox proportional hazard model. Options
-for survival analysis are; “ALL” (not advisable!), “DA” /
-“DE” = Differentially Expressed/Abundant, “LASSO” / “EN” =
-LASSO / Elastic Net results or “Consensus” = Overlap between
-DE and LASSO/EN, referring to the set of variables used for
-cox-regression. For survival analysis the metadata file must contain
-at least three columns in addition to the sample IDs named;
-’outcome.time’ (time until end of follow-up, censuring or death
-in weeks, months or years), ’outcome’ (numeric 0 = censuring,
-1=dead) and ’survival’ (numeric 0 = no survival info, 1=survival
-info available). If the user wishes to correct for potential confounders
-(e.g. patient age, tumor grade, hormone levels, drug treatment
-ect.) these should also be included in the metadata.xlsx.
-CAMPP checks two underlying assumptions of the cox model
-before performing survival analysis (I) a linear relationship of continuous
-covariates with log hazards and (II) proportional hazards
-of categorical and continuous covariates, e.i. constant relative
-hazard. If the requirement of linearity is not fulfilled, cubic splines
-will be added to the covariate(s) in question.</p>
-<p><strong>P-P Interactions</strong> (PPI): The argument PPI may be specified to perform
-protein-protein interaction network analysis. Input for this argument
-is a comma separated list of length two (without quotes
-or parenthesis!), where the first element specifies the type of
-gene IDs in the data file, accepted IDs are: uniprotswissprot, ensembl_
-peptide_id, hgnc_symbol, ensembl_gene_id or ensembl_
-transcript_id. The second element specifies the protein-protein
-interaction database to use, currently the only supported database
-is STRING [20], accepted inputs are: stringdatabase.</p>
-<p><strong>Gene-miRNA Interactions</strong> (miR_G_I): The argument miR_G_I may be specified to
-perform gene-miRNA interaction network analysis. Input for
-this argument is a comma separated list of length two (without
-quotes or parenthesis!), where the first element specifies the type of
-miRNA IDs in the data file, accepted IDs are: mature_mirna_ids
-or mature_mirna_accession. The second element specifies the
-Gene-miRNA interaction database to use (validated, predicted or
-both), accepted inputs are: targetscan, mirtarbase or tarscanbase.
-N.B: If both -p and -i are set, CAMPP will integrate P-P and
-Gene-miR networks. Naturally two data files must be provided
-to use both PPI and miR_G_I, it is assumed that data file 1 contains genes
-and data file 2 contains miRNAs!</p>
-<p>The next page contains an elaborate table (Figure 1) which goes
-through most of the plots generated by the CAMPP pipeline. In this
-table the user may find information about in which type of analysis
-the plot is produced, what it shows and how to interpret it.</p>
-<div class="figure">
-<img src="./vignette/table1.png" style="width:100.0%" alt />
-<p class="caption">Figure 1</p>
-</div>
-</div>
-</div>
-<div id="n-glycan-serum-markers-for-bc-diagnostics" class="section level1" number="4">
-<h1><span class="header-section-number">4</span> N-glycan Serum Markers for BC Diagnostics</h1>
-<p>This section contains an example of how CAMPP is run using different
-flags in the command-line and what output the user can expect. The
-files used for running this example may be found in the repository https:
-//github.com/ELELAB/N-glycan-TIF/tree/master/Data/DataExamples.</p>
-<p>The case below uses N-glycans abundances measured using high
-resolution quantitative Ultra-Performance Liquid Chromatography
-(UPLC) [28] from interstitial samples [15] and matched serum. Tumor
-interstitial fluid (TIF), normal interstitial fluid (NIF) and serum samples
-were collected from 90 women diagnosed with breast cancer
-(BC). A total of 165 N-glycan groups were identified [32].</p>
-<p>Briefly, the involvement of N-glycosylation in development and progression
-of BC has been documented by both in vitro and in vivo
-studies [3, 5, 16]. Several circulating N-glycan patterns with altered
-glycan structures, possibly originating from a primary tumor or from
-other organs, in response to a neoplastic process, have recently been
-described in a number of studies by using high-throughput N-glycan
-profiling [2, 18, 25, 28].</p>
-<div id="data-normalization-transformation-and-distributional-checks" class="section level2" number="4.1">
-<h2><span class="header-section-number">4.1</span> Data Normalization, Transformation and Distributional Checks</h2>
-<p>If an input dataset contains missing values CAMPP will automatically
-impute these, unless missing per column &gt; 70%. Depending on which
-data input is given CAMPP will perform data normalization and transformation
-(argument “data_type”, see section on mandatory
-input).</p>
-<p>The quantitative N-glycan data (used in this example) are
-relative (fractional) meaning that the sum of all values within one
-sample yields 100. Abundances of N-glycans were quantified using
-liquid chromatography tandem mass spectrometry (LC-MS/MS). The
-dataset had already been standardized by the MS-software, therefore
-the argument “data_type” was set to ms and the argument transform was set to
-log2. As the N-glycan data were quantified over three LC-MS/MS runs, the
-argument batch should be set, e.g. data will be corrected for experimental batch.
-Before performing any analysis it is advisable to evaluate the distribution
-of the normalized data. CAMPP automatically generates distributional
-plots for n (default is 10) randomly selecting input variables for
-the user to evaluate - to skip this step the argument check_distr may be set to
-FALSE).</p>
 </div>
 </div>
 
